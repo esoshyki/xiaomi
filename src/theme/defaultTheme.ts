@@ -32,17 +32,23 @@ const defaultTheme : DefaultTheme = {
         primary: {
             bgcolor: Colors.primary,
             textColor: Colors.white,
-            borderColor: Colors.transparent
+            borderColor: Colors.transparent,
+            hoverBackground: Colors.primaryHover,
+            activeBackground: Colors.primaryActive
         },
         secondary: {
             bgcolor: Colors.secondary,
             textColor: Colors.white,
-            borderColor: Colors.transparent
+            borderColor: Colors.transparent,
+            hoverBackground: Colors.secondaryHover,
+            activeBackground: Colors.secondaryActive
         },
         outline: {
             bgcolor: Colors.transparent,
             textColor: Colors.dark,
-            borderColor: Colors.dark            
+            borderColor: Colors.dark,
+            hoverBackground: Colors.transparent,
+            activeBackground: Colors.transparent
         }
     },
 

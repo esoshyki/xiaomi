@@ -7,7 +7,7 @@ const ThemePage = () => {
 
     return (
         <Container fullWidth padding={30}>
-            <Typography.H2>Создать тему</Typography.H2>
+            <Typography.H2>Тема</Typography.H2>
             <Theme />
             
         </Container>

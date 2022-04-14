@@ -1,4 +1,5 @@
 import styled from 'styled-components/macro'
+import Button from '../ui/Button'
 
 const TestWrapper = styled.div`
     width: 100vw;
@@ -11,7 +12,7 @@ const Test = () => {
 
     return (
         <TestWrapper>
-
+            <Button onClick={() => {}}>Кнопка</Button>
         </TestWrapper>
     )
 }

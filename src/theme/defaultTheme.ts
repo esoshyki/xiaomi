@@ -6,7 +6,13 @@ const defaultTheme : DefaultTheme = {
     colors: {
         main: "#000",
         secondary: "megenta",
-        bgMain: "#2f2f2f"
+        text: {
+            main: "#000"
+        },
+        bgMain: "#2f2f2f",
+        primary: "#1769aa",
+        primaryHover: "#2196f3",
+        primaryActive: "#4dabf5"
     },
 
     spaces: {

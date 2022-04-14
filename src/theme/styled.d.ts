@@ -6,9 +6,15 @@ declare module 'styled-components' {
     borderRadius: string;
 
     colors: {
+      text: {
+        main: string
+      }
       main: string
       secondary: string
       bgMain: string
+      primary: string
+      primaryHover: string
+      primaryActive: string
     }
 
     spaces: {

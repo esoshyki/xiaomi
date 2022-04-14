@@ -24,7 +24,7 @@ const ThemeButtons = () => {
                     styles={{ minWidth: "200px" }}
                     onClick={() => {}}
                 >
-                    Вторичная
+                    Контурная
                 </Button>
 
                 <Button
@@ -32,7 +32,7 @@ const ThemeButtons = () => {
                     styles={{ minWidth: "200px" }}
                     onClick={() => {}}
                 >
-                    Вторичная
+                    
                 </Button>
             </Container>
         </Card>

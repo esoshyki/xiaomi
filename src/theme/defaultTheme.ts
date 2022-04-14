@@ -1,5 +1,18 @@
 import { DefaultTheme } from "styled-components";
 
+enum Colors {
+    primary = "#1769aa",
+    primaryHover = "#2196f3",
+    primaryActive = "#4dabf5",
+    secondary = "#2e7d32",
+    secondaryHover = "#66bb6a",
+    secondaryActive = "#a5d6a7",
+    background = "#2f2f2f",
+    white = "#fff",
+    transparent = "transparent",
+    dark = "#000"
+}
+
 const defaultTheme : DefaultTheme = {
     borderRadius: "5px",
 
@@ -9,10 +22,28 @@ const defaultTheme : DefaultTheme = {
         text: {
             main: "#000"
         },
-        bgMain: "#2f2f2f",
-        primary: "#1769aa",
-        primaryHover: "#2196f3",
-        primaryActive: "#4dabf5"
+        bgMain: Colors.background,
+        primary: Colors.primary,
+        primaryHover: Colors.primaryHover,
+        primaryActive: Colors.primaryActive
+    },
+
+    buttons: {
+        primary: {
+            bgcolor: Colors.primary,
+            textColor: Colors.white,
+            borderColor: Colors.transparent
+        },
+        secondary: {
+            bgcolor: Colors.secondary,
+            textColor: Colors.white,
+            borderColor: Colors.transparent
+        },
+        outline: {
+            bgcolor: Colors.transparent,
+            textColor: Colors.dark,
+            borderColor: Colors.dark            
+        }
     },
 
     spaces: {

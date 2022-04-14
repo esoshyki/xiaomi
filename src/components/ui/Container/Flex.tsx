@@ -1,25 +1,38 @@
-import styled from "styled-components"
-import { getFlexJustify } from "../../../helpers/getFlexProps"
-import { Props } from "../../types"
+import styled from "styled-components/macro";
+import { getFlexAligns, getFlexJustify } from "../../../helpers/getFlexProps";
+import { Aligns, Justifies, Props } from "../../types";
 
 type FlexProps = Props<{
     direction?: "row" | "column"
-    justify: "start" | "end" | "center"
-    alignItems: "start" | "end" | "center"
-}>
+    justify?: Justifies
+    alignItems?: Aligns
+    fullWidth?: true,
+    padding?: number,
+    margin?: number
+}>;
 
 const FlexContainer = styled.div<FlexProps>`
     display: flex;
-    flex-direction: ${props => props.direction};
-    justify-content: ${props => getFlexJustify(props.justify)};
-    align-items: ${props => getFlexJustify(props.alignItems)};
-`
+    width: ${props => props.fullWidth ? "100%" : "auto"};
+    flex-direction: ${(props) => props.direction || "column"};
+    justify-content: ${(props) => getFlexJustify(props.justify || "start")};
+    align-items: ${(props) => getFlexAligns(props.alignItems || "center")};
+    padding: ${props => `${props.padding || 0}px`};
+    margin: ${props => `${props.margin || 0}px`};
+    ${props => ({
+        ...props.styles
+    })}
+`;
 
 const Flex = (props: FlexProps) => {
 
-    return <FlexContainer {...props}>
-        {!!props.children && props.children}
-    </FlexContainer>
-}
+    return (
+        <FlexContainer
+            {...props}
+        >
+            {!!props.children && props.children}
+        </FlexContainer>
+    );
+};
 
-export default Flex
+export default Flex;

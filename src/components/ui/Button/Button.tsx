@@ -1,26 +1,39 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import styled from 'styled-components'
+import { Props } from "../../types";
 
-type ButtonVariants = "primary" | "secondary"
+type ButtonVariants = "primary" | "secondary" | "outline"
 
 const Root = styled.button<{
     variant: ButtonVariants
 }>`
     padding: 20px;
-`
+    ${props => {
+        const { variant, theme } = props;
+        const buttonProps = theme.buttons[variant];
+        console.log(variant)
+        return ({
+            color: buttonProps.textColor,
+            backgroundColor: buttonProps.bgcolor,
+            border: `1px solid ${buttonProps.borderColor}`
+        })
+    }};
+    ${props => ({
+        ...props.style
+    })}
+`;
 
-interface ButtonProps {
+type ButtonProps = Props<{
     onClick: () => void
     variant?: ButtonVariants
-    children: ReactNode
-}
+}>
 
 const Button = (props: ButtonProps) => {
     const { children, variant = "primary" } = props;
 
     return (
-        <Root variant={variant}>
-            {children}
+        <Root variant={variant} style={props.styles}>
+            {!!children && children}
         </Root>
     )
 };

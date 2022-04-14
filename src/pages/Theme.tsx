@@ -1,10 +1,17 @@
+import Theme from "../components/Theme"
+import { Container } from "../components/ui/Container"
+import Typography from "../components/ui/Typography"
 
 
-const Theme = () => {
+const ThemePage = () => {
 
     return (
-        <div>Создать тему</div>
+        <Container fullWidth padding={30}>
+            <Typography.H2>Создать тему</Typography.H2>
+            <Theme />
+            
+        </Container>
     )
 }
 
-export default Theme
+export default ThemePage

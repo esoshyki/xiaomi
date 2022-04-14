@@ -1,4 +1,5 @@
 import 'styled-components';
+import type { ButtonTheme } from "./types";
 
 // and extend them!
 declare module 'styled-components' {
@@ -16,6 +17,8 @@ declare module 'styled-components' {
       primaryHover: string
       primaryActive: string
     }
+
+    buttons: ButtonTheme
 
     spaces: {
         0: string

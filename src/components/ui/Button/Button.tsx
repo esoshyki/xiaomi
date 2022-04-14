@@ -1,16 +1,26 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Props } from "../../types";
+import { ReactComponent as LoadingIcon } from "../../../assets/loading.svg";
 
 type ButtonVariants = "primary" | "secondary" | "outline";
 
-const Root = styled.button<{
-    variant: ButtonVariants;
-}>`
+const Rotation = keyframes`
+    0% {
+        transform: rotate(0deg)
+    }
+    100% {
+        transform: rotate(360deg)
+    }
+`
+
+const Root = styled.button<ButtonProps>`
     padding: 20px;
+    margin: 10px 20px;
     transition: background-color 200ms ease-in;
+    position: relative;
     ${(props) => {
-        const { variant, theme } = props;
+        const { variant="primary", theme } = props;
         const buttonProps = theme.buttons[variant];
         return {
             color: buttonProps.textColor,
@@ -21,30 +31,43 @@ const Root = styled.button<{
     &:hover {
         cursor: pointer;
         ${(props) => ({
-            backgroundColor: props.theme.buttons[props.variant].hoverBackground,
+            backgroundColor: props.theme.buttons[props.variant ?? "primary"].hoverBackground,
         })}
     }
     &:active {
         ${(props) => ({
             backgroundColor:
-                props.theme.buttons[props.variant].activeBackground,
+                props.theme.buttons[props.variant ?? "primary"].activeBackground,
         })}
     }
+    svg {
+        animation: ${Rotation} 1000ms ease-in 0s infinite;
+        position: absolute;
+        width: 20px;
+        left: 25px;
+        fill: #fff;
+    }
     ${(props) => ({
-        ...props.style,
+        ...props.styles,
     })}
 `;
 
 type ButtonProps = Props<{
     onClick: () => void;
     variant?: ButtonVariants;
+    withLoader?: true;
+    loading?: boolean;
+    icon?: string;
 }>;
 
 const Button = (props: ButtonProps) => {
-    const { children, variant = "primary" } = props;
+    const { children, withLoader, loading } = props;
+
+    console.log((((withLoader && !loading) || !withLoader) && !!children))
 
     return (
-        <Root variant={variant} style={props.styles}>
+        <Root {...props}>
+            {withLoader && loading && <LoadingIcon />}
             {!!children && children}
         </Root>
     );

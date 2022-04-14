@@ -12,9 +12,6 @@ const ThemeButtons = () => {
             <Container
                 direction="row"
                 justify="around"
-                styles={{
-                    minWidth: "700px",
-                }}
             >
                 <Button styles={{ minWidth: "200px" }} onClick={() => {}}>
                     Обычная
@@ -33,6 +30,15 @@ const ThemeButtons = () => {
                     onClick={() => {}}
                 >
                     Контурная
+                </Button>
+
+                <Button
+                    withLoader
+                    loading={true}
+                    styles={{ minWidth: "200px" }}
+                    onClick={() => {}}
+                >
+                    С загрузкой
                 </Button>
             </Container>
         </Card>

@@ -7,7 +7,9 @@ export const withLayout =
     <T extends object>(Component: ComponentType<T>) =>
     (props: T): ReactElement => {
 
-        const { theme } = useSelector(getThemeData)
+        const { theme } = useSelector(getThemeData);
+
+        console.log(JSON.stringify(theme));
 
         return (
             <ThemeProvider theme={theme}>

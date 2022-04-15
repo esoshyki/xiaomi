@@ -4,6 +4,7 @@ import type { ButtonTheme } from "./types";
 // and extend them!
 declare module 'styled-components' {
   export interface DefaultTheme {
+    id: number
     borderRadius: string;
 
     colors: {

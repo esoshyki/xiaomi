@@ -14,6 +14,7 @@ enum Colors {
 }
 
 const defaultTheme : DefaultTheme = {
+    id: 1,
     borderRadius: "5px",
 
     colors: {

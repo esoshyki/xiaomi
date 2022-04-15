@@ -1,28 +1,15 @@
 import { ReactNode } from 'react';
+import * as CSS from 'csstype'
 
-export enum TextColors {
-  Black100 = "#171A22",
-  Grey10 = "#E8E8E9",
-  Grey20 = "#D1D1D3",
-  Grey40 = "#A2A3A7",
-  Grey60 = "#74767A",
-  Primary = "#6678E2",
-  PrimaryHover = "#8b9dfa",
-  Error = "#db2845"
-}
+type Variant =  "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "span" | "p" | "mark" | "error"
 
 export type TextProps = {
-  fontSize?: number
-  marginTop?: number
-  marginBottom?: number
-  fontWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700
-  lineHeight?: number
-  color?: TextColors
-  className?: string
+  styles?: CSS.Properties
   children: ReactNode
-  position?: "relative" | "absolute" | "static",
-  top?: number
-  left?: number
-  hover?: true
+  className?: string
   onClick?: () => void
+}
+
+export interface TypographyProps extends TextProps {
+  variant: Variant
 }

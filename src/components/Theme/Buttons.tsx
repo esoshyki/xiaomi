@@ -8,7 +8,7 @@ import { Container } from "../ui/Container";
 const ThemeButtons = () => {
     return (
         <Card>
-            <Typography.H4 marginTop={0}>Кнопки</Typography.H4>
+            <Typography.H4 styles={{marginTop: 0}}>Кнопки</Typography.H4>
             <Container
                 direction="row"
                 justify="around"

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useDeferredValue } from "react";
+import React, { ChangeEvent, useState, useDeferredValue, useEffect } from "react";
 import Typography from "../ui/Typography";
 import Card from "../ui/Card";
 
@@ -12,7 +12,11 @@ const ThemeInputs = () => {
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value)
-    }    
+    } 
+
+    useEffect(() => {
+        console.log(text)    
+    }, [text])
     return (
         <Card>
             <Typography.H4 styles={{marginTop: 0}}>Инпуты</Typography.H4>

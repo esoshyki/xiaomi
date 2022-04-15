@@ -21,7 +21,9 @@ const Theme = () => {
 
     return (
         <Container fullWidth >
-            {themes.length && <select value={theme.id} onChange={themeChange}>
+            {themes.length && <select value={theme.id} onChange={themeChange} style={{
+                marginBottom: 20
+            }}>
                 <option value={themes[0].id}>{themes[0].title}</option>
                 <option value={themes[1].id}>{themes[1].title}</option>
             </select>}

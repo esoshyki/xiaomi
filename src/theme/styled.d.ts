@@ -1,5 +1,5 @@
 import 'styled-components';
-import type { ButtonTheme } from "./types";
+import type { ButtonTheme, ThemeInput } from "./types";
 
 // and extend them!
 declare module 'styled-components' {
@@ -18,6 +18,8 @@ declare module 'styled-components' {
       primaryHover: string
       primaryActive: string
     }
+
+    input: ThemeInput
 
     buttons: ButtonTheme
 

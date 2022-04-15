@@ -3,6 +3,7 @@ import ThemeButtons from "./Buttons";
 import { ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTheme, getThemeData, getThemes } from "../../store/themeSlice";
+import ThemeInputs from "./Inputs";
 
 const Theme = () => {
 
@@ -25,6 +26,7 @@ const Theme = () => {
                 <option value={themes[1].id}>{themes[1].title}</option>
             </select>}
             <ThemeButtons />
+            <ThemeInputs />
         </Container>
     );
 };

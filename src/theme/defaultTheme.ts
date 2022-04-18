@@ -10,7 +10,10 @@ enum Colors {
     background = "#fff",
     white = "#fff",
     transparent = "transparent",
-    dark = "#000"
+    dark = "#000",
+    error = "#DB2845",
+    errorActive = "#C20824",
+    errorHover = "#F44C6A"
 }
 
 const defaultTheme : DefaultTheme = {
@@ -26,7 +29,10 @@ const defaultTheme : DefaultTheme = {
         bgMain: Colors.background,
         primary: Colors.primary,
         primaryHover: Colors.primaryHover,
-        primaryActive: Colors.primaryActive
+        primaryActive: Colors.primaryActive,
+        error: Colors.error,
+        errorActive: Colors.errorActive,
+        errorHover: Colors.errorHover
     },
 
     input: {

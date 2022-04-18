@@ -2,17 +2,13 @@ import React from "react";
 import Typography from "../ui/Typography";
 import Button from "../ui/Button";
 import Card from "../ui/Card";
-
-import { Container } from "../ui/Container";
+import Container from "../ui/Container";
 
 const ThemeButtons = () => {
     return (
         <Card>
-            <Typography.H4 styles={{marginTop: 0}}>Кнопки</Typography.H4>
-            <Container
-                direction="row"
-                justify="around"
-            >
+            <Typography.H4 styles={{ marginTop: 0 }}>Кнопки</Typography.H4>
+            <Container.Flex direction="row" justify="around">
                 <Button styles={{ minWidth: "200px" }} onClick={() => {}}>
                     Обычная
                 </Button>
@@ -40,7 +36,7 @@ const ThemeButtons = () => {
                 >
                     С загрузкой
                 </Button>
-            </Container>
+            </Container.Flex>
         </Card>
     );
 };

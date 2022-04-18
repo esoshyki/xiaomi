@@ -16,7 +16,10 @@ declare module 'styled-components' {
       bgMain: string
       primary: string
       primaryHover: string
-      primaryActive: string
+      primaryActive: string,
+      error: string,
+      errorActive: string
+      errorHover: string
     }
 
     input: ThemeInput

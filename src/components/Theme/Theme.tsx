@@ -1,4 +1,4 @@
-import { Container } from "../ui/Container";
+import Container from "../ui/Container";
 import ThemeButtons from "./Buttons";
 import { ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +20,7 @@ const Theme = () => {
     }
 
     return (
-        <Container fullWidth >
+        <Container.Grid fullWidth gap={15} >
             {themes.length && <select value={theme.id} onChange={themeChange} style={{
                 marginBottom: 20
             }}>
@@ -29,7 +29,7 @@ const Theme = () => {
             </select>}
             <ThemeButtons />
             <ThemeInputs />
-        </Container>
+        </Container.Grid>
     );
 };
 

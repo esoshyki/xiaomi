@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Props } from "../../types";
 import Typography from "../Typography";
 import { InputTypes } from "./types";
-import { useTheme } from 'styled-components'
+import { useTheme } from 'styled-components/macro'
 
 type InputProps = Props<{
     label?: string;
@@ -14,12 +14,10 @@ type InputProps = Props<{
 }>;
 
 const InputWrapper = styled.input<InputProps>`
-    border: ${(props) =>
-        `1px solid ${
-            props.error
+    border-style: solid;
+    border-color: ${(props) => props.error
                 ? props.theme.colors.error
-                : props.theme.input.common.borderColor
-        }`};
+                : props.theme.input.common.borderColor};
     padding: 10px 20px;
     border-radius: 5px;
     background-color: ${(props) => props.theme.input.common.bgColor};
@@ -33,6 +31,7 @@ const InputWrapper = styled.input<InputProps>`
         background-color: ${(props) => props.theme.input.hover.bgColor};
     }
     &:active {
+        outline: none;
         border-color: ${(props) =>
             props.error
                 ? props.theme.colors.errorHover
@@ -41,6 +40,7 @@ const InputWrapper = styled.input<InputProps>`
         background-color: ${(props) => props.theme.input.active.bgColor};
     }
     &:focus {
+        outline: none;
         border-color: ${(props) =>
             props.error
                 ? props.theme.colors.errorHover

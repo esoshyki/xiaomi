@@ -29,6 +29,8 @@ const Root = styled.button<ButtonProps>`
             border: `1px solid ${buttonProps.borderColor}`,
         };
     }};
+    border-width: ${props => props.variant === "outline" ? "0" : "1px"};
+    box-shadow: 0px 0px 5px 1px grey;
     &:hover {
         cursor: pointer;
         ${(props) => ({

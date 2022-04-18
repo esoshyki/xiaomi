@@ -19,6 +19,7 @@ const Root = styled.button<ButtonProps>`
     margin: 10px 20px;
     transition: background-color 200ms ease-in;
     position: relative;
+    border-radius: 28px;
     ${(props) => {
         const { variant="primary", theme } = props;
         const buttonProps = theme.buttons[variant];

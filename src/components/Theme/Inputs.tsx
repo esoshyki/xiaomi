@@ -14,9 +14,6 @@ const ThemeInputs = () => {
         setValue(e.target.value)
     } 
 
-    useEffect(() => {
-        console.log(text)    
-    }, [text])
     return (
         <Card>
             <Typography.H4 styles={{marginTop: 0}}>Инпуты</Typography.H4>

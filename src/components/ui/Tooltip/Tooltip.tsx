@@ -28,7 +28,8 @@ const TooltipWrapper = styled.div<TooltipProps & WrapperProps>`
     color: #fff;
     left: ${(props) => `${props.left}px`};
     top: ${(props) => `${props.top}px`};
-    transition: filter 500ms ease-in 1000ms;
+    transition: filter 500ms ease-in;
+    transition-delay: ${props => props.delay ? `${props.delay}ms` : "500ms"}
     ${props => ({
         ...props.styles
     })}
@@ -40,6 +41,7 @@ type TooltipProps = Props<{
     side?: Sides;
     top?: number;
     left?: number;
+    delay?: number
 }>
 
 

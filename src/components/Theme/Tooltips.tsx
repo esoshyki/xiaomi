@@ -3,6 +3,7 @@ import Card from "../ui/Card";
 
 import Container from "../ui/Container";
 import ToolTip from "../ui/Tooltip/Tooltip";
+import Button from "../ui/Button";
 
 const ThemeTooltips = () => {
     return (
@@ -28,13 +29,9 @@ const ThemeTooltips = () => {
                     </Typography.H4>
                 </ToolTip>
                 <ToolTip text="Подсказка справа" side="right">
-                    <Typography.H4
-                        styles={{
-                            userSelect: "none",
-                        }}
-                    >
+                    <Button onClick={() => {}} styles={{width: "200px"}}>
                         Справа
-                    </Typography.H4>
+                    </Button>
                 </ToolTip>
                 <ToolTip text="Подсказка снизу" styles={{
                     minWidth: "150px"

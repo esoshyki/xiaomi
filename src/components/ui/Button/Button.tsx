@@ -1,18 +1,10 @@
 import React from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { Props } from "../../types";
-import { ReactComponent as LoadingIcon } from "../../../assets/loading.svg";
+import Icon from "../Icon";
+import { Icons } from '../Icon/types'
 
 type ButtonVariants = "primary" | "secondary" | "outline";
-
-const Rotation = keyframes`
-    0% {
-        transform: rotate(0deg)
-    }
-    100% {
-        transform: rotate(360deg)
-    }
-`
 
 const Root = styled.button<ButtonProps>`
     padding: 20px;
@@ -21,7 +13,7 @@ const Root = styled.button<ButtonProps>`
     position: relative;
     border-radius: 28px;
     ${(props) => {
-        const { variant="primary", theme } = props;
+        const { variant = "primary", theme } = props;
         const buttonProps = theme.buttons[variant];
         return {
             color: buttonProps.textColor,
@@ -29,26 +21,33 @@ const Root = styled.button<ButtonProps>`
             border: `1px solid ${buttonProps.borderColor}`,
         };
     }};
-    border-width: ${props => props.variant === "outline" ? "0" : "1px"};
+    border-width: ${(props) => (props.variant === "outline" ? "0" : "1px")};
     box-shadow: 0px 0px 5px 1px grey;
     &:hover {
         cursor: pointer;
         ${(props) => ({
-            backgroundColor: props.theme.buttons[props.variant ?? "primary"].hoverBackground,
+            backgroundColor:
+                props.theme.buttons[props.variant ?? "primary"].hoverBackground,
         })}
     }
     &:active {
         ${(props) => ({
             backgroundColor:
-                props.theme.buttons[props.variant ?? "primary"].activeBackground,
+                props.theme.buttons[props.variant ?? "primary"]
+                    .activeBackground,
         })}
     }
     svg {
-        animation: ${Rotation} 1000ms ease-in 0s infinite;
         position: absolute;
-        width: 20px;
         left: 25px;
         fill: #fff;
+
+       &[type=loading] {
+            width: 40px;
+            height: 40px;
+            left: 10px;
+            top: 7px;
+       }
     }
     ${(props) => ({
         ...props.styles,
@@ -60,17 +59,18 @@ type ButtonProps = Props<{
     variant?: ButtonVariants;
     withLoader?: true;
     loading?: boolean;
-    icon?: string;
+    icon?: Icons;
 }>;
 
 const Button = (props: ButtonProps) => {
-    const { children, withLoader, loading } = props;
+    const { children, withLoader, loading, icon } = props;
 
-    console.log((((withLoader && !loading) || !withLoader) && !!children))
+    console.log(((withLoader && !loading) || !withLoader) && !!children);
 
     return (
         <Root {...props}>
-            {withLoader && loading && <LoadingIcon />}
+            {withLoader && loading && <Icon name="loading" />}
+            {icon && !(withLoader && loading) && <Icon name={icon} />}
             {!!children && children}
         </Root>
     );

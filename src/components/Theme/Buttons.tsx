@@ -36,6 +36,14 @@ const ThemeButtons = () => {
                 >
                     С загрузкой
                 </Button>
+
+                <Button
+                    icon="telegram"
+                    styles={{ minWidth: "200px" }}
+                    onClick={() => {}}
+                >
+                    C иконкой
+                </Button>
             </Container.Flex>
         </Card>
     );

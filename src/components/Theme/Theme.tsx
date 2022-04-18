@@ -21,7 +21,9 @@ const Theme = () => {
     }
 
     return (
-        <Container.Grid fullWidth gap={15} >
+        <Container.Grid fullWidth gap={15} mobile={{
+            padding: "5px"
+        }}>
             {themes.length && <select value={theme.id} onChange={themeChange} style={{
                 marginBottom: 20,
                 height: 50

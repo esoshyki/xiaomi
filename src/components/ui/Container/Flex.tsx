@@ -26,7 +26,9 @@ const FlexContainer = styled.div<FlexProps>`
         ...props.styles
     })};
     @media ${media.mobile} {
-        padding: 20px;
+        ${props => ({
+            ...props.mobile
+        })}
     }
 `;
 

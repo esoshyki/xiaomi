@@ -4,6 +4,7 @@ import { ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTheme, getThemeData, getThemes } from "../../store/themeSlice";
 import ThemeInputs from "./Inputs";
+import ThemeTooltips from "./Tooltips";
 
 const Theme = () => {
 
@@ -29,6 +30,7 @@ const Theme = () => {
             </select>}
             <ThemeButtons />
             <ThemeInputs />
+            <ThemeTooltips />
         </Container.Grid>
     );
 };

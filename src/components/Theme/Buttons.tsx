@@ -8,7 +8,7 @@ const ThemeButtons = () => {
     return (
         <Card>
             <Typography.H4 styles={{ marginTop: 0 }}>Кнопки</Typography.H4>
-            <Container.Flex direction="row" justify="around" wrap>
+            <Container.Flex direction="row" justify="start" wrap>
                 <Button styles={{ minWidth: "200px" }} onClick={() => {}}>
                     Обычная
                 </Button>

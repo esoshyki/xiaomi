@@ -20,7 +20,7 @@ const Wrapper = styled.div<CardProps>`
     box-shadow: 0px 0px 7px 0px rgba(34, 60, 80, 0.2);
     border-radius: 3px;
     @media ${media.mobile} {
-        padding: 5px;
+        padding: 15px;
     }
 `;
 

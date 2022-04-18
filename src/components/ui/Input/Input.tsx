@@ -4,6 +4,7 @@ import { Props } from "../../types";
 import Typography from "../Typography";
 import { InputTypes } from "./types";
 import { useTheme } from 'styled-components/macro'
+import { media } from "../../../theme/media";
 
 type InputProps = Props<{
     label?: string;
@@ -20,6 +21,8 @@ const InputWrapper = styled.input<InputProps>`
                 : props.theme.input.common.borderColor};
     padding: 10px 20px;
     border-radius: 5px;
+    width: 100%;
+    height: 100%;
     background-color: ${(props) => props.theme.input.common.bgColor};
     color: ${(props) => props.theme.input.common.color};
     &:hover {
@@ -48,14 +51,19 @@ const InputWrapper = styled.input<InputProps>`
         color: ${(props) => props.theme.input.focus.color};
         background-color: ${(props) => props.theme.input.focus.bgColor};
     }
+`;
+
+const Wrapper = styled.div<InputProps>`
+    position: relative;
+    margin: 20px;
     ${(props) => ({
         ...props.styles,
     })}
-`;
-
-const Wrapper = styled.div`
-    position: relative;
-    margin: 20px;
+    @media ${media.mobile} {
+        ${props => ({
+            ...props.mobile
+        })}
+    }
 `;
 
 const Input = (props: InputProps) => {
@@ -65,7 +73,7 @@ const Input = (props: InputProps) => {
 
     console.log(theme);
     return (
-        <Wrapper>
+        <Wrapper {...props}>
             <InputWrapper
                 {...props}
                 type={props.type ?? "text"}

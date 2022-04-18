@@ -26,7 +26,7 @@ const FlexContainer = styled.div<FlexProps>`
         ...props.styles
     })};
     @media ${media.mobile} {
-        padding: 10px;
+        padding: 20px;
     }
 `;
 

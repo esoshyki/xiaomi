@@ -9,7 +9,7 @@ const ThemeTooltips = () => {
     return (
         <Card>
             <Typography.H4 styles={{ marginTop: 0 }}>Тултипы</Typography.H4>
-            <Container.Flex direction="row" justify="around">
+            <Container.Flex direction="row" justify="around" wrap>
                 <ToolTip text="Сверху" side="up" >
                     <Typography.H4
                         styles={{

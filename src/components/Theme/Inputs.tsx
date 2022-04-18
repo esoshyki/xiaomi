@@ -20,6 +20,7 @@ const ThemeInputs = () => {
             <Container.Flex
                 direction="row"
                 justify="around"
+                wrap
             >
                <Input value={text} onChange={onChange}/>
                <Input value={text} label="С лейблом" onChange={onChange}/>

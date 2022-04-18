@@ -1,5 +1,6 @@
 import styled from "styled-components/macro";
 import { getFlexAligns, getFlexJustify } from "../../../helpers/getFlexProps";
+import { media } from "../../../theme/media";
 import { Aligns, Justifies, Props } from "../../types";
 
 type FlexProps = Props<{
@@ -9,19 +10,24 @@ type FlexProps = Props<{
     fullWidth?: true,
     padding?: number,
     margin?: number
+    wrap?: true
 }>;
 
 const FlexContainer = styled.div<FlexProps>`
     display: flex;
     width: ${props => props.fullWidth ? "100%" : "auto"};
     flex-direction: ${(props) => props.direction || "column"};
+    flex-wrap: ${props => props.wrap ? "wrap" : "no-wrap"};
     justify-content: ${(props) => getFlexJustify(props.justify || "start")};
     align-items: ${(props) => getFlexAligns(props.alignItems || "center")};
     padding: ${props => `${props.padding || 0}px`};
-    margin: ${props => `${props.margin || 0}px`};
+    margin: ${props => props.margin ? `${props.margin}px` : "auto"};
     ${props => ({
         ...props.styles
-    })}
+    })};
+    @media ${media.mobile} {
+        padding: 10px;
+    }
 `;
 
 const Flex = (props: FlexProps) => {

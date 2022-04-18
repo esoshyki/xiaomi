@@ -3,13 +3,11 @@ import { useSelector } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import { getThemeData } from "../store/themeSlice";
 
-export const withLayout =
+export const withTheme =
     <T extends object>(Component: ComponentType<T>) =>
     (props: T): ReactElement => {
 
         const { theme } = useSelector(getThemeData);
-
-        console.log(JSON.stringify(theme));
 
         return (
             <ThemeProvider theme={theme}>

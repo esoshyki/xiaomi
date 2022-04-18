@@ -1,12 +1,14 @@
 import React from "react"
+import Container from "../components/ui/Container"
+import { withLayout } from "../hooks/withLayout"
 
 const Home = () => {
 
     return (
-        <div>
+        <Container.Flex>
             Home
-        </div>
+        </Container.Flex>
     )
 }
 
-export default Home
+export default withLayout(Home, "Главная")

@@ -1,6 +1,7 @@
 import Theme from "../components/Theme"
 import Container from "../components/ui/Container"
 import Typography from "../components/ui/Typography"
+import { withLayout } from "../hooks/withLayout"
 
 
 const ThemePage = () => {
@@ -14,4 +15,4 @@ const ThemePage = () => {
     )
 }
 
-export default ThemePage
+export default withLayout(ThemePage, "Тема")

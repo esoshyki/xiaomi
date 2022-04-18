@@ -1,5 +1,5 @@
 import React from "react";
-import { withLayout } from "./hooks/withTheme";
+import { withTheme } from "./hooks/withTheme";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Theme from "./pages/Theme";
@@ -26,4 +26,4 @@ function App() {
     );
 }
 
-export default withLayout(App);
+export default withTheme(App);

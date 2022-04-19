@@ -1,5 +1,5 @@
 import 'styled-components';
-import type { ButtonTheme, ThemeInput } from "./types";
+import type { ButtonTheme, ThemeInput, CardProps } from "./types";
 
 // and extend them!
 declare module 'styled-components' {
@@ -25,6 +25,8 @@ declare module 'styled-components' {
     input: ThemeInput
 
     buttons: ButtonTheme
+
+    card: CardProps
 
     spaces: {
         0: string

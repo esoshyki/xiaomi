@@ -13,7 +13,8 @@ enum Colors {
     dark = "#000",
     error = "#DB2845",
     errorActive = "#C20824",
-    errorHover = "#F44C6A"
+    errorHover = "#F44C6A",
+    grey = "#f2f2f2"
 }
 
 const defaultTheme : DefaultTheme = {
@@ -39,23 +40,39 @@ const defaultTheme : DefaultTheme = {
         common: {
             bgColor: Colors.white,
             color: Colors.dark,
-            borderColor: Colors.primary
+            borderColor: Colors.primary,
+            labelBackground: Colors.background,
+            labelColor: Colors.dark
+
         },
         hover: {
             bgColor: Colors.white,
             color: Colors.dark,
-            borderColor: Colors.primaryHover
+            borderColor: Colors.primaryHover,
+            labelBackground: Colors.background,
+            labelColor: Colors.dark
         },
         active: {
             bgColor: Colors.white,
             color: Colors.dark,
-            borderColor: Colors.primaryActive
+            borderColor: Colors.primaryActive,
+            labelBackground: Colors.background,
+            labelColor: Colors.dark
         },
         focus: {
             bgColor: Colors.white,
             color: Colors.dark,
-            borderColor: Colors.primaryActive
+            borderColor: Colors.primaryActive,
+            labelBackground: Colors.background,
+            labelColor: Colors.dark
         }
+    },
+
+    card: {
+        bgColor: Colors.transparent,
+        color: Colors.dark,
+        borderRadius: 10,
+        boxShadow: "0 0 5px 5px " + Colors.grey
     },
 
     buttons: {

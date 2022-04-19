@@ -17,8 +17,10 @@ const Wrapper = styled.div<CardProps>`
             margin: margin ?? "0",
         };
     }};
-    box-shadow: 0px 0px 7px 0px rgba(34, 60, 80, 0.2);
-    border-radius: 3px;
+    border-radius: ${props => `${props.theme.card.borderRadius}px`};
+    background-color: ${props => props.theme.card.bgColor};
+    color: ${props => props.theme.card.color ?? props.theme.colors.text.main};
+    box-shadow: ${props => props.theme.card.boxShadow};
     @media ${media.mobile} {
         padding: 15px;
     }

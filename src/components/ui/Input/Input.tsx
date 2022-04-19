@@ -5,6 +5,8 @@ import Typography from "../Typography";
 import { InputTypes } from "./types";
 import { useTheme } from 'styled-components/macro'
 import { media } from "../../../theme/media";
+import { useSelector } from "react-redux";
+import { getThemeData } from "../../../store/themeSlice";
 
 type InputProps = Props<{
     label?: string;
@@ -71,7 +73,8 @@ const Input = (props: InputProps) => {
 
     const theme = useTheme();
 
-    console.log(theme);
+    const { input } = theme;
+
     return (
         <Wrapper {...props}>
             <InputWrapper
@@ -83,12 +86,12 @@ const Input = (props: InputProps) => {
             {label && (
                 <Typography.Span
                     styles={{
-                        backgroundColor: "#fff",
                         position: "absolute",
                         top: "-10px",
                         padding: "0 10px",
                         left: "20px",
-                        color: props.error ? theme.colors.error : theme.colors.text.main
+                        color: props.error ? theme.colors.error : input.common.labelColor,
+                        backgroundColor: input.common.labelBackground
                     }}
                 >
                     {label}

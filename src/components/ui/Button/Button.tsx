@@ -23,6 +23,7 @@ const Root = styled.button<ButtonProps>`
     }};
     border-width: ${(props) => (props.variant === "outline" ? "0" : "1px")};
     box-shadow: 0px 0px 5px 1px grey;
+    padding-left: ${props => (props.withLoader || props.icon) ? "60px" : "20px"};
     &:hover {
         cursor: pointer;
         ${(props) => ({
@@ -58,19 +59,17 @@ type ButtonProps = Props<{
     onClick: () => void;
     variant?: ButtonVariants;
     withLoader?: true;
-    loading?: boolean;
+    pending?: boolean;
     icon?: Icons;
 }>;
 
 const Button = (props: ButtonProps) => {
-    const { children, withLoader, loading, icon } = props;
-
-    console.log(((withLoader && !loading) || !withLoader) && !!children);
+    const { children, withLoader, pending, icon } = props;
 
     return (
         <Root {...props}>
-            {withLoader && loading && <Icon name="loading" />}
-            {icon && !(withLoader && loading) && <Icon name={icon} />}
+            {withLoader && pending && <Icon name="loading" />}
+            {icon && !(withLoader && pending) && <Icon name={icon} />}
             {!!children && children}
         </Root>
     );

@@ -8,7 +8,7 @@ const ThemeButtons = () => {
     return (
         <Card>
             <Typography.H4 styles={{ marginTop: 0 }}>Кнопки</Typography.H4>
-            <Container.Flex direction="row" justify="start" wrap fullWidth mobile={{
+            <Container.Flex direction="row" justify="start" wrapped fullWidth mobile={{
                 flexDirection: "column",
                 alignItems: "center"
             }}>
@@ -33,7 +33,7 @@ const ThemeButtons = () => {
 
                 <Button
                     withLoader
-                    loading={true}
+                    pending={true}
                     styles={{ minWidth: "200px" }}
                     onClick={() => {}}
                 >

@@ -5,8 +5,6 @@ import Typography from "../Typography";
 import { InputTypes } from "./types";
 import { useTheme } from 'styled-components/macro'
 import { media } from "../../../theme/media";
-import { useSelector } from "react-redux";
-import { getThemeData } from "../../../store/themeSlice";
 
 type InputProps = Props<{
     label?: string;

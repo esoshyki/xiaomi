@@ -2,7 +2,6 @@ import React, {
     ChangeEvent,
     useState,
     useDeferredValue,
-    useEffect,
 } from "react";
 import Typography from "../ui/Typography";
 import Card from "../ui/Card";

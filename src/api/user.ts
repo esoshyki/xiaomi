@@ -1,8 +1,6 @@
 import { ResponseData } from './types';
-import { LoginData } from "../store/userSlice/types";
 import { api } from "./instance";
 import { AxiosResponse } from 'axios';
-import qs from 'qs'
 
 export type LoginResponseData = {
     isAuthorised: boolean,

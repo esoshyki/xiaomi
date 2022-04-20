@@ -3,7 +3,6 @@ import { ResponseData } from './../../api/types';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { takeLeading, call, put } from '@redux-saga/core/effects';
 import { Login } from '.';
-import { LoginData } from './types';
 import { userAPI, LoginResponseData, CheckAuthResponseData } from '../../api/user';
 
 function* loginRequestWorker ({payload} : PayloadAction<FormData>) {

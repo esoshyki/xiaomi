@@ -1,4 +1,3 @@
-import { useCookies } from "react-cookie"
 import Theme from "../components/Theme"
 import Container from "../components/ui/Container"
 import Typography from "../components/ui/Typography"

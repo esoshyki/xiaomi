@@ -56,6 +56,8 @@ const InputWrapper = styled.input<InputProps>`
 const Wrapper = styled.div<InputProps>`
     position: relative;
     margin: 20px;
+    width: ${props => props.fullWidth ? "100%" : "auto"};
+    height: ${props => props.fullHeight ? "100%" : "auto"};;
     ${(props) => ({
         ...props.styles,
     })}

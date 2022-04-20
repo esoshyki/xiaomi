@@ -14,31 +14,32 @@ export const withAuth =
 
         const { user, checkAuth } = useSelector(getUserData);
 
-        const getCookiesUser = () => {
-            const { id, userName = "Неизвестный пользователь",  sessid, sessName, isAuthorised } = cookies;
-            if (sessid) {
-                dispatch(setUser({
-                    id, userName, sessid, sessName, isAuthorised
-                }))
-            } else {
-                dispatch(setUser(null))
-            }
-        }
-
-        const setCookiesUser = (user: User) => {
-            Object.entries(user).forEach(([key, val]) => {
-                setCookie(key, val)
-            })
-        }
-
         useEffect(() => {
+
+            const getCookiesUser = () => {
+                const { id, userName = "Неизвестный пользователь",  sessid, sessName, isAuthorised } = cookies;
+                if (sessid) {
+                    dispatch(setUser({
+                        id, userName, sessid, sessName, isAuthorised
+                    }))
+                } else {
+                    dispatch(setUser(null))
+                }
+            }
+
+            const setCookiesUser = (user: User) => {
+                Object.entries(user).forEach(([key, val]) => {
+                    setCookie(key, val)
+                })
+            }
+
             if (checkAuth.result === "error") return;
             if (!user) {
                 getCookiesUser()
             } else {
                 setCookiesUser(user)
             }
-        }, [user])
+        }, [user, cookies, dispatch, setCookie, checkAuth.result])
 
         return (
                 <Component {...props} />

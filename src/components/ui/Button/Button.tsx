@@ -24,6 +24,8 @@ const Root = styled.button<ButtonProps>`
     border-width: ${(props) => (props.variant === "outline" ? "0" : "1px")};
     box-shadow: 0px 0px 5px 1px grey;
     padding-left: ${props => ((props.withLoader && props.pending) || props.icon) ? "60px" : "20px"};
+    width: ${props => props.fullWidth ? "100%" : "auto"};
+    height: ${props => props.fullHeight ? "100%" : "auto"};;
     &:hover {
         cursor: pointer;
         ${(props) => ({

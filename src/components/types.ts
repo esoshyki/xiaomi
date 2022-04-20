@@ -5,6 +5,9 @@ export type Props<T> = {
     styles?: CSS.Properties
     mobile?: CSS.Properties
     children?: ReactNode
+    fullWidth?: true
+    fullHeight?: true
+    className?: string
 } & T
 
 export type Justifies = "start" | "end" | "center" | "around" | "between"

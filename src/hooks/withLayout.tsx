@@ -35,7 +35,7 @@ export const withLayout =
                     })
                 );
             }
-        }, [needAuth]);
+        }, [cookies, dispatch]);
 
         return (
             <Fragment>

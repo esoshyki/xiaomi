@@ -12,6 +12,7 @@ type FlexProps = Props<{
     padding?: number
     margin?: number
     wrapped?: true
+    onClick?: (v: any) => void
 }>;
 
 const FlexContainer = styled.div<FlexProps>`
@@ -37,7 +38,9 @@ const FlexContainer = styled.div<FlexProps>`
 const Flex = (props: FlexProps) => {
 
     return (
-        <FlexContainer
+        <FlexContainer 
+            className={props.className}
+            onClick={props.onClick}
             {...props}
         >
             {!!props.children && props.children}

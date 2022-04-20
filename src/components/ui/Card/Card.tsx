@@ -6,6 +6,7 @@ type CardProps = Props<{
     padding?: number;
     noPadding?: number;
     margin?: number;
+    noShadow?: true
 }>;
 
 const Wrapper = styled.div<CardProps>`
@@ -20,7 +21,10 @@ const Wrapper = styled.div<CardProps>`
     border-radius: ${props => `${props.theme.card.borderRadius}px`};
     background-color: ${props => props.theme.card.bgColor};
     color: ${props => props.theme.card.color ?? props.theme.colors.text.main};
-    box-shadow: ${props => props.theme.card.boxShadow};
+    box-shadow: ${props => props.noShadow ? "none" : props.theme.card.boxShadow};
+    ${props => ({
+        ...props.styles
+    })}
     @media ${media.mobile} {
         padding: 15px;
     }
@@ -28,7 +32,7 @@ const Wrapper = styled.div<CardProps>`
 
 const Card = (props: CardProps) => {
     const { children } = props;
-    return <Wrapper>{!!children && children}</Wrapper>;
+    return <Wrapper {...props}>{!!children && children}</Wrapper>;
 };
 
 export default Card;

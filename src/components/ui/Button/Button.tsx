@@ -9,9 +9,9 @@ type ButtonVariants = "primary" | "secondary" | "outline";
 const Root = styled.button<ButtonProps>`
     padding: 20px;
     margin: 10px 20px;
-    transition: background-color 200ms ease-in;
+    transition: background-color 200ms ease-in, padding-left 200ms ease-in;
     position: relative;
-    border-radius: 28px;
+    border-radius: ${props => props.square? "0" : "28px"};
     ${(props) => {
         const { variant = "primary", theme } = props;
         const buttonProps = theme.buttons[variant];
@@ -23,7 +23,7 @@ const Root = styled.button<ButtonProps>`
     }};
     border-width: ${(props) => (props.variant === "outline" ? "0" : "1px")};
     box-shadow: 0px 0px 5px 1px grey;
-    padding-left: ${props => (props.withLoader || props.icon) ? "60px" : "20px"};
+    padding-left: ${props => ((props.withLoader && props.pending) || props.icon) ? "60px" : "20px"};
     &:hover {
         cursor: pointer;
         ${(props) => ({
@@ -61,6 +61,7 @@ type ButtonProps = Props<{
     withLoader?: true;
     pending?: boolean;
     icon?: Icons;
+    square?: true
 }>;
 
 const Button = (props: ButtonProps) => {

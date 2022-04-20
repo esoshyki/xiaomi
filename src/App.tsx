@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Theme from "./pages/Theme";
 import styled from "styled-components";
+import { withCookies } from "react-cookie";
+import { withAuth } from "./hooks/withAuth";
 
 const AppWrapper = styled.div`
     width: 100%;
@@ -24,4 +26,4 @@ function App() {
     );
 }
 
-export default withTheme(App);
+export default withCookies(withAuth(withTheme(App)));

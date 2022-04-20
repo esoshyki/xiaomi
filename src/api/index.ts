@@ -3,8 +3,8 @@ import { DefaultTheme } from 'styled-components';
 import { ResponseData } from './types';
 import { ThemesResponse } from '../store/themeSlice/types';
 
-// const baseURL = "https://test-server-tau.vercel.app";
-const baseURL = "https://rostok-partners.dev-bitrix.by/api/"
+const baseURL = "https://test-server-tau.vercel.app";
+// const baseURL = "https://rostok-partners.dev-bitrix.by/api/"
 
 const api = axios.create({
     baseURL
@@ -51,7 +51,7 @@ const getTheme = async (id: number) : Promise<ResponseData<{ theme: DefaultTheme
     }
 };
 
-export const API = {
+export const ThemeAPI = {
     getThemes,
     getTheme
 }

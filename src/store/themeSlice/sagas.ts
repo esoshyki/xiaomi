@@ -2,13 +2,13 @@ import { call, takeLeading, put } from "@redux-saga/core/effects";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { DefaultTheme } from "styled-components";
 import { getTheme, getThemes } from ".";
-import { API } from "../../api";
+import { ThemeAPI } from "../../api";
 import { ResponseData } from "../../api/types";
 import { ThemesResponse } from "./types";
 
 function* getThemesWork() {
     yield put(getThemes.trigger());
-    const response: ResponseData<ThemesResponse> = yield call(API.getThemes);
+    const response: ResponseData<ThemesResponse> = yield call(ThemeAPI.getThemes);
     if (response.status === "success") {
         yield put(getThemes.success(response.data));
     }
@@ -23,7 +23,7 @@ function* getThemesWork() {
 function* getThemeWork({ payload }: PayloadAction<number>) {
     yield put(getTheme.trigger());
     const response: ResponseData<{ theme: DefaultTheme} > = yield call(
-        API.getTheme,
+        ThemeAPI.getTheme,
         payload
     );
     if (response.status === "success") {

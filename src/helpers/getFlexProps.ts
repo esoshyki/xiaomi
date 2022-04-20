@@ -22,6 +22,6 @@ export const getFlexAligns = (value: Aligns) => {
         case "end":
             return "flex-end"
         default:
-            return "start"
+            return "center"
     }   
 }

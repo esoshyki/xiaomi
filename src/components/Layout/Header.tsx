@@ -8,6 +8,7 @@ import Button from "../ui/Button";
 const HeaderWrapper = styled.header`
     position: relative;
     width: 100%;
+    height: 60px;
     padding: 20px;
     background-color: ${(props) => props.theme.colors.primary};
     color: #fff;
@@ -44,6 +45,17 @@ const Header = () => {
                 }}
             >
                 Тема
+            </Link>
+
+            <Link
+                to={"/profile"}
+                style={{
+                    color: "#fff",
+                    textDecoration: "none",
+                    margin: "0 20px",
+                }}
+            >
+                Профиль
             </Link>
 
             <Button

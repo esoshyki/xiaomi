@@ -7,8 +7,9 @@ type FlexProps = Props<{
     direction?: "row" | "column"
     justify?: Justifies
     alignItems?: Aligns
-    fullWidth?: true,
-    padding?: number,
+    fullWidth?: true
+    fullHeight?: true
+    padding?: number
     margin?: number
     wrapped?: true
 }>;
@@ -16,6 +17,7 @@ type FlexProps = Props<{
 const FlexContainer = styled.div<FlexProps>`
     display: flex;
     width: ${props => props.fullWidth ? "100%" : "auto"};
+    height: ${props => props.fullHeight ? "100%" : "auto"};
     flex-direction: ${(props) => props.direction || "column"};
     flex-wrap: ${props => props.wrapped ? "wrap" : "no-wrap"};
     justify-content: ${(props) => getFlexJustify(props.justify || "start")};

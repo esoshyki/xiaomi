@@ -6,10 +6,11 @@ import Theme from "./pages/Theme";
 import styled from "styled-components";
 import { withCookies } from "react-cookie";
 import { withAuth } from "./hooks/withAuth";
+import Profile from "./pages/Profile";
 
 const AppWrapper = styled.div`
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 60px);
     background-color: ${props => props.theme.colors.bgMain};
 `;
 
@@ -20,6 +21,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/theme" element={<Theme />} />
+                    <Route path="/profile" element={<Profile />} />
                 </Routes>
             </Router>
         </AppWrapper>

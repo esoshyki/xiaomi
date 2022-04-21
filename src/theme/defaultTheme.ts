@@ -7,7 +7,7 @@ enum Colors {
     secondary = "#2e7d32",
     secondaryHover = "#66bb6a",
     secondaryActive = "#a5d6a7",
-    background = "#fff",
+    background = "#F5F5F5",
     white = "#fff",
     transparent = "transparent",
     dark = "#000",
@@ -69,7 +69,7 @@ const defaultTheme : DefaultTheme = {
     },
 
     card: {
-        bgColor: Colors.transparent,
+        bgColor: Colors.white,
         color: Colors.dark,
         borderRadius: 10,
         boxShadow: "0 0 5px 5px " + Colors.grey

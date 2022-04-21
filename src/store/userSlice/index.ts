@@ -12,11 +12,15 @@ const initialState: UserState = {
     },
     checkAuth: {
         pending: false
+    },
+    logout: {
+        pending: false,
     }
 }
 
 export const Login = createRoutine("user/Login");
-export const CheckAuth = createRoutine("user/Check-auth")
+export const CheckAuth = createRoutine("user/Check-auth");
+export const Logout = createRoutine("user/Logout");
 
 const userSlice = createSlice({
     name: "user",
@@ -49,7 +53,7 @@ const userSlice = createSlice({
             state.checkAuth.pending = true;
         },
         [CheckAuth.SUCCESS](state) {
-            state.checkAuth.pending = true;
+            state.checkAuth.pending = false;
             state.checkAuth.result = "success"
             if (state.user) {
                 state.user.isAuthorised = true;
@@ -59,6 +63,16 @@ const userSlice = createSlice({
             state.user = null;
             state.checkAuth.result = "error"
             state.checkAuth.pending = false;
+        },
+        [Logout.REQUEST](state) {
+            state.logout.pending = true
+        },
+        [Logout.SUCCESS](state) {
+            state.logout.pending = false;
+            state.user = null;
+        },
+        [Logout.FAILURE](state) {
+            state.logout.pending = false
         }
     }
 })

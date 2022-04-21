@@ -1,9 +1,11 @@
 export type User = {
-    id: number
+    user_id: string
     userName: string
-    sessid: string
+    session_id: string
     sessName: string
     isAuthorised: boolean
+    bitrix_sessid: number
+    token: string
 }
 
 export type ErrorFieldKey<T> = keyof (T & { catched: string })
@@ -18,15 +20,19 @@ export type LoginData = {
 }
 
 export type UserState = {
-    user: User | null,
+    user: User | null
     login: {
         pending: boolean,
-        result?: "success" | "error",
-        errors?: ErrorType<LoginData>,
+        result?: "success" | "error"
+        errors?: ErrorType<LoginData>
         show: boolean
-    },
+    }
     checkAuth: {
-        pending: boolean,
+        pending: boolean
+        result?: "success" | "error"
+    },
+    logout: {
+        pending: boolean
         result?: "success" | "error"
     }
 }

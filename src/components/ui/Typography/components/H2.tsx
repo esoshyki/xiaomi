@@ -3,6 +3,7 @@ import { TextProps } from "../types";
 
 export const H2 = styled.h2<TextProps>`
     color: ${(props) => props.theme.colors.text.main};
+    text-align: ${props => props.textAlign ?? "center"};
     ${(props) => ({
         ...props.styles,
     })}

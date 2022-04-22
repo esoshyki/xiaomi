@@ -12,6 +12,7 @@ type InputProps = Props<{
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
     value: string | number;
     error?: string;
+    placeholder?: string
 }>;
 
 const InputWrapper = styled.input<InputProps>`
@@ -82,6 +83,7 @@ const Input = (props: InputProps) => {
                 type={props.type ?? "text"}
                 onChange={onChange}
                 value={value}
+                placeholder={props.placeholder}
             ></InputWrapper>
             {label && (
                 <Typography.Span

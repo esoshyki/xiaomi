@@ -7,6 +7,7 @@ export type TextProps = {
   styles?: CSS.Properties
   children: ReactNode
   className?: string
+  textAlign?: "center" | "ent" | "start"
   onClick?: () => void
 }
 

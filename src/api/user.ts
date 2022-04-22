@@ -48,18 +48,13 @@ const login = async (data: FormData): Promise<ResponseData<LoginResponseData>> =
 
 const logout = async (user: User): Promise<ResponseData<LogoutResponseData>> => {
 
-    const { session_id, token, user_id } = user;
+    const { auth_param_name, auth_param_value } = user;
 
     const formData = new FormData();
-    formData.set("user_id", user_id);
-    formData.set("token", token);
+    formData.set(auth_param_name, auth_param_value);
 
     try {
-        const response: AxiosResponse<ResponseData<LogoutResponseData>> = await api.post(urls.logout, formData, {
-            headers: {
-                "X-Bitrix-Csrf-Token": session_id,
-            }
-        });
+        const response: AxiosResponse<ResponseData<LogoutResponseData>> = await api.post(urls.logout, formData);
 
         return response.data
     } catch (error: any) {
@@ -74,19 +69,13 @@ const logout = async (user: User): Promise<ResponseData<LogoutResponseData>> => 
 
 const checkAuth = async (user: User): Promise<ResponseData<CheckAuthResponseData>> => {
 
-    const { session_id, token, user_id } = user;
+    const { auth_param_name, auth_param_value } = user;
 
     const formData = new FormData();
-    formData.set("user_id", user_id);
-    formData.set("token", token);
+    formData.set(auth_param_name, auth_param_value);
 
     try {
-        const response: AxiosResponse<ResponseData<CheckAuthResponseData>> = await api.post(urls.checkAuth, formData, {
-            headers: {
-                "X-Bitrix-Csrf-Token": session_id,
-            },
-
-        });
+        const response: AxiosResponse<ResponseData<CheckAuthResponseData>> = await api.post(urls.checkAuth, formData);
 
         return response.data
     } catch (error: any) {

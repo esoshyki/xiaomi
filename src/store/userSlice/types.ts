@@ -1,11 +1,7 @@
 export type User = {
-    user_id: string
-    userName: string
-    session_id: string
-    sessName: string
+    auth_param_name: string
+    auth_param_value: string
     isAuthorised: boolean
-    bitrix_sessid: number
-    token: string
 }
 
 export type ErrorFieldKey<T> = keyof (T & { catched: string })

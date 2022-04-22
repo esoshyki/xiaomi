@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import Container from "../ui/Container";
 import Button from "../ui/Button";
-import { getUserData, Logout, toggleLogin } from "../../store/userSlice";
-import { useDispatch, useSelector } from "react-redux";
 import Login from "../Login";
 import Icon from "../ui/Icon";
 import Typography from "../ui/Typography";
+import { useAuth } from "../../hooks/useAuth";
 
 const Wrapper = styled.div`
     position: absolute;
@@ -16,15 +15,8 @@ const Wrapper = styled.div`
 `;
 
 const User = () => {
-    const dispatch = useDispatch();
 
-    const showLogin = () => {
-        dispatch(toggleLogin(true));
-    };
-
-    const { login, user } = useSelector(getUserData);
-
-    const logout = () => {dispatch(Logout.request())};
+    const { isAuth, showLogin, logout, showLoginForm } = useAuth()
 
     return (
         <Wrapper>
@@ -34,7 +26,7 @@ const User = () => {
                 fullWidth
                 direction="row"
             >
-                {!user && (
+                {!isAuth && (
                     <Button
                         square
                         styles={{
@@ -44,14 +36,14 @@ const User = () => {
                             margin: 0,
                             padding: "10px",
                         }}
-                        onClick={showLogin}
+                        onClick={showLoginForm}
                         variant="secondary"
                     >
                         Войти
                     </Button>
                 )}
 
-                {!!user && (
+                {isAuth && (
                     <Container.Flex direction="row" fullHeight>
                         <Icon
                             name="user"
@@ -63,7 +55,7 @@ const User = () => {
                             }}
                         />
                         <Typography.H5>
-                            {user.userName ?? "Пользователь"}
+                            Пользователь
                         </Typography.H5>
 
                         <Button
@@ -77,7 +69,7 @@ const User = () => {
                     </Container.Flex>
                 )}
             </Container.Flex>
-            {login.show && <Login />}
+            {showLogin && <Login />}
         </Wrapper>
     );
 };

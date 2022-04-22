@@ -31,7 +31,11 @@ const userSlice = createSlice({
         },
         setUser(state, { payload } : PayloadAction<User | null>) {
             state.user = payload
-        }
+        },
+        resetCheckout(state) {
+            state.checkAuth.result = undefined;
+            state.checkAuth.pending = false;
+        } 
     },
     extraReducers: {
         [Login.REQUEST](state) {
@@ -84,7 +88,8 @@ export const getUserData = createSelector(
 
 export const {
     toggleLogin,
-    setUser
+    setUser,
+    resetCheckout
 } = userSlice.actions
 
 export default userSlice.reducer;

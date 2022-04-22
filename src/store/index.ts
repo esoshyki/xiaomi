@@ -29,7 +29,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const store = configureStore({
     reducer: persistedReducer,
-    middleware: [...getDefaultMiddleware({ thunk: false}), sagaMiddleWare]
+    middleware: [...getDefaultMiddleware({ thunk: false, serializableCheck: false }), sagaMiddleWare]
 })
 
 sagaMiddleWare.run(rootSaga)

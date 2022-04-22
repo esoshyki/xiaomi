@@ -1,11 +1,10 @@
 import { ComponentType, Fragment, ReactElement, useEffect } from "react";
-import { useCookies } from "react-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import Bearer from "../components/Layout/Bearer";
 import Header from "../components/Layout/Header";
 import Main from "../components/Layout/Main";
 import PageLoading from "../components/Layout/PageLoading";
-import { CheckAuth, getUserData } from "../store/userSlice";
+import { CheckAuth, getUserData, resetCheckout } from "../store/userSlice";
 
 export const withLayout =
     <T extends object>(
@@ -14,28 +13,24 @@ export const withLayout =
         needAuth?: true
     ) =>
     (props: T): ReactElement => {
+        const user = useSelector(getUserData);
         const dispatch = useDispatch();
-
-        const [cookies] = useCookies();
-
-        const { checkAuth } = useSelector(getUserData);
 
         useEffect(() => {
             if (typeof document !== "undefined") {
                 document.title = pageTitle;
             }
-        }, []);
+            dispatch(resetCheckout())
+        }, [dispatch]);
 
         useEffect(() => {
-            if (needAuth) {
-                dispatch(
-                    CheckAuth.request({
-                        sessid: cookies.sessid,
-                        sessName: cookies.sessName,
-                    })
-                );
+            if (user.user && !user.checkAuth.result && !user.checkAuth.pending) {
+                dispatch(CheckAuth.request())
             }
-        }, [cookies, dispatch]);
+            if (!user.user) {
+                dispatch(resetCheckout())
+            }
+        }, [user.user, dispatch, user.checkAuth.pending, user.checkAuth.result])
 
         return (
             <Fragment>
@@ -43,12 +38,15 @@ export const withLayout =
                 <Main>
                     {!needAuth && <Component {...props} />}
                     {needAuth &&
-                        !checkAuth.pending &&
-                        checkAuth.result === "success" && (
+                        !user.checkAuth.pending &&
+                        user.checkAuth.result === "success" && (
                             <Component {...props} />
                         )}
-                    {needAuth && checkAuth.pending && <PageLoading />}
-                    {needAuth && checkAuth.result === "error" && <Bearer />}
+                    {needAuth && user.checkAuth.pending && <PageLoading />}
+                    {needAuth && user.checkAuth.result === "error" && (
+                        <Bearer />
+                    )}
+                    {needAuth && !user.checkAuth.result && <Bearer />} 
                 </Main>
             </Fragment>
         );

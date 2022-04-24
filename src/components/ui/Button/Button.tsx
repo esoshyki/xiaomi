@@ -58,19 +58,20 @@ const Root = styled.button<ButtonProps>`
 `;
 
 type ButtonProps = Props<{
-    onClick: () => void;
+    onClick?: () => void;
     variant?: ButtonVariants;
     withLoader?: true;
     pending?: boolean;
     icon?: Icons;
     square?: true
+    sumbit?: true
 }>;
 
 const Button = (props: ButtonProps) => {
     const { children, withLoader, pending, icon } = props;
 
     return (
-        <Root {...props}>
+        <Root {...props} type={props.sumbit ? "submit" : "button"}>
             {withLoader && pending && <Icon name="loading" />}
             {icon && !(withLoader && pending) && <Icon name={icon} />}
             {!!children && children}

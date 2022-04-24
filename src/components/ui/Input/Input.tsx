@@ -9,10 +9,11 @@ import { media } from "../../../theme/media";
 type InputProps = Props<{
     label?: string;
     type?: InputTypes;
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-    value: string | number;
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+    value?: string | number;
     error?: string;
     placeholder?: string
+    defaultValue?: string
 }>;
 
 const InputWrapper = styled.input<InputProps>`

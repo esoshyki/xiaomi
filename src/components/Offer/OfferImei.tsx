@@ -14,9 +14,10 @@ const OfferImeiWrapper = styled.div`
 `;
 
 const OfferImei = () => {
-    const [IMEI, setIMEI] = useState(useOfferData().IMEI || "");
 
-    const check = () => {}
+    const { loading, checkImei } = useOfferData()
+
+    const [IMEI, setImei] = useState("");
 
     return (
         <OfferImeiWrapper>
@@ -31,13 +32,13 @@ const OfferImei = () => {
                         </Typography.H4>
 
                         <Input
-                            fullWidth
                             value={IMEI}
+                            fullWidth
                             placeholder="Укажите IMEI устройства"
-                            onChange={(e) => setIMEI(e.target.value)}
+                            onChange={e => setImei(e.target.value)}
                         />
 
-                        <Button onClick={check} fullWidth>Проверить</Button>
+                        <Button withLoader pending={loading} onClick={() => checkImei(IMEI)} fullWidth>Проверить</Button>
                     </Container.Flex>
                 </Card>
             </Container.Flex>

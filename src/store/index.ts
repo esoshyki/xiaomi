@@ -10,7 +10,7 @@ import offerSlice from "./offerSlice";
 const persistConfig = {
     key: "root",
     storage,
-    blacklist: ["user"]
+    whitelist: ["user"]
 }
 
 const userPersistConfig = {

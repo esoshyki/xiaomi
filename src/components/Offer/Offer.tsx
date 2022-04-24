@@ -1,9 +1,10 @@
+import { useSelector } from "react-redux";
 import { OfferStep } from ".";
-import { useOfferData } from "../../hooks/useOfferData";
+import { select } from "../../store/selector";
 
 const Offer = () => {
 
-    const { step } = useOfferData();
+    const { step } = useSelector(select.offer)
 
     switch (step) {
 

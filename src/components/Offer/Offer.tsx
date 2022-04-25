@@ -20,6 +20,8 @@ const Offer = () => {
                 return <OfferStep.Imei />;
             case OfferSteps.isYourPhone:
                 return <OfferStep.IsYourPhone />;
+            case OfferSteps.questions:
+                return <OfferStep.Questions />
 
             default:
                 return <OfferStep.Imei />;

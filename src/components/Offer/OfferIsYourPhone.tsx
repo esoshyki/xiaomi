@@ -1,28 +1,50 @@
-import { Fragment } from "react";
 import { useOfferData } from "../../hooks/useOfferData";
 import { OfferSteps } from "../../store/offerSlice/types";
 import Confirm from "../ui/Confirm";
 import Container from "../ui/Container";
 import Typography from "../ui/Typography";
+import Image from "../ui/Image";
 
 enum Content {
     isYourDevice = "Это ваше устройство?",
 }
 
 const OfferIsYourPhone = () => {
-    const { phone, getQuestions, changeStep, errors } = useOfferData();
+    const { phone, getQuestions, changeStep, errors, IMEI } = useOfferData();
 
     return (
-        <Container.Grid fullWidth fullHeight rows="auto auto auto" cols="1fr" gap={10}>
-            {phone && <Typography.H3>{phone[0].NAME}</Typography.H3>}
+        <Container.Grid
+            fullWidth
+            fullHeight
+            rows="auto auto auto"
+            cols="1fr"
+            gap={10}
+        >
+            {phone && (
+                <Container.Flex fullWidth direction="row">
+                    <Image
+                        src={phone[0].IMAGE}
+                        alt={phone[0].NAME}
+                        height={100}
+                    />
+                    <Container.Flex>
+                        <Typography.H3>{phone[0].NAME}</Typography.H3>
+                        <Typography.Span>{`IMEI: ${IMEI}`}</Typography.Span>
+                    </Container.Flex>
+                </Container.Flex>
+            )}
             {phone && (
                 <Confirm
-                    onNo={() => {changeStep(OfferSteps.imei)}}
+                    onNo={() => {
+                        changeStep(OfferSteps.imei);
+                    }}
                     onYes={() => getQuestions(phone[0].ID)}
                     question={Content.isYourDevice}
                 ></Confirm>
             )}
-            {!!errors.length && <Typography.Error>{errors.join(". ")}</Typography.Error>}
+            {!!errors.length && (
+                <Typography.Error>{errors.join(". ")}</Typography.Error>
+            )}
         </Container.Grid>
     );
 };

@@ -1,7 +1,7 @@
 import { takeLeading, call, put, select } from "redux-saga/effects";
 import { CheckImei, GetQuestions, setImeiValue } from ".";
 import { phoneAPI } from "../../api/phone";
-import { PhoneInfo } from "./types";
+import { PhoneInfo, QuestionGroup } from "./types";
 import { ResponseData } from "../../api/types";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
@@ -21,9 +21,9 @@ function* checkImeiWorker ({ payload } : PayloadAction<string>) {
 
 function* getQuestionsWorker ({ payload } : PayloadAction<string>) {
     const state : RootState = yield select();
-    const response: ResponseData<any> = yield call(phoneAPI.getQuestions, payload, state.user.user);
+    const response: ResponseData<QuestionGroup[]> = yield call(phoneAPI.getQuestions, payload, state.user.user);
     if (response.status === "success") {
-        yield put(GetQuestions.success())
+        yield put(GetQuestions.success(response.data))
     };
     if (response.status === "error") {
         yield put(GetQuestions.failure(response.errors))

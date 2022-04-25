@@ -1,5 +1,4 @@
 import { Fragment, useState } from "react";
-import styled from "styled-components";
 import { useOfferData } from "../../hooks/useOfferData";
 import Button from "../ui/Button";
 import Input from "../ui/Input";

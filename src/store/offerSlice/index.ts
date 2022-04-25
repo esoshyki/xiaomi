@@ -1,6 +1,6 @@
 import { RootState } from '..';
 import { createSelector, PayloadAction } from '@reduxjs/toolkit';
-import { OfferState, OfferSteps, PhoneInfo } from './types';
+import { OfferState, OfferSteps, PhoneInfo, QuestionGroup } from './types';
 import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
 
@@ -10,7 +10,8 @@ const initialState: OfferState = {
     result: null,
     loading: false,
     errors: [],
-    phone: null
+    phone: null,
+    questions: null
 }
 
 export const CheckImei = createRoutine("offer/Check-Imei");
@@ -60,9 +61,11 @@ const offerSlice = createSlice({
             state.result = "error";
             state.errors = payload
         },
-        [GetQuestions.SUCCESS](state, { payload } : PayloadAction<any>) {
+        [GetQuestions.SUCCESS](state, { payload } : PayloadAction<QuestionGroup[]>) {
             state.result = "success"
             state.errors = [];
+            state.questions = payload;
+            state.step = OfferSteps.questions
         },
         [GetQuestions.FULFILL](state) {
             state.loading = false

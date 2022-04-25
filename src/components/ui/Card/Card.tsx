@@ -22,6 +22,8 @@ const Wrapper = styled.div<CardProps>`
     background-color: ${props => props.theme.card.bgColor};
     color: ${props => props.theme.card.color ?? props.theme.colors.text.main};
     box-shadow: ${props => props.noShadow ? "none" : props.theme.card.boxShadow};
+    width: ${props => props.fullWidth ? "100%" : "auto"};
+    height: ${props => props.fullHeight ? "100%" : "auto"};
     ${props => ({
         ...props.styles
     })}

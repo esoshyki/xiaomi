@@ -1,6 +1,6 @@
 import { RootState } from '..';
 import { createSelector, PayloadAction } from '@reduxjs/toolkit';
-import { OfferState, OfferSteps, PhoneInfo, QuestionGroup } from './types';
+import { OfferState, OfferSteps, PhoneInfo, QuestionGroup, GivenAnswer } from './types';
 import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
 
@@ -11,7 +11,13 @@ const initialState: OfferState = {
     loading: false,
     errors: [],
     phone: null,
-    questions: null
+    questions: null,
+    variants: null,
+    variant: null,
+    hint: "",
+    currentQuestion: null,
+    currentQuestionGroup: null,
+    givenAnswers: []
 }
 
 export const CheckImei = createRoutine("offer/Check-Imei");
@@ -33,6 +39,16 @@ const offerSlice = createSlice({
                 case OfferSteps.imei:
                     state.IMEI = ""
             }
+        },
+        setCurrentQuestionGroup(state, { payload } : PayloadAction<number>) {
+            state.currentQuestionGroup = payload;
+            state.currentQuestion = 0;
+        },
+        setCurrentQuestion(state, { payload } : PayloadAction<number>) {
+            state.currentQuestion = payload
+        },
+        setGivenAnswers(state, { payload } : PayloadAction<GivenAnswer[]>) {
+            state.givenAnswers = payload
         }
     }, 
     extraReducers: {
@@ -65,7 +81,9 @@ const offerSlice = createSlice({
             state.result = "success"
             state.errors = [];
             state.questions = payload;
-            state.step = OfferSteps.questions
+            state.step = OfferSteps.questions;
+            state.currentQuestion = 0;
+            state.currentQuestionGroup = 0;
         },
         [GetQuestions.FULFILL](state) {
             state.loading = false
@@ -80,7 +98,10 @@ export const getOfferData = createSelector(
 
 export const { 
     setImeiValue,
-    setStep
+    setStep,
+    setCurrentQuestionGroup,
+    setCurrentQuestion,
+    setGivenAnswers
 } = offerSlice.actions
 
 export default offerSlice.reducer;

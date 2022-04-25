@@ -1,4 +1,4 @@
-import { isString } from './../types';
+import { isString, isNumber } from './../types';
 import { N } from '../types';
 export enum OfferSteps {
     imei = "Imei",
@@ -16,9 +16,28 @@ export type PhoneInfo = {
     IMAGE: string
 }
 
+export type PhoneVariant = {
+    offerId: number
+    properties: {
+        MEMORY: number
+        BRAND: string
+        MODEL: string
+    }
+}
+
+export type Answer = {
+    answerName: string
+    answerId: string
+}
+
+export type QuestionAnswer = {
+    answerId: string
+    answerName: string
+}
+
 export type Question = {
-    ID: number
-    questionAnswers: string[]
+    questionId: string
+    questionAnswers: QuestionAnswer[]
     questionName: string
     questionCode: string
     questionHelp: string
@@ -30,6 +49,11 @@ export type QuestionGroup = {
     questions: Question[]
 };
 
+export type GivenAnswer = {
+    questionId: string
+    answerId: string
+    questionCode: string
+}
 
 export type OfferState = {
     step: OfferSteps
@@ -38,6 +62,12 @@ export type OfferState = {
     result: "success" | "error" | null
     errors: string[]
     phone: N<PhoneInfo[]>,
-    questions: N<QuestionGroup[]>
+    questions: N<QuestionGroup[]>,
+    variants: N<PhoneVariant[]>,
+    variant: N<PhoneVariant>,
+    hint: string,
+    currentQuestion: isNumber
+    currentQuestionGroup: isNumber
+    givenAnswers: GivenAnswer[]
 }
 

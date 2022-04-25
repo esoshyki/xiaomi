@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { OfferStep } from ".";
 import { useOfferData } from "../../hooks/useOfferData";
 import { OfferSteps } from "../../store/offerSlice/types";
-import Card from "../ui/Card";
 import Container from "../ui/Container";
 
 const OfferWrapper = styled.div`
@@ -30,12 +29,8 @@ const Offer = () => {
 
     return (
         <OfferWrapper>
-            <Container.Flex fullHeight fullWidth>
-                <Card styles={{ maxWidth: "700px", minWidth: "400px", padding: "20px" }}>
-                    <Container.Flex fullHeight fullWidth>
+            <Container.Flex fullHeight fullWidth styles={{ maxWidth: "700px", minWidth: "400px", padding: "20px" }}>
                         {getContent()}
-                    </Container.Flex>
-                </Card>
             </Container.Flex>
         </OfferWrapper>
     );

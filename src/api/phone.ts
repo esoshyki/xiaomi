@@ -1,33 +1,33 @@
 import { ResponseData } from './types'
 import { api } from './instance';
 import { AxiosResponse } from 'axios';
-import { collectFormData } from './helpers';
+import { collectFormData, getErrorResponse } from './helpers';
 import { PhoneInfo } from '../store/offerSlice/types';
 import { User } from "../store/userSlice/types"
 import { N } from '../store/types';
 
+
 const getModelByImei = async (imei: string, user: N<User>): Promise<ResponseData<PhoneInfo>> => {
-    if (!user) {
-        return {
-            data: null,
-            errors: ["Please, log in"],
-            status: "error",
-            statusCode: 401
-        }
-    }
+    if (!user) return getErrorResponse();
     try {
-        const response: AxiosResponse<ResponseData<PhoneInfo>> = await api.post("/phonedata/getmodelbyimei/", collectFormData({ imei, ...user }))
+        const response: AxiosResponse<ResponseData<PhoneInfo>> = await api.post("/phonedata/getmodelbyimei/", collectFormData({imei}, user))
         return response.data
     } catch (error: any) {
-        return {
-            data: null,
-            errors: [error.message],
-            status: "error",
-            statusCode: 500
-        }
+        return getErrorResponse(error.message)
     }
 };
 
+const getQuestions = async (phoneId: string, user: N<User>) : Promise<ResponseData<any>> => {
+    if (!user) return getErrorResponse();
+    try {
+        const response: AxiosResponse<ResponseData<any>> = await api.post("/phonedata/getquestions/", collectFormData( {id: phoneId} , user ))
+        return response.data
+    } catch (error: any) {
+        return getErrorResponse(error.message)
+    }
+}
+
 export const phoneAPI = {
-    getModelByImei
+    getModelByImei,
+    getQuestions
 }

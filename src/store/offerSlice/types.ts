@@ -1,6 +1,7 @@
 import { N } from '../types';
 export enum OfferSteps {
-    imei = "Imei"
+    imei = "Imei",
+    isYourPhone = "IsYourPhone"
 };
 
 export type OfferError = {
@@ -18,5 +19,5 @@ export type OfferState = {
     loading: boolean,
     result: "success" | "error" | null
     errors: string[]
-    phone: N<PhoneInfo>
+    phone: N<PhoneInfo[]>
 }

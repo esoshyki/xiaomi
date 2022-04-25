@@ -1,7 +1,8 @@
 import { select } from '../store/selector';
 import { useDispatch, useSelector } from 'react-redux';
 import { ChangeEvent } from 'react';
-import { CheckImei, setImeiValue } from '../store/offerSlice';
+import { CheckImei, GetQuestions, setImeiValue, setStep } from '../store/offerSlice';
+import { OfferSteps } from '../store/offerSlice/types';
 
 export const useOfferData = () => {
     const offer = useSelector(select.offer);
@@ -11,11 +12,21 @@ export const useOfferData = () => {
         dispatch(setImeiValue(e.target.value))
     }
 
+    const getQuestions = (phoneID: string) => {
+        dispatch(GetQuestions.request(phoneID))
+    }
+
+    const changeStep = (step: OfferSteps) => {
+        dispatch(setStep(step))
+    }
+
     const checkImei = (emai: string) => dispatch(CheckImei.request(emai))
 
     return ({
         ...offer,
         setImei,
-        checkImei
+        checkImei,
+        getQuestions,
+        changeStep
     })
 }

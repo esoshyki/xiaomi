@@ -13,7 +13,8 @@ const initialState: OfferState = {
     phone: null
 }
 
-export const CheckImei = createRoutine("offer/Check-Imei")
+export const CheckImei = createRoutine("offer/Check-Imei");
+export const GetQuestions = createRoutine("offer/Get-Questions");
 
 const offerSlice = createSlice({
     name: "offer",
@@ -21,6 +22,16 @@ const offerSlice = createSlice({
     reducers: {
         setImeiValue(state, { payload } : PayloadAction<string>) {
             state.IMEI = payload
+        },
+        setStep(state, { payload } : PayloadAction<OfferSteps>) {
+            state.result = null;
+            state.errors = [];
+            state.loading = false;
+            state.step = payload;
+            switch (payload) {
+                case OfferSteps.imei:
+                    state.IMEI = ""
+            }
         }
     }, 
     extraReducers: {
@@ -32,12 +43,28 @@ const offerSlice = createSlice({
             state.result = "error";
             state.errors = payload
         },
-        [CheckImei.SUCCESS](state, { payload } : PayloadAction<PhoneInfo>) {
+        [CheckImei.SUCCESS](state, { payload } : PayloadAction<PhoneInfo[]>) {
             state.result = "success"
             state.errors = []
             state.phone = payload
+            state.step = OfferSteps.isYourPhone
         },
         [CheckImei.FULFILL](state) {
+            state.loading = false
+        },
+        [GetQuestions.REQUEST](state) {
+            state.result = null;
+            state.loading = true;
+        },
+        [GetQuestions.FAILURE](state, { payload } : PayloadAction<string[]>) {
+            state.result = "error";
+            state.errors = payload
+        },
+        [GetQuestions.SUCCESS](state, { payload } : PayloadAction<any>) {
+            state.result = "success"
+            state.errors = [];
+        },
+        [GetQuestions.FULFILL](state) {
             state.loading = false
         }
     }
@@ -49,7 +76,8 @@ export const getOfferData = createSelector(
 )
 
 export const { 
-    setImeiValue
+    setImeiValue,
+    setStep
 } = offerSlice.actions
 
 export default offerSlice.reducer;

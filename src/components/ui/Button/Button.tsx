@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Props } from "../../types";
+import { getCommonProps, Props } from "../../types";
 import Icon from "../Icon";
 import { Icons } from '../Icon/types'
 
@@ -33,9 +33,7 @@ const Root = styled.button<ButtonProps>`
     svg {
 
     }
-    ${(props) => ({
-        ...props.styles,
-    })}
+    ${(props) => getCommonProps(props)}
 `;
 
 type ButtonProps = Props<{

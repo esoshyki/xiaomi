@@ -1,6 +1,5 @@
-import { Props } from "../../types";
+import { getCommonProps, Props } from "../../types";
 import styled from "styled-components/macro";
-import { media } from "../../../theme/media";
 
 type CardProps = Props<{
     padding?: number;
@@ -22,12 +21,7 @@ const Wrapper = styled.div<CardProps>`
     background-color: ${props => props.theme.colors.background.opacity};
     width: ${props => props.fullWidth ? "100%" : "auto"};
     height: ${props => props.fullHeight ? "100%" : "auto"};
-    ${props => ({
-        ...props.styles
-    })}
-    @media ${media.mobile} {
-        padding: 15px;
-    }
+    ${props => getCommonProps(props)};
 `;
 
 const Card = (props: CardProps) => {

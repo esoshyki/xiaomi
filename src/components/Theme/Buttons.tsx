@@ -8,17 +8,19 @@ const ThemeButtons = () => {
     return (
         <Card>
             <Typography.Title styles={{ marginTop: 0 }}>Кнопки</Typography.Title>
-            <Container.Flex direction="row" justify="start" wrapped fullWidth mobile={{
-                flexDirection: "column",
-                alignItems: "center"
+            <Container.Flex direction="row" justify="start" wrapped fullWidth breakpoints={{
+                600: {
+                    flexDirection: "column",
+                    alignItems: "center"
+                }
             }}>
-                <Button styles={{ minWidth: "200px" }} onClick={() => {}}>
+                <Button styles={{ minWidth: "200px" }} onClick={() => { }}>
                     Обычная
                 </Button>
                 <Button
                     variant="outline"
                     styles={{ minWidth: "200px" }}
-                    onClick={() => {}}
+                    onClick={() => { }}
                 >
                     Вторичная
                 </Button>
@@ -26,7 +28,7 @@ const ThemeButtons = () => {
                 <Button
                     variant="disabled"
                     styles={{ minWidth: "200px" }}
-                    onClick={() => {}}
+                    onClick={() => { }}
                 >
                     Контурная
                 </Button>
@@ -35,7 +37,7 @@ const ThemeButtons = () => {
                     withLoader
                     pending={true}
                     styles={{ minWidth: "200px" }}
-                    onClick={() => {}}
+                    onClick={() => { }}
                 >
                     С загрузкой
                 </Button>
@@ -43,7 +45,7 @@ const ThemeButtons = () => {
                 <Button
                     icon="telegram"
                     styles={{ minWidth: "200px" }}
-                    onClick={() => {}}
+                    onClick={() => { }}
                 >
                     C иконкой
                 </Button>

@@ -9,9 +9,11 @@ const ThemeTooltips = () => {
     return (
         <Card>
             <Typography.Title styles={{ marginTop: 0 }}>Тултипы</Typography.Title>
-            <Container.Flex direction="row" justify="start" wrapped mobile={{
-                flexDirection: "column",
-                alignItems: "center"
+            <Container.Flex direction="row" justify="start" wrapped breakpoints={{
+                "600": {
+                    flexDirection: "column",
+                    alignItems: "center"
+                }
             }}>
                 <ToolTip text="Сверху" side="up">
                     <Typography.Title

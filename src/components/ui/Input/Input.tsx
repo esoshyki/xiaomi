@@ -1,10 +1,9 @@
 import React, { ChangeEvent } from "react";
 import styled from "styled-components";
-import { Props } from "../../types";
+import { getCommonProps, Props } from "../../types";
 import Typography from "../Typography";
 import { InputTypes } from "./types";
 import { useTheme } from 'styled-components/macro'
-import { media } from "../../../theme/media";
 
 type InputProps = Props<{
     label?: string;
@@ -34,14 +33,7 @@ const Wrapper = styled.div<InputProps>`
     font-weight: 400;
     color: ${props => props.theme.colors.text.default};
     border: none;
-    ${(props) => ({
-        ...props.styles,
-    })}
-    @media ${media.mobile} {
-        ${props => ({
-            ...props.mobile
-        })}
-    }
+    ${props => getCommonProps(props)}
     &::placeholder {
         color: ${props => props.theme.colors.text.secondary}
     }

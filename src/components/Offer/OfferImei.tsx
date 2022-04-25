@@ -23,6 +23,11 @@ const OfferImei = () => {
                     fullWidth
                     placeholder="Укажите IMEI устройства"
                     onChange={(e) => setImei(e.target.value)}
+                    breakpoints={{
+                        600: {
+                            width: "100%"
+                        }
+                    }}
                 />
 
                 <Button

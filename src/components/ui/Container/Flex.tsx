@@ -1,7 +1,6 @@
 import styled from "styled-components/macro";
 import { getFlexAligns, getFlexJustify } from "../../../helpers/getFlexProps";
-import { media } from "../../../theme/media";
-import { Aligns, Justifies, Props } from "../../types";
+import { Aligns, getCommonProps, Justifies, Props } from "../../types";
 
 type FlexProps = Props<{
     direction?: "row" | "column"
@@ -25,14 +24,7 @@ const FlexContainer = styled.div<FlexProps>`
     align-items: ${(props) => getFlexAligns(props.alignItems || "center")};
     padding: ${props => `${props.padding || 0}px`};
     margin: ${props => props.margin ? `${props.margin}px` : "auto"};
-    ${props => ({
-        ...props.styles
-    })};
-    @media ${media.mobile} {
-        ${props => ({
-            ...props.mobile
-        })}
-    }
+    ${props => getCommonProps(props)};
 `;
 
 const Flex = (props: FlexProps) => {

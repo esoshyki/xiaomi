@@ -1,7 +1,6 @@
 import styled from "styled-components/macro";
 import { getGridJustify, getGridAligns } from "../../../helpers/getGridProps";
-import { Aligns, Justifies, Props } from "../../types";
-import { media } from '../../../theme/media'
+import { Aligns, getCommonProps, Justifies, Props } from "../../types";
 
 type GridProps = Props<{
     direction?: "row" | "column";
@@ -28,15 +27,7 @@ const GridContainer = styled.div<GridProps>`
     })}
     padding: ${(props) => `${props.padding || 0}px`};
     margin: ${(props) => `${props.margin || 0}px`};
-    ${(props) => ({
-        ...props.styles,
-    })}
-    @media ${media.mobile} {
-        padding: 20px;
-        ${(props) => ({
-            ...props.mobile,
-        })}
-    }
+    ${(props) => getCommonProps(props)}
 `;
 
 const Grid = (props: GridProps) => {

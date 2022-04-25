@@ -26,17 +26,17 @@ const ThemeInputs = () => {
         <Card>
             <Typography.Title styles={{ marginTop: 0 }}>Инпуты</Typography.Title>
             <Container.Flex direction="row" justify="start" wrapped>
-                <Input value={text} onChange={onChange} mobile={mobileProps} />
+                <Input value={text} onChange={onChange} breakpoints={{"600" : mobileProps}} />
                 <Input
                     value={text}
                     label="С лейблом"
-                    mobile={mobileProps}
+                    breakpoints={{600 : mobileProps}}
                     onChange={onChange}
                 />
                 <Input
                     value={text}
                     label="Ошибка"
-                    mobile={mobileProps}
+                    breakpoints={{600 : mobileProps}}
                     onChange={onChange}
                     error="Ошибка сервера"
                 />

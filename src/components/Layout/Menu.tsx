@@ -20,6 +20,12 @@ const Close = styled.svg`
     position: absolute;
     top: 22px;
     left: 32px;
+    transition: color 200ms ease-in;
+    color: ${props => props.theme.colors.icon.contrast};
+    &:hover {
+        cursor: pointer;
+        color: ${props => props.theme.colors.icon.secondary};
+    }
 `;
 
 const CloseButton = ({ onClick }: { onClick: () => void }) => {
@@ -36,7 +42,7 @@ const CloseButton = ({ onClick }: { onClick: () => void }) => {
                 fillRule="evenodd"
                 clipRule="evenodd"
                 d="M3.63603 14.9499C3.24551 15.3404 3.24551 15.9736 3.63603 16.3641C4.02656 16.7546 4.65972 16.7546 5.05025 16.3641L9.99988 11.4144L14.9497 16.3643C15.3403 16.7548 15.9734 16.7548 16.364 16.3643C16.7545 15.9738 16.7545 15.3406 16.364 14.9501L11.4141 10.0002L16.364 5.05037C16.7545 4.65984 16.7545 4.02668 16.364 3.63615C15.9734 3.24563 15.3403 3.24563 14.9497 3.63615L9.99988 8.58602L5.05025 3.63639C4.65972 3.24586 4.02656 3.24586 3.63603 3.63639C3.24551 4.02691 3.24551 4.66008 3.63603 5.0506L8.58566 10.0002L3.63603 14.9499Z"
-                fill="white"
+                fill="currentColor"
             />
         </Close>
     );

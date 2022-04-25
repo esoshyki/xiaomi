@@ -29,7 +29,7 @@ const Offer = () => {
 
     return (
         <OfferWrapper>
-            <Container.Flex fullHeight fullWidth styles={{ maxWidth: "700px", minWidth: "400px", padding: "20px" }}>
+            <Container.Flex fullHeight fullWidth styles={{ maxWidth: "700px", padding: "20px" }}>
                         {getContent()}
             </Container.Flex>
         </OfferWrapper>

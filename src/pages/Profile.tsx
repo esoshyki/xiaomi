@@ -1,13 +1,13 @@
 import Container from "../components/ui/Container"
 import Typography from "../components/ui/Typography"
-import { withLayout } from "../hooks/withLayout"
+import { withLayout } from "../components/Layout/withLayout"
 
 
 const ThemePage = () => {
 
     return (
         <Container.Flex fullWidth padding={30} >
-            <Typography.H2>Профиль</Typography.H2>
+            <Typography.Title>Профиль</Typography.Title>
            
         </Container.Flex>
     )

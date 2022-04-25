@@ -1,10 +1,10 @@
 import styled from "styled-components/macro"
 import { TextProps } from "../types";
 
-export const H4 = styled.h4<TextProps>`
-    color: ${(props) => props.theme.colors.text.main};
+export const RublesLarge = styled.span<TextProps>`
     text-align: ${props => props.textAlign ?? "center"};
     ${(props) => ({
+        ...props.theme.typography.largeRubles,
         ...props.styles,
     })}
 `;

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import Container from "../ui/Container";
 import Button from "../ui/Button";
 import Login from "../Login";
@@ -37,7 +37,6 @@ const User = () => {
                             padding: "10px",
                         }}
                         onClick={showLoginForm}
-                        variant="secondary"
                     >
                         Войти
                     </Button>
@@ -54,12 +53,11 @@ const User = () => {
                                 marginRight: "20px",
                             }}
                         />
-                        <Typography.H5>
+                        <Typography.Medium>
                             Пользователь
-                        </Typography.H5>
+                        </Typography.Medium>
 
                         <Button
-                            variant="secondary"
                             onClick={logout}
                             square
                             styles={{ height: "40px", padding: "0 20px" }}

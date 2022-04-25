@@ -18,10 +18,8 @@ const Wrapper = styled.div<CardProps>`
             margin: margin ?? "0",
         };
     }};
-    border-radius: ${props => `${props.theme.card.borderRadius}px`};
-    background-color: ${props => props.theme.card.bgColor};
-    color: ${props => props.theme.card.color ?? props.theme.colors.text.main};
-    box-shadow: ${props => props.noShadow ? "none" : props.theme.card.boxShadow};
+    border-radius: 20px;
+    background-color: ${props => props.theme.colors.background.opacity};
     width: ${props => props.fullWidth ? "100%" : "auto"};
     height: ${props => props.fullHeight ? "100%" : "auto"};
     ${props => ({

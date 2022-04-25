@@ -7,7 +7,7 @@ import Container from "../ui/Container";
 const ThemeButtons = () => {
     return (
         <Card>
-            <Typography.H4 styles={{ marginTop: 0 }}>Кнопки</Typography.H4>
+            <Typography.Title styles={{ marginTop: 0 }}>Кнопки</Typography.Title>
             <Container.Flex direction="row" justify="start" wrapped fullWidth mobile={{
                 flexDirection: "column",
                 alignItems: "center"
@@ -16,7 +16,7 @@ const ThemeButtons = () => {
                     Обычная
                 </Button>
                 <Button
-                    variant="secondary"
+                    variant="outline"
                     styles={{ minWidth: "200px" }}
                     onClick={() => {}}
                 >
@@ -24,7 +24,7 @@ const ThemeButtons = () => {
                 </Button>
 
                 <Button
-                    variant="outline"
+                    variant="disabled"
                     styles={{ minWidth: "200px" }}
                     onClick={() => {}}
                 >

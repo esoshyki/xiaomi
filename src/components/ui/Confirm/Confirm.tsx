@@ -22,7 +22,7 @@ const Confirm = (props: ConfirmProps) => {
     return (
         <ConfirmWrapper {...props}>
             <Container.Flex fullWidth alignItems="start">
-                <Typography.H5>{props.question}</Typography.H5>
+                <Typography.Title>{props.question}</Typography.Title>
 
                 <Container.Grid
                     direction="row"

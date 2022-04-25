@@ -22,8 +22,8 @@ Primary.args = {
 };
 
 Secondary.args = {
-  variant: "secondary",
-  children: "Вторичная"
+  variant: "disabled",
+  children: "Отключенная"
 }
 
 Outline.args = {
@@ -32,7 +32,7 @@ Outline.args = {
 }
 
 WithLoader.args = {
-  variant: "secondary",
+  variant: "disabled",
   withLoader: true,
   pending: true,
   children: "С загрузкой"

@@ -38,7 +38,7 @@ const Question = (props: QuestionType) => {
 
     return (
         <Card>
-            <Typography.H5>{questionName}</Typography.H5>
+            <Typography.Main>{questionName}</Typography.Main>
 
             {questionAnswers &&
                 questionAnswers.map((question) => {
@@ -64,7 +64,7 @@ const QuestionGroup = (props: QuestionGroupType) => {
 
     return (
         <Container.Flex fullHeight fullWidth>
-            <Typography.H4>{groupName || ""}</Typography.H4>
+            <Typography.Main>{groupName || ""}</Typography.Main>
 
             {slice &&
                 slice.map((question, key) => (

@@ -6,6 +6,7 @@ import userSlice from "./userSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
 import offerSlice from "./offerSlice";
+import viewSlice from "./viewSlice";
 
 const persistConfig = {
     key: "root",
@@ -24,7 +25,8 @@ const sagaMiddleWare = createSagaMiddleware();
 const rootReducer = combineReducers({
     theme: themeSliceReducer,
     user: persistReducer(userPersistConfig, userSlice),
-    offer: offerSlice
+    offer: offerSlice,
+    view: viewSlice
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

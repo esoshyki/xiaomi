@@ -24,7 +24,7 @@ const ThemeInputs = () => {
 
     return (
         <Card>
-            <Typography.H4 styles={{ marginTop: 0 }}>Инпуты</Typography.H4>
+            <Typography.Title styles={{ marginTop: 0 }}>Инпуты</Typography.Title>
             <Container.Flex direction="row" justify="start" wrapped>
                 <Input value={text} onChange={onChange} mobile={mobileProps} />
                 <Input

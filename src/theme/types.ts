@@ -1,9 +1,6 @@
 type ButtonProps = {
-    bgcolor: string
-    textColor: string
-    borderColor: string
-    hoverBackground: string
-    activeBackground: string
+    backgroundColor: string
+    borderRadius: string
 }
 
 export type ButtonTheme = {
@@ -32,6 +29,14 @@ export type CardProps = {
     color?: string;
     boxShadow: string;
     borderRadius: number;
+}
+
+export type TextProps = {
+    fontWeight: string
+    fontSize: string
+    lineHeight: string
+    color: string
+    textDecorationLine?: string
 }
 
 export type ThemeInput = ElementProps<InputProps>

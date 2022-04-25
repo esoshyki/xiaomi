@@ -8,30 +8,30 @@ import Button from "../ui/Button";
 const ThemeTooltips = () => {
     return (
         <Card>
-            <Typography.H4 styles={{ marginTop: 0 }}>Тултипы</Typography.H4>
+            <Typography.Title styles={{ marginTop: 0 }}>Тултипы</Typography.Title>
             <Container.Flex direction="row" justify="start" wrapped mobile={{
                 flexDirection: "column",
                 alignItems: "center"
             }}>
                 <ToolTip text="Сверху" side="up">
-                    <Typography.H4
+                    <Typography.Title
                         styles={{
                             userSelect: "none",
                             marginRight: "30px",
                         }}
                     >
                         Сверху
-                    </Typography.H4>
+                    </Typography.Title>
                 </ToolTip>
                 <ToolTip text="Слева" side="left">
-                    <Typography.H4
+                    <Typography.Title
                         styles={{
                             userSelect: "none",
                             marginRight: "30px",
                         }}
                     >
                         Слева
-                    </Typography.H4>
+                    </Typography.Title>
                 </ToolTip>
                 <ToolTip text="Подсказка справа" side="right">
                     <Button
@@ -47,13 +47,13 @@ const ThemeTooltips = () => {
                         minWidth: "150px",
                     }}
                 >
-                    <Typography.H4
+                    <Typography.Title
                         styles={{
                             userSelect: "none",
                         }}
                     >
                         Снизу
-                    </Typography.H4>
+                    </Typography.Title>
                 </ToolTip>
             </Container.Flex>
         </Card>

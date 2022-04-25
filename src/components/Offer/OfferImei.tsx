@@ -14,9 +14,9 @@ const OfferImei = () => {
     return (
         <Card fullWidth>
             <Container.Flex>
-                <Typography.H4 textAlign="start" styles={{ width: "100%" }}>
+                <Typography.Title textAlign="start" styles={{ width: "100%" }}>
                     Я хочу сдать
-                </Typography.H4>
+                </Typography.Title>
 
                 <Input
                     value={IMEI}

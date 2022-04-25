@@ -1,16 +1,16 @@
-import { H1, H2, H3, H4, H5, H6, Span, P, Mark, Error } from './components'
+import { Title, Small, RublesLarge, RublesSmall, Medium, Main, Link, Button, Error, Tertiary } from './components'
 
 const Typography = {
-  H1,
-  H2,
-  H3,
-  H4,
-  H5,
-  H6,
-  Span,
-  P,
-  Mark,
-  Error
+  Title,
+  Small,
+  RublesLarge,
+  RublesSmall,
+  Medium,
+  Main,
+  Link,
+  Button,
+  Error,
+  Tertiary
 };
 
 export default Typography

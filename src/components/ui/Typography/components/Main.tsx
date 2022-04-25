@@ -1,10 +1,10 @@
 import styled from "styled-components/macro"
 import { TextProps } from "../types";
 
-export const H5 = styled.h5<TextProps>`
-    color: ${(props) => props.theme.colors.text.main};
+export const Main = styled.p<TextProps>`
     text-align: ${props => props.textAlign ?? "center"};
     ${(props) => ({
+        ...props.theme.typography.main,
         ...props.styles,
     })}
 `;

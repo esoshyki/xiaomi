@@ -1,3 +1,4 @@
+import { getViewData } from './viewSlice/index';
 import { getUserData } from './userSlice';
 import { getThemeData } from './themeSlice';
 import { getOfferData } from "./offerSlice";
@@ -5,5 +6,6 @@ import { getOfferData } from "./offerSlice";
 export const select = {
     offer: getOfferData,
     theme: getThemeData,
-    user: getUserData
+    user: getUserData,
+    view: getViewData
 }

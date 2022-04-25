@@ -23,7 +23,7 @@ const TooltipWrapper = styled.div<TooltipProps & WrapperProps>`
     justify-content: center;
     text-align: center;
     filter: ${(props) => `opacity(${props.opacity})`};
-    background-color: ${(props) => props.theme.colors.primary};
+    background-color: ${(props) => props.theme.colors.background.second};
     padding: 10px 20px;
     color: #fff;
     left: ${(props) => `${props.left}px`};

@@ -17,49 +17,23 @@ type InputProps = Props<{
 }>;
 
 const InputWrapper = styled.input<InputProps>`
-    border-style: solid;
-    border-color: ${(props) => props.error
-                ? props.theme.colors.error
-                : props.theme.input.common.borderColor};
+    border: none;
+    border-radius: 12px;
     padding: 10px 20px;
-    border-radius: 5px;
     width: 100%;
     height: 100%;
-    background-color: ${(props) => props.theme.input.common.bgColor};
-    color: ${(props) => props.theme.input.common.color};
-    &:hover {
-        border-color: ${(props) =>
-            props.error
-                ? props.theme.colors.errorHover
-                : props.theme.input.hover.borderColor};
-        color: ${(props) => props.theme.input.hover.color};
-        background-color: ${(props) => props.theme.input.hover.bgColor};
-    }
-    &:active {
-        outline: none;
-        border-color: ${(props) =>
-            props.error
-                ? props.theme.colors.errorHover
-                : props.theme.input.active.borderColor};
-        color: ${(props) => props.theme.input.active.color};
-        background-color: ${(props) => props.theme.input.active.bgColor};
-    }
-    &:focus {
-        outline: none;
-        border-color: ${(props) =>
-            props.error
-                ? props.theme.colors.errorHover
-                : props.theme.input.focus.borderColor};
-        color: ${(props) => props.theme.input.focus.color};
-        background-color: ${(props) => props.theme.input.focus.bgColor};
-    }
 `;
 
 const Wrapper = styled.div<InputProps>`
     position: relative;
     margin: 20px;
+    padding: 10px 16px;
     width: ${props => props.fullWidth ? "100%" : "auto"};
     height: ${props => props.fullHeight ? "100%" : "auto"};;
+    font-size: 16px;
+    font-weight: 400;
+    color: ${props => props.theme.colors.text.default};
+    border: none;
     ${(props) => ({
         ...props.styles,
     })}
@@ -68,14 +42,15 @@ const Wrapper = styled.div<InputProps>`
             ...props.mobile
         })}
     }
+    &::placeholder {
+        color: ${props => props.theme.colors.text.secondary}
+    }
 `;
 
 const Input = (props: InputProps) => {
     const { label, value, onChange } = props;
 
     const theme = useTheme();
-
-    const { input } = theme;
 
     return (
         <Wrapper {...props}>
@@ -87,18 +62,18 @@ const Input = (props: InputProps) => {
                 placeholder={props.placeholder}
             ></InputWrapper>
             {label && (
-                <Typography.Span
+                <Typography.Tertiary
                     styles={{
                         position: "absolute",
                         top: "-10px",
                         padding: "0 10px",
                         left: "20px",
-                        color: props.error ? theme.colors.error : input.common.labelColor,
-                        backgroundColor: input.common.labelBackground
+                        color: props.error ? theme.colors.text.tertiary : theme.colors.text.default,
+                        backgroundColor: "transparent"
                     }}
                 >
                     {label}
-                </Typography.Span>
+                </Typography.Tertiary>
             )}
 
             {!!props.error && (

@@ -9,7 +9,6 @@ import Profile from "./pages/Profile";
 const AppWrapper = styled.div`
     width: 100%;
     height: 100vh;
-    background-color: ${props => props.theme.colors.bgMain};
 `;
 
 function App() {

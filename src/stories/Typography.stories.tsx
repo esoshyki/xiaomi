@@ -9,14 +9,14 @@ const TypographyWrapper = () => {
 
   return (
     <Container.Flex>
-      <Typography.H1>Заговолок 1</Typography.H1>
-      <Typography.H2>Заговолок 2</Typography.H2>
-      <Typography.H3>Заговолок 3</Typography.H3>
-      <Typography.H4>Заговолок 4</Typography.H4>
-      <Typography.H5>Заговолок 5</Typography.H5>
-      <Typography.H6>Заговолок 6</Typography.H6>
-      <Typography.P>Параграф. Алая вспышка осветила силуэт зазубренного крыла</Typography.P>
-      <Typography.Span>Спан. Алая вспышка осветила силуэт зазубренного крыла</Typography.Span>
+      <Typography.Title>Заговолок</Typography.Title>
+      <Typography.Main>Основной текст</Typography.Main>
+      <Typography.Medium>Средний текст</Typography.Medium>
+      <Typography.Small>Мелкий текст</Typography.Small>
+      <Typography.Button>Текс в кнопке</Typography.Button>
+      <Typography.Link href='#'>Ссылка</Typography.Link>
+      <Typography.RublesLarge>≈ 317 руб 00</Typography.RublesLarge>
+      <Typography.RublesSmall>≈ 317 руб 00</Typography.RublesSmall>
       <Typography.Error styles={{marginTop: "20px"}}>Ошибка</Typography.Error>
     </Container.Flex>
   )

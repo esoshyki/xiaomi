@@ -30,8 +30,11 @@ const OfferIsYourPhone = () => {
                             height={100}
                         />
                         <Container.Flex>
-                            <Typography.H3>{phone[0].NAME}</Typography.H3>
-                            <Typography.Span>{`IMEI: ${IMEI}`}</Typography.Span>
+                            <Typography.Title>{phone[0].NAME}</Typography.Title>
+                            <Container.Flex direction="row" fullWidth>
+                                <Typography.Tertiary>IMEI</Typography.Tertiary>
+                                <Typography.Small>{IMEI}</Typography.Small>
+                            </Container.Flex>
                         </Container.Flex>
                     </Container.Flex>
                 )}

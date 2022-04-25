@@ -1,7 +1,7 @@
 import React from "react"
 import Offer from "../components/Offer"
 import Container from "../components/ui/Container"
-import { withLayout } from "../hooks/withLayout"
+import { withLayout } from "../components/Layout/withLayout"
 
 const Home = () => {
 

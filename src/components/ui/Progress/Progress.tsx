@@ -3,6 +3,7 @@ import TreePNG from '../../../assets/tree.png'
 import RostokPNG from '../../../assets/rostok.png'
 import BranchPNG from '../../../assets/branch.png'
 import styled from 'styled-components/macro';
+import { useOfferData } from '../../../hooks/useOfferData';
 
 const Img = styled.div<{image: string}>`
     width: 20px;
@@ -22,17 +23,23 @@ const ProgressContainer = styled.div`
     position: relative;
 `;
 
-const ProgressContent = styled.div`
+const ProgressContent = styled.div<{ progress: number}>`
     min-width: 8px;
+    width: ${props => `${100 * props.progress}%`};
     height: 8px;
     border-radius: 4px;
     background-color: ${props => props.theme.colors.statusBar.default};
     position: absolute;
+    transition: width 200ms ease-in;
     left: 0;
     top: 0;
 `
 
 const Progress = () => {
+
+    const { progress } = useOfferData();
+
+    console.log(progress);
     
     return (
         <Container.Flex fullWidth>
@@ -43,7 +50,7 @@ const Progress = () => {
             </Container.Flex>
 
             <ProgressContainer>
-                <ProgressContent />
+                <ProgressContent progress={progress} />
             </ProgressContainer>
             
         </Container.Flex>

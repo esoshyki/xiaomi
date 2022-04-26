@@ -53,6 +53,7 @@ export type GivenAnswer = {
     questionId: string
     answerId: string
     questionCode: string
+    groupShortName: string
 }
 
 export type OfferState = {
@@ -68,6 +69,8 @@ export type OfferState = {
     hint: string,
     currentQuestion: isNumber
     currentQuestionGroup: isNumber
-    givenAnswers: GivenAnswer[]
+    givenAnswers: {
+        [k: string] : GivenAnswer[]
+    }
 }
 

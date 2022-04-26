@@ -4,9 +4,10 @@ import { OfferSteps } from "../../store/offerSlice/types";
 import Container from "../ui/Container";
 import { Progress, Card, Info, Typography, Button } from "../ui";
 import { useRef, useState } from "react";
+import OfferDevice from "./OfferDevice";
 
 const Offer = () => {
-    const { step } = useOfferData();
+    const { step, phone } = useOfferData();
 
     const [hint, setHint] = useState(true);
 
@@ -49,6 +50,7 @@ const Offer = () => {
             <Card fullWidth padding={28} >
                 <Container.Flex fullWidth verticalGap={10}>
                 {step !== OfferSteps.imei && <Progress />}
+                {phone?.[0] && <OfferDevice phone={phone[0]} />}
                 {getContent()}
                 </Container.Flex>
             </Card>

@@ -17,7 +17,7 @@ const initialState: OfferState = {
     hint: "",
     currentQuestion: null,
     currentQuestionGroup: null,
-    givenAnswers: []
+    givenAnswers: {}
 }
 
 export const CheckImei = createRoutine("offer/Check-Imei");
@@ -47,8 +47,13 @@ const offerSlice = createSlice({
         setCurrentQuestion(state, { payload } : PayloadAction<number>) {
             state.currentQuestion = payload
         },
-        setGivenAnswers(state, { payload } : PayloadAction<GivenAnswer[]>) {
-            state.givenAnswers = payload
+        giveAnswer(state, { payload } : PayloadAction<{groupId: number, answer: GivenAnswer}>) {
+            const { groupId, answer } = payload;
+            if (state.givenAnswers[groupId]) {
+                state.givenAnswers[groupId].push(answer)
+            } else {
+                state.givenAnswers[groupId] = [answer]
+            }
         }
     }, 
     extraReducers: {
@@ -101,7 +106,7 @@ export const {
     setStep,
     setCurrentQuestionGroup,
     setCurrentQuestion,
-    setGivenAnswers
+    giveAnswer
 } = offerSlice.actions
 
 export default offerSlice.reducer;

@@ -4,22 +4,35 @@ import {
     Question as QuestionType,
     QuestionGroup as QuestionGroupType,
 } from "../../store/offerSlice/types";
+import { isString } from "../../store/types";
 import Button from "../ui/Button";
 import Container from "../ui/Container";
 import Typography from "../ui/Typography";
 
 const questions = {
-    memory: "42",
+    memory: {
+        id: "42",
+        label: "",
+    },
 };
 
-const Question = (props: QuestionType) => {
-    const { questionAnswers, questionName, questionId, questionCode } = props;
+const Question = (
+    props: QuestionType & { groupShortName: isString; groupId: number }
+) => {
+    const {
+        questionAnswers,
+        questionName,
+        questionId,
+        questionCode,
+        groupShortName,
+        groupId,
+    } = props;
 
-    const { getAnswer } = useOfferData()
+    const { giveAnswer } = useOfferData();
 
     const filterAnswerName = (value: string) => {
         switch (questionId) {
-            case questions.memory:
+            case questions.memory.id:
                 return value + " Gb";
 
             default:
@@ -28,31 +41,44 @@ const Question = (props: QuestionType) => {
     };
 
     const onAnswer = (answerId: string) => {
-        getAnswer({
-            questionCode,
-            questionId,
-            answerId
-        })
-    }
+        console.log(groupId);
+        if (typeof groupId === "number") {
+            giveAnswer(groupId, {
+                questionCode,
+                questionId,
+                answerId,
+                groupShortName: groupShortName || "",
+            });
+        }
+    };
 
     return (
         <Fragment>
             <Typography.Main>{questionName}</Typography.Main>
 
-            {questionAnswers &&
-                questionAnswers.map((question) => {
-                    return (
-                        <Button onClick={() => onAnswer(question.answerId)} square variant="outline">
-                            {filterAnswerName(question.answerName)}
-                        </Button>
-                    );
-                })}
+            <Container.Flex direction="row" gap={10} wrapped>
+                {questionAnswers &&
+                    questionAnswers.map((question) => {
+                        return (
+                            <Button
+                                onClick={() => onAnswer(question.answerId)}
+                                variant="outline"
+                                styles={{
+                                    width: "120px",
+                                    height: "40px",
+                                }}
+                            >
+                                {filterAnswerName(question.answerName)}
+                            </Button>
+                        );
+                    })}
+            </Container.Flex>
         </Fragment>
     );
 };
 
-const QuestionGroup = (props: QuestionGroupType) => {
-    const { groupName, questions } = props;
+const QuestionGroup = (props: QuestionGroupType & { groupId: number }) => {
+    const { groupName, questions, groupShortName, groupId } = props;
 
     const { currentQuestion } = useOfferData();
 
@@ -68,7 +94,11 @@ const QuestionGroup = (props: QuestionGroupType) => {
             {slice &&
                 slice.map((question, key) => (
                     <Fragment key={"question" + key}>
-                        <Question {...question} />
+                        <Question
+                            {...question}
+                            groupShortName={groupShortName}
+                            groupId={groupId}
+                        />
                     </Fragment>
                 ))}
         </Container.Flex>
@@ -83,7 +113,10 @@ const OfferQuestions = () => {
             {!!questions &&
                 typeof currentQuestionGroup === "number" &&
                 questions.length > 0 && (
-                    <QuestionGroup {...questions[currentQuestionGroup]} />
+                    <QuestionGroup
+                        {...questions[currentQuestionGroup]}
+                        groupId={currentQuestionGroup || 0}
+                    />
                 )}
         </Container.Flex>
     );

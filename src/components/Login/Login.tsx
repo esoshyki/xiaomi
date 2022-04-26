@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import {
@@ -10,6 +10,7 @@ import {
 } from "../../store/userSlice";
 import Container from "../ui/Container";
 import Card from "../ui/Card";
+import Typography from "../ui/Typography";
 
 const LoginWrapper = styled.div`
     position: fixed;
@@ -24,6 +25,8 @@ const LoginWrapper = styled.div`
 const Login = () => {
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
+
+    const theme = useTheme();
 
     const dispatch = useDispatch();
 
@@ -45,39 +48,53 @@ const Login = () => {
 
     return (
         <LoginWrapper>
-            <Container.Flex justify="center" fullHeight onClick={onClick} className="login-wrapper">
-            <Card noShadow styles={{
-                width: "auto",
-                margin: "auto",
-                backgroundColor: "#fff",
-            }}>
-                <Container.Flex
-                    styles={{ width: "300px", margin: "auto", height: "100%" }}
-                    justify="center"
+            <Container.Flex
+                justify="center"
+                fullHeight
+                onClick={onClick}
+                className="login-wrapper"
+                styles={{ background: theme.colors.background.default }}
+            >
+                <Card
+                    noShadow
+                    styles={{
+                        width: "auto",
+                        margin: "auto",
+                        backgroundColor: "#fff",
+                    }}
                 >
-                    <Input
-                        label="Логин"
-                        value={login}
-                        onChange={(e) => setLogin(e.target.value)}
-                        fullWidth
-                    />
-                    <Input
-                        label="Пароль"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        fullWidth
-                    />
-                    <Button
-                        withLoader
-                        pending={user.login.pending}
-                        onClick={onSubmit}
-                        square
+                    <Container.Flex
+                        gap={10}
+                        styles={{
+                            width: "300px",
+                            margin: "auto",
+                            height: "100%",
+                        }}
+                        justify="center"
                     >
-                        Отправить
-                    </Button>
-                </Container.Flex>
-            </Card>
+                        <Typography.Small>Логин</Typography.Small>
+                        <Input
+                            value={login}
+                            onChange={(e) => setLogin(e.target.value)}
+                            fullWidth
+                        />
+                        <Typography.Small>Пароль</Typography.Small>
+                        <Input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            fullWidth
+                        />
+                        <Button
+                            withLoader
+                            pending={user.login.pending}
+                            onClick={onSubmit}
+                            square
+                        >
+                            Отправить
+                        </Button>
+                    </Container.Flex>
+                </Card>
             </Container.Flex>
         </LoginWrapper>
     );

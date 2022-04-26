@@ -1,17 +1,19 @@
 import styled from "styled-components/macro";
 import { getFlexAligns, getFlexJustify } from "../../../helpers/getFlexProps";
-import { Aligns, getCommonProps, Justifies, Props } from "../../types";
+import { Aligns, collectGap, getCommonProps, Justifies, Props } from "../../types";
 
-type FlexProps = Props<{
+export type FlexProps = Props<{
     direction?: "row" | "column"
     justify?: Justifies
     alignItems?: Aligns
     fullWidth?: true
     fullHeight?: true
-    padding?: number
-    margin?: number
     wrapped?: true
     onClick?: (v: any) => void
+    gap?: number
+    verticalGap?: number
+    horizontalGap?: number
+    padding?: number
 }>;
 
 const FlexContainer = styled.div<FlexProps>`
@@ -22,9 +24,9 @@ const FlexContainer = styled.div<FlexProps>`
     flex-wrap: ${props => props.wrapped ? "wrap" : "no-wrap"};
     justify-content: ${(props) => getFlexJustify(props.justify || "start")};
     align-items: ${(props) => getFlexAligns(props.alignItems || "center")};
-    padding: ${props => `${props.padding || 0}px`};
-    margin: ${props => props.margin ? `${props.margin}px` : "auto"};
+    padding: ${props => props.padding ? `${props.padding}px` : 0};
     ${props => getCommonProps(props)};
+    ${props => collectGap(props)}
 `;
 
 const Flex = (props: FlexProps) => {

@@ -3,9 +3,10 @@ import styled from "styled-components/macro";
 
 const Wrapper = styled.main`
     width: 100%;
-    height: calc(100vh - 60px);
+    height: 100%;
     max-width: 1104px;
     margin: 0 auto;
+    transition: all 500ms ease-in;
 `
 
 const Main = ({ children } : { children: ReactNode}) => {

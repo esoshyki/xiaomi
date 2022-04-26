@@ -2,16 +2,16 @@ import styled from "styled-components/macro";
 import { getGridJustify, getGridAligns } from "../../../helpers/getGridProps";
 import { Aligns, getCommonProps, Justifies, Props } from "../../types";
 
-type GridProps = Props<{
+export type GridProps = Props<{
     direction?: "row" | "column";
     cols?: string;
     rows?: string;
     gap?: number;
+    verticalGap?: number
+    horizontalGap?: number
     alignItems?: Aligns;
     justify?: Justifies;
     fullWidth?: true;
-    padding?: number;
-    margin?: number;
 }>;
 
 const GridContainer = styled.div<GridProps>`
@@ -25,9 +25,7 @@ const GridContainer = styled.div<GridProps>`
         justifyContent: getGridJustify(props.justify ?? "start"),
         alignItems: getGridAligns(props.alignItems ?? "center"),
     })}
-    padding: ${(props) => `${props.padding || 0}px`};
-    margin: ${(props) => `${props.margin || 0}px`};
-    ${(props) => getCommonProps(props)}
+    ${(props) => getCommonProps(props)};
 `;
 
 const Grid = (props: GridProps) => {

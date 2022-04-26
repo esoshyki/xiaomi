@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components/macro";
-import LogoWhite from "../../assets/logoWhite";
 import { useAuth } from "../../hooks/useAuth";
 import { useMenu } from "../../hooks/useMenu";
 import Container from "../ui/Container";
@@ -9,17 +8,22 @@ import Typography from "../ui/Typography";
 import Login from "../Login";
 
 const MenuWrapper = styled.div<{ visible: boolean }>`
-    width: 100%;
-    height: 100%;
-    max-width: 360px;
+    width: ${props => props.visible ? "100vh" : "0"};
+    height: ${props => props.visible ? "100vh" : "0"};
+    border-radius: ${props => props.visible ? 0 : "50%"};
+    opacity: ${props => props.visible ? 1 : 0};
     position: absolute;
     z-index: 2;
-    background-color: rgba(0, 0, 0, 0.7);
-    left: ${(props) => (props.visible ? "0" : "-360px")};
-    transition: left 300ms ease-in;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+    left: ${(props) => (props.visible ? "0" : "-200vw")};
+    top: ${props => props.visible ? "0" : "-200vw"};
+    transition: top 200ms ease-in, left 200ms ease-in, opacity 200ms ease-in, width 200ms ease-in, height 200ms ease-in, border-radius 100ms ease-in;
     z-index: 3;
-    top: 0;
     padding-top: 10px;
+    @media screen and (max-width: 600px) {
+        left: ${(props) => (props.visible ? "0" : "-100%")};    
+
+    }
 `;
 
 const Close = styled.svg`
@@ -88,7 +92,7 @@ const Text = ({ children }: { children: ReactNode }) => {
 const Menu = () => {
     const { hideMenu, menuIsShown } = useMenu();
 
-    const { showLogin, showLoginForm, isAuth, login } = useAuth();
+    const { showLogin, showLoginForm, isAuth } = useAuth();
 
     const onLoginClick = () => {
         console.log(isAuth);
@@ -100,13 +104,10 @@ const Menu = () => {
     return (
         <MenuWrapper visible={menuIsShown}>
             <CloseButton onClick={hideMenu} />
-            <Container.Flex>
-                <LogoWhite />
-            </Container.Flex>
 
             {showLogin && <Login />}
 
-            <Container.Flex styles={{ width: "124px", marginTop: "60px" }}>
+            <Container.Flex styles={{ width: "124px", marginTop: "60px", marginLeft: "calc((100vw - 124px) / 2)" }}>
                 <MenuLink onClick={onLoginClick}>
                     <Icon name="user" />
                     <Text>{isAuth ? "Профиль" : "Войти"}</Text>

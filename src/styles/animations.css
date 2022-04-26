@@ -1,0 +1,44 @@
+@keyframes show {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes hide {
+    0% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scaleY(0);
+    }
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.rotation {
+    animation: rotation 500ms ease-in 0s infinite;
+}
+
+.hide {
+    animation: hide 200ms ease-in 0s;
+    opacity: 0;
+    height: 0;
+}
+
+.show {
+    animation: show 200ms ease-in 0s;
+    opacity: 1;
+    height: auto;
+}

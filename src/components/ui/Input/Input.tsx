@@ -9,6 +9,7 @@ type InputProps = Props<{
     label?: string;
     type?: InputTypes;
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+    onFocus?: () => void
     value?: string | number;
     error?: string;
     placeholder?: string
@@ -25,8 +26,6 @@ const InputWrapper = styled.input<InputProps>`
 
 const Wrapper = styled.div<InputProps>`
     position: relative;
-    margin: 20px;
-    padding: 10px 16px;
     width: ${props => props.fullWidth ? "100%" : "auto"};
     height: ${props => props.fullHeight ? "100%" : "auto"};;
     font-size: 16px;
@@ -40,7 +39,7 @@ const Wrapper = styled.div<InputProps>`
 `;
 
 const Input = (props: InputProps) => {
-    const { label, value, onChange } = props;
+    const { label, value, onChange, onFocus } = props;
 
     const theme = useTheme();
 
@@ -50,6 +49,7 @@ const Input = (props: InputProps) => {
                 {...props}
                 type={props.type ?? "text"}
                 onChange={onChange}
+                onFocus={onFocus}
                 value={value}
                 placeholder={props.placeholder}
             ></InputWrapper>

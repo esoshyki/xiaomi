@@ -1,5 +1,8 @@
+import { GridProps } from './ui/Container/Grid';
 import * as CSS from 'csstype';
 import { ReactNode } from 'react';
+import { FlexProps } from './ui/Container/Flex';
+import { Animations } from '../theme/animations';
 
 export const breakpoints = {
     xl: 1536,
@@ -18,6 +21,9 @@ export type Props<T> = {
     breakpoints?: {
         [k: number] : CSS.Properties
     }
+    animate?: Animations,
+    isHidden?: true
+    onAnimationEnd?: () => void
 } & T
 
 export type Justifies = "start" | "end" | "center" | "around" | "between"
@@ -32,4 +38,24 @@ export const getCommonProps = (props: Props<any>) => {
     };
 
     return obj
+};
+
+export const collectGap = (props: GridProps | FlexProps) => {
+    return ({
+        "& > *" : {
+            margin: props.gap ? `${props.gap}px` : undefined,
+            marginTop: props.verticalGap ? `${props.verticalGap}px` : undefined,
+            marginBottom: props.verticalGap ? `${props.verticalGap}px` : undefined,
+            marginLeft: props.horizontalGap ? `${props.horizontalGap}px` : undefined,
+            marginRight: props.horizontalGap ? `${props.horizontalGap}px` : undefined,
+            "&:first-child": {
+                marginTop: props.verticalGap ? 0 : undefined,
+                marginLeft: props.horizontalGap ? 0 : undefined,
+            },
+            "&:last-child": {
+                marginBottom: props.verticalGap ? 0 : undefined,
+                marginRight: props.horizontalGap ? 0 : undefined,
+            }
+        }
+    })
 }

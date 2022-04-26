@@ -7,7 +7,7 @@ import { withLayout } from "../components/Layout/withLayout"
 const ThemePage = () => {
 
     return (
-        <Container.Flex fullWidth padding={30} >
+        <Container.Flex fullWidth >
             <Typography.Title>Тема</Typography.Title>
             <Theme />
             

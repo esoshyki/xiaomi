@@ -8,6 +8,8 @@ import { CheckAuth, getUserData, resetCheckout } from "../../store/userSlice";
 import Container from "../ui/Container";
 import Background from "./Backgorund";
 import Menu from "./Menu";
+import Logo from "../../assets/logo";
+import { useMenu } from "../../hooks/useMenu";
 
 export const withLayout =
     <T extends object>(
@@ -44,10 +46,13 @@ export const withLayout =
             user.checkAuth.result,
         ]);
 
+        const { menuIsShown } = useMenu()
+
         return (
             <Container.Flex styles={{ position: "relative" }}>
                 <Background />
                 <Menu />
+                <Logo isWhite={menuIsShown} />
                 <Container.Flex fullHeight fullWidth styles={{ zIndex: "1"}}>
                     <Header />
                     <Main>

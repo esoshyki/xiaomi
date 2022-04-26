@@ -1,24 +1,22 @@
-import { Link } from "react-router-dom";
 import Container from "../ui/Container";
-import Logo from "../../assets/logo";
 import { useMenu } from "../../hooks/useMenu";
 import styled from "styled-components";
 import { Fragment } from "react";
 
 interface ButtonProps {
     onClick: () => void;
-};
+}
 
 const BurgerWrapper = styled.svg`
     width: 20px;
     height: 20px;
-    color: ${props => props.theme.colors.icon.default};
+    color: ${(props) => props.theme.colors.icon.default};
     transition: color 200ms ease-in;
     &:hover {
         cursor: pointer;
-        color: ${props => props.theme.colors.icon.secondary};
+        color: ${(props) => props.theme.colors.icon.secondary};
     }
-`
+`;
 
 const Burger = ({ onClick }: ButtonProps) => {
     return (
@@ -48,27 +46,23 @@ const ButtonContainer = styled.div`
 `;
 
 const Header = () => {
-    const { menuIsShown, showMenu } = useMenu();
+    const { showMenu } = useMenu();
 
     return (
+        <Fragment>
         <Container.Flex
             fullWidth
             styles={{
                 paddingTop: "11px",
-                height: "50px"
+                height: "50px",
             }}
         >
-            {!menuIsShown && (
-                <Fragment>
-                    <ButtonContainer>
-                        <Burger onClick={showMenu} />
-                    </ButtonContainer>
-                    <Link to={"/"}>
-                        <Logo />
-                    </Link>
-                </Fragment>
-            )}
+            <ButtonContainer>
+                <Burger onClick={showMenu} />
+            </ButtonContainer>
+
         </Container.Flex>
+        </Fragment>
     );
 };
 

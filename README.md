@@ -1,4 +1,4 @@
-### В проекте используется TypeScript
+if### В проекте используется TypeScript
 
 В этом ничего страшного нету, просто немного больше кода. Но это того стоит.
 
@@ -17,7 +17,7 @@
 
 `<Input styles={{ position: "relative" }} breakpoints={{ 600 : { position: "absolute" }}}/>`;
 
-Свойство ***media*** добавит к стилям `@media screen and (max-width: 600px) { position: absolute }`
+Свойство ***breakpoints*** добавит к стилям `@media screen and (max-width: 600px) { position: absolute }`
 
 ### Разработка
 

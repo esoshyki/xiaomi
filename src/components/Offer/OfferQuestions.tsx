@@ -5,7 +5,6 @@ import {
     QuestionGroup as QuestionGroupType,
 } from "../../store/offerSlice/types";
 import Button from "../ui/Button";
-import Card from "../ui/Card";
 import Container from "../ui/Container";
 import Typography from "../ui/Typography";
 
@@ -37,7 +36,7 @@ const Question = (props: QuestionType) => {
     }
 
     return (
-        <Card>
+        <Fragment>
             <Typography.Main>{questionName}</Typography.Main>
 
             {questionAnswers &&
@@ -48,7 +47,7 @@ const Question = (props: QuestionType) => {
                         </Button>
                     );
                 })}
-        </Card>
+        </Fragment>
     );
 };
 

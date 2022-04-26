@@ -16,6 +16,7 @@ interface ConfirmProps {
     onYes: () => void;
     onNo: () => void;
     styles?: CSS.Properties;
+    withWrapper?: true
 }
 
 const Confirm = (props: ConfirmProps) => {

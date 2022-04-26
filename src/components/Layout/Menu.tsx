@@ -92,7 +92,6 @@ const Menu = () => {
     const { showLogin, showLoginForm, isAuth } = useAuth();
 
     const onLoginClick = () => {
-        console.log(isAuth);
         if (!isAuth) {
             showLoginForm()
         }

@@ -12,6 +12,7 @@ export type GridProps = Props<{
     alignItems?: Aligns;
     justify?: Justifies;
     fullWidth?: true;
+    padding?: number
 }>;
 
 const GridContainer = styled.div<GridProps>`
@@ -26,6 +27,7 @@ const GridContainer = styled.div<GridProps>`
         alignItems: getGridAligns(props.alignItems ?? "center"),
     })}
     ${(props) => getCommonProps(props)};
+    ${props => ({padding: props.padding ? `${props.padding}px` : undefined})}
 `;
 
 const Grid = (props: GridProps) => {

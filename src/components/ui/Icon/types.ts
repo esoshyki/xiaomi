@@ -1,9 +1,12 @@
 import { Props } from "../../types";
 
-export type Icons = "telegram" | "loading" | "user"
+export type Icons = "telegram" | "loading" | "user" | "reports" | "help"
 
 export type IconProps = Props<{
     name: Icons,
+    width?: number
+    height?: number
+    color?: string
 }>
 
 export type SVGProps = Props<{

@@ -4,6 +4,9 @@ import { SVGProps } from "./types";
 
 
 const Wrapper = styled.svg<SVGProps>`
+    ${props => {
+        if (props.color) return { color: props.color}
+    }}
     ${(props) => getCommonProps(props)}
 `;
 

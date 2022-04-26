@@ -1,15 +1,21 @@
+import React, { ReactNode } from "react";
 import styled from "styled-components/macro";
 import LogoWhite from "../../assets/logoWhite";
+import { useAuth } from "../../hooks/useAuth";
 import { useMenu } from "../../hooks/useMenu";
 import Container from "../ui/Container";
+import Icon from "../ui/Icon";
+import Typography from "../ui/Typography";
+import Login from "../Login";
 
-const MenuWrapper = styled.div<{visible: boolean}>`
+const MenuWrapper = styled.div<{ visible: boolean }>`
     width: 100%;
     height: 100%;
+    max-width: 360px;
     position: absolute;
     z-index: 2;
     background-color: rgba(0, 0, 0, 0.7);
-    left: ${(props) => (props.visible ? "0" : "-100%")};
+    left: ${(props) => (props.visible ? "0" : "-360px")};
     transition: left 300ms ease-in;
     z-index: 3;
     top: 0;
@@ -21,10 +27,10 @@ const Close = styled.svg`
     top: 22px;
     left: 32px;
     transition: color 200ms ease-in;
-    color: ${props => props.theme.colors.icon.contrast};
+    color: ${(props) => props.theme.colors.icon.contrast};
     &:hover {
         cursor: pointer;
-        color: ${props => props.theme.colors.icon.secondary};
+        color: ${(props) => props.theme.colors.icon.secondary};
     }
 `;
 
@@ -48,17 +54,76 @@ const CloseButton = ({ onClick }: { onClick: () => void }) => {
     );
 };
 
+const MenuLink = styled.a`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin: 20px 0;
+    color: #ffffff;
+    transition: color 200ms ease-in;
+    &:hover {
+        cursor: pointer;
+        color: ${(props) => props.theme.colors.button.hover};
+        span {
+            color: ${(props) => props.theme.colors.button.hover};
+        }
+    }
+`;
+
+const Text = ({ children }: { children: ReactNode }) => {
+    return (
+        <Typography.Button
+            styles={{
+                color: "#fff",
+                marginLeft: "20px",
+                transition: "color 200ms ease-in",
+            }}
+        >
+            {children}
+        </Typography.Button>
+    );
+};
+
 const Menu = () => {
     const { hideMenu, menuIsShown } = useMenu();
 
+    const { showLogin, showLoginForm, isAuth, login } = useAuth();
+
+    const onLoginClick = () => {
+        console.log(isAuth);
+        if (!isAuth) {
+            showLoginForm()
+        }
+    }
+
     return (
         <MenuWrapper visible={menuIsShown}>
-                        <CloseButton onClick={hideMenu} />
+            <CloseButton onClick={hideMenu} />
             <Container.Flex>
                 <LogoWhite />
             </Container.Flex>
 
-        </MenuWrapper>);
+            {showLogin && <Login />}
+
+            <Container.Flex styles={{ width: "124px", marginTop: "60px" }}>
+                <MenuLink onClick={onLoginClick}>
+                    <Icon name="user" />
+                    <Text>{isAuth ? "Профиль" : "Войти"}</Text>
+                </MenuLink>
+
+                <MenuLink>
+                    <Icon name="reports" />
+                    <Text>Отчеты</Text>
+                </MenuLink>
+
+                <MenuLink>
+                    <Icon name="help" />
+                    <Text>Помощь</Text>
+                </MenuLink>
+            </Container.Flex>
+        </MenuWrapper>
+    );
 };
 
 export default Menu;

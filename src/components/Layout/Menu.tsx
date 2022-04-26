@@ -8,22 +8,19 @@ import Typography from "../ui/Typography";
 import Login from "../Login";
 
 const MenuWrapper = styled.div<{ visible: boolean }>`
-    width: ${props => props.visible ? "100vh" : "0"};
-    height: ${props => props.visible ? "100vh" : "0"};
+    width: ${props => props.visible ? "100%" : "0"};
+    height: ${props => props.visible ? "100%" : "0"};
+    min-height: 100vh;
     border-radius: ${props => props.visible ? 0 : "50%"};
     opacity: ${props => props.visible ? 1 : 0};
     position: absolute;
     z-index: 2;
     background: radial-gradient(circle, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
-    left: ${(props) => (props.visible ? "0" : "-200vw")};
-    top: ${props => props.visible ? "0" : "-200vw"};
+    left: ${(props) => (props.visible ? "0" : "-100%")};
+    top: ${props => props.visible ? "0" : "-100%"};
     transition: top 200ms ease-in, left 200ms ease-in, opacity 200ms ease-in, width 200ms ease-in, height 200ms ease-in, border-radius 100ms ease-in;
     z-index: 3;
     padding-top: 10px;
-    @media screen and (max-width: 600px) {
-        left: ${(props) => (props.visible ? "0" : "-100%")};    
-
-    }
 `;
 
 const Close = styled.svg`

@@ -26,13 +26,14 @@ const Offer = () => {
     };
 
     return (
-        <Container.Flex verticalGap={10} padding={20} fullHeight>
-            <Card
-                fullWidth
-                ref={hintRef}
-                isHidden={!hint || undefined}
-            >
-                <Container.Flex gap={5} padding={28} fullWidth>
+        <Container.Flex
+            verticalGap={10}
+            fullHeight
+            styles={{ maxWidth: "400px" }}
+            padding={28}
+        >
+            <Card fullWidth ref={hintRef} isHidden={!hint || undefined}>
+                <Container.Flex gap={5} fullWidth padding={28} >
                     <Info>
                         За 2 минуты рассчитайте скидку на покупку у 
                         <Typography.Link>партнёров</Typography.Link>, взамен
@@ -44,14 +45,10 @@ const Offer = () => {
                 </Container.Flex>
             </Card>
 
-            <Card fullWidth>
+            <Card fullWidth padding={28} >
+                <Container.Flex fullWidth verticalGap={10}>
                 {step !== OfferSteps.imei && <Progress />}
-                <Container.Flex
-                    fullHeight
-                    fullWidth
-                    styles={{ maxWidth: "700px", padding: "28px" }}
-                >
-                    {getContent()}
+                {getContent()}
                 </Container.Flex>
             </Card>
         </Container.Flex>

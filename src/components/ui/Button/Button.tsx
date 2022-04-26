@@ -35,6 +35,7 @@ const Root = styled.button<ButtonProps>`
             background: props.theme.colors.button.hover,
             borderColor: props.theme.colors.button.hover,
             color: props.theme.colors.button.contrast,
+            cursor: "pointer"
         },
         "&:active": {
             background: props.theme.colors.button.pressed,

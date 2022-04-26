@@ -57,6 +57,7 @@ const Login = () => {
             >
                 <Card
                     noShadow
+                    padding={20}
                     styles={{
                         width: "auto",
                         margin: "auto",
@@ -64,7 +65,7 @@ const Login = () => {
                     }}
                 >
                     <Container.Flex
-                        gap={10}
+                        verticalGap={10}
                         styles={{
                             width: "300px",
                             margin: "auto",

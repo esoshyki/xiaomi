@@ -4,6 +4,7 @@ import Confirm from "../ui/Confirm";
 import Container from "../ui/Container";
 import Typography from "../ui/Typography";
 import Image from "../ui/Image";
+import { Fragment } from "react";
 
 enum Content {
     isYourDevice = "Это ваше устройство?",
@@ -13,13 +14,7 @@ const OfferIsYourPhone = () => {
     const { phone, getQuestions, changeStep, errors, IMEI } = useOfferData();
 
     return (
-        <Container.Grid
-            fullWidth
-            fullHeight
-            rows="auto auto auto"
-            cols="1fr"
-            gap={10}
-        >
+        <Fragment>
             {phone && (
                 <Container.Flex fullWidth direction="row">
                     <Image
@@ -48,7 +43,7 @@ const OfferIsYourPhone = () => {
             {!!errors.length && (
                 <Typography.Error>{errors.join(". ")}</Typography.Error>
             )}
-        </Container.Grid>
+        </Fragment>
     );
 };
 

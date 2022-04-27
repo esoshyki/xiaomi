@@ -1,6 +1,6 @@
 import { select } from "../store/selector";
 import { useDispatch, useSelector } from "react-redux";
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useCallback, useEffect } from "react";
 import {
     CheckImei,
     GetQuestions,
@@ -9,6 +9,7 @@ import {
     giveAnswer,
     setImeiValue,
     setStep,
+    changeAnswer,
 } from "../store/offerSlice";
 import { GivenAnswer, OfferSteps } from "../store/offerSlice/types";
 
@@ -24,11 +25,11 @@ export const useOfferData = () => {
         dispatch(GetQuestions.request(phoneID));
     };
 
-    const changeStep = (step: OfferSteps) => {
+    const changeStep = useCallback((step: OfferSteps) => {
         dispatch(setStep(step));
-    };
+    }, [dispatch]);
 
-    const nextQuestion = () => {
+    const nextQuestion = useCallback(() => {
         const { currentQuestion, currentQuestionGroup, questions } = offer;
         if (
             typeof currentQuestion !== "number" ||
@@ -53,9 +54,10 @@ export const useOfferData = () => {
                 changeStep(OfferSteps.summary)
             }   
         }
-    };
+    }, [offer, changeStep, dispatch]);
 
     useEffect(() => {
+        if (offer.step !== OfferSteps.questions) return;
         const shouldDisplay = (
             displayConditionQuestion?: string,
             displayConditionAnswers?: string[]
@@ -83,7 +85,7 @@ export const useOfferData = () => {
                 }
             }
         }
-    }, [offer.currentQuestion, nextQuestion, offer])
+    }, [offer, nextQuestion])
 
       const _giveAnswer = (groupId: number, answer: GivenAnswer) => {
         dispatch(
@@ -94,6 +96,13 @@ export const useOfferData = () => {
         );
         nextQuestion();
     };
+
+    const _changeAnswer = (groupId: number, answer: GivenAnswer) => {
+        dispatch(changeAnswer({
+            answer,
+            groupId
+        }))
+    }
 
     const checkImei = (emai: string) => dispatch(CheckImei.request(emai));
 
@@ -115,6 +124,7 @@ export const useOfferData = () => {
         changeStep,
         nextQuestion,
         giveAnswer: _giveAnswer,
+        changeAnswer: _changeAnswer,
         progress,
     };
 };

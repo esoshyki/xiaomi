@@ -36,7 +36,7 @@ const Offer = () => {
             styles={{ maxWidth: "400px" }}
             padding={28}
         >
-            <Card fullWidth ref={hintRef} isHidden={!hint || undefined} >
+            {step === OfferSteps.imei && <Card fullWidth ref={hintRef} isHidden={!hint || undefined} >
                 <Container.Flex gap={5} fullWidth padding={28} >
                     <Info>
                         За 2 минуты рассчитайте скидку на покупку у 
@@ -47,7 +47,7 @@ const Offer = () => {
                         ПОДРОБНЕЕ
                     </Button>
                 </Container.Flex>
-            </Card>
+            </Card>}
 
             <Card fullWidth padding={28} >
                 <Container.Flex fullWidth verticalGap={10}>

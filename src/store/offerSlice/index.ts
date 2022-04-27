@@ -54,6 +54,17 @@ const offerSlice = createSlice({
             } else {
                 state.givenAnswers[groupId] = [answer]
             }
+        },
+        changeAnswer(state, { payload } : PayloadAction<{groupId: number, answer: GivenAnswer}>) {
+            const { groupId, answer } = payload;
+            if (state.givenAnswers[groupId]) {
+                const givenAnswerIdx = state.givenAnswers[groupId].findIndex(el => el.questionId === answer.questionId);
+                if (givenAnswerIdx >= 0) {
+                    state.givenAnswers[groupId][givenAnswerIdx] = answer
+                } else {
+                    state.givenAnswers[groupId].push(answer);
+                }
+            }
         }
     }, 
     extraReducers: {
@@ -106,7 +117,8 @@ export const {
     setStep,
     setCurrentQuestionGroup,
     setCurrentQuestion,
-    giveAnswer
+    giveAnswer,
+    changeAnswer
 } = offerSlice.actions
 
 export default offerSlice.reducer;

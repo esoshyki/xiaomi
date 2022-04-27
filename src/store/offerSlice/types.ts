@@ -1,12 +1,7 @@
 import { isString, isNumber } from './../types';
 import { N } from '../types';
-export enum OfferSteps {
-    imei = "Imei",
-    isYourPhone = "IsYourPhone",
-    questions = "Questions",
-    summary = "Summary",
-    CostConfirm = "CostConfirm"
-};
+
+export type OfferSteps = "imei" | "isYourPhone" | "questions" | "summary" | "cost-confirm" | "qr-code" | "photo-front" | "photo-back" | "pending" | "success"
 
 export type OfferError = {
 
@@ -75,7 +70,7 @@ export type OfferState = {
     currentQuestion: isNumber
     currentQuestionGroup: isNumber
     givenAnswers: {
-        [k: string] : GivenAnswer[]
+        [k: string]: GivenAnswer[]
     }
 }
 

@@ -1,6 +1,5 @@
 import { OfferStep } from ".";
 import { useOfferData } from "../../hooks/useOfferData";
-import { OfferSteps } from "../../store/offerSlice/types";
 import Container from "../ui/Container";
 import { Progress, Card, Info, Typography, Button } from "../ui";
 import { useRef, useState } from "react";
@@ -15,16 +14,20 @@ const Offer = () => {
 
     const getContent = () => {
         switch (step) {
-            case OfferSteps.imei:
+            case "imei":
                 return <OfferStep.Imei hint={hint} setHint={setHint} />;
-            case OfferSteps.isYourPhone:
+            case "isYourPhone":
                 return <OfferStep.IsYourPhone />;
-            case OfferSteps.questions:
+            case "questions":
                 return <OfferStep.Questions />;
-            case OfferSteps.summary:
+            case "summary":
                 return <OfferStep.Summary />
-            case OfferSteps.CostConfirm:
+            case "cost-confirm":
                 return <OfferStep.CostConfirm />
+            case "qr-code":
+                return <OfferStep.QR />
+            case "photo-front":
+                return <OfferStep.PhotoFront />
             default:
                 return null
         }
@@ -38,7 +41,7 @@ const Offer = () => {
             styles={{ maxWidth: "400px" }}
             padding={28}
         >
-            {step === OfferSteps.imei && <Card fullWidth ref={hintRef} isHidden={!hint || undefined} >
+            {step === "imei" && <Card fullWidth ref={hintRef} isHidden={!hint || undefined} >
                 <Container.Flex gap={5} fullWidth padding={28} >
                     <Info>
                         За 2 минуты рассчитайте скидку на покупку у 
@@ -53,7 +56,7 @@ const Offer = () => {
 
             <Card fullWidth padding={28} >
                 <Container.Flex fullWidth verticalGap={10}>
-                {step !== OfferSteps.imei && <Progress />}
+                {step !== "imei" && <Progress />}
                 {phone?.[0] && <OfferDevice phone={phone[0]} />}
                 {getContent()}
                 </Container.Flex>

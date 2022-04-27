@@ -4,6 +4,7 @@ import { IconProps } from './types';
 import UserIcon from './icons/user';
 import ReportsIcon from './icons/reports';
 import InfoIcon from './icons/info';
+import PhotoIcon from './icons/photo';
 
 const Icon = (props: IconProps) => {
 
@@ -20,6 +21,8 @@ const Icon = (props: IconProps) => {
             return <ReportsIcon {...props} />
         case "info":
             return <InfoIcon {...props} />
+        case "photo":
+            return <PhotoIcon {...props} />
      
     };
 }

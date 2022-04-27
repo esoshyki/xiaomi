@@ -41,7 +41,7 @@ export const useOfferData = () => {
         const currentGroup = questions[currentQuestionGroup];
 
         if (!currentGroup) {
-            changeStep(OfferSteps.summary)
+            changeStep("summary")
         }
 
         if (currentGroup.questions[currentQuestion + 1]) {
@@ -52,13 +52,13 @@ export const useOfferData = () => {
                     setCurrentQuestionGroup(currentQuestionGroup + 1)
                 );
             } else {
-                changeStep(OfferSteps.summary)
+                changeStep("summary")
             }   
         }
     }, [offer, changeStep, dispatch]);
 
     useEffect(() => {
-        if (offer.step !== OfferSteps.questions) return;
+        if (offer.step !== "questions") return;
         const shouldDisplay = (
             displayConditionQuestion?: string,
             displayConditionAnswers?: string[]

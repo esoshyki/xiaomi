@@ -1,6 +1,10 @@
+import { useOfferData } from "../../hooks/useOfferData";
 import { Button, Container, Typography } from "../ui";
 
 const OfferCostConfirm = () => {
+
+    const { changeStep } = useOfferData();
+
     return (
         <Container.Flex fullWidth alignItems="start">
             <Typography.Title>Подтвержение стоимости</Typography.Title>
@@ -18,6 +22,7 @@ const OfferCostConfirm = () => {
                     styles={{ maxWidth: "120px", height: "40px" }}
                     variant="outline"
                     fullWidth
+                    onClick={() => changeStep("photo-front")}
                 >
                     Нет
                 </Button>
@@ -25,6 +30,7 @@ const OfferCostConfirm = () => {
                     fullWidth
                     styles={{ maxWidth: "120px", height: "40px" }}
                     variant="outline"
+                    onClick={() => changeStep("qr-code")}
                 >
                     Да
                 </Button>

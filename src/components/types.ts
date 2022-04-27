@@ -17,6 +17,8 @@ export type Props<T> = {
     children?: ReactNode
     fullWidth?: true
     fullHeight?: true
+    padding?: number | string
+    margin?: number | string
     className?: string
     breakpoints?: {
         [k: number] : CSS.Properties
@@ -30,7 +32,28 @@ export type Justifies = "start" | "end" | "center" | "around" | "between"
 export type Aligns = "start" | "end" | "center";
 
 export const getCommonProps = (props: Props<any>) => {
+    const { padding, margin, fullWidth, fullHeight } = props;
     const obj = {...props.styles};
+    if (padding) {
+        if (typeof padding === "number") {
+            obj.padding = `${padding}px`
+        } else {
+            obj.padding = padding
+        }
+    }
+    if (margin) {
+        if (typeof margin === "number") {
+            obj.margin = `${margin}px`
+        } else {
+            obj.margin = margin
+        }
+    }
+    if (fullWidth) {
+        obj.width = "100%"
+    }
+    if (fullHeight) {
+        obj.height = "100%"
+    }
     if (props.breakpoints) {
         Object.entries(props.breakpoints).forEach(([media, styles]) => {
             obj[`@media screen and (max-width: ${media}px)`] = styles

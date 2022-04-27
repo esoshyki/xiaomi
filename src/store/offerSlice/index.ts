@@ -5,7 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
 
 const initialState: OfferState = {
-    step: OfferSteps.imei,
+    step: "imei",
     IMEI: "",
     result: null,
     loading: false,
@@ -36,7 +36,7 @@ const offerSlice = createSlice({
             state.loading = false;
             state.step = payload;
             switch (payload) {
-                case OfferSteps.imei:
+                case "imei":
                     state.IMEI = ""
             }
         },
@@ -81,7 +81,7 @@ const offerSlice = createSlice({
             state.result = "success"
             state.errors = []
             state.phone = payload
-            state.step = OfferSteps.isYourPhone
+            state.step = "isYourPhone"
         },
         [CheckImei.FULFILL](state) {
             state.loading = false
@@ -98,7 +98,7 @@ const offerSlice = createSlice({
             state.result = "success"
             state.errors = [];
             state.questions = payload;
-            state.step = OfferSteps.questions;
+            state.step = "questions";
             state.currentQuestion = 0;
             state.currentQuestionGroup = 0;
         },

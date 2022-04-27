@@ -2,7 +2,6 @@ import { useOfferData } from "../../hooks/useOfferData";
 import { Button, Container, Delete, Typography } from "../ui";
 import OfferQuestion from "./OfferQuestion";
 import { memo, useState } from "react";
-import { OfferSteps } from "../../store/offerSlice/types";
 
 const OfferSummary = () => {
     const { givenAnswers, questions, restoreOffer, changeStep } = useOfferData();
@@ -45,7 +44,7 @@ const OfferSummary = () => {
         );
 
     const nextStep = () => {
-        changeStep(OfferSteps.CostConfirm)
+        changeStep("cost-confirm")
     }
 
     return (

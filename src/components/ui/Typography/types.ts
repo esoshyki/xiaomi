@@ -9,6 +9,7 @@ export type TextProps = {
   className?: string
   textAlign?: "center" | "ent" | "start"
   onClick?: () => void
+  start?: true
 }
 
 export interface TypographyProps extends TextProps {

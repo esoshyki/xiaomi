@@ -6,8 +6,7 @@ const OfferPhotoFront = () => {
             <Typography.Title>Фото 1 из 2</Typography.Title>
 
             <Typography.Main start>
-                Сделайте фото лицевой стороны с включённым экраном
-                и отображением IMEI, для этого наберите USSD-команду *#06#
+                {"Сделайте фото лицевой стороны с включённым экраном и отображением IMEI, для этого наберите USSD-команду *#06# "}
                 <Typography.Link href="#">Пример фото</Typography.Link>
             </Typography.Main>
 

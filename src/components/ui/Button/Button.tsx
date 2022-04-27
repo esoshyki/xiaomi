@@ -35,8 +35,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props: ButtonProps, r
 
     return (
         <Root ref={ref ?? buttonRef} {...props} type={props.sumbit ? "submit" : "button"}>
-            {withLoader && pending && <Icon name="loading" />}
-            {icon && !(withLoader && pending) && <Icon name={icon} />}
+            {withLoader && pending && <Icon name="loading" styles={{marginRight: "10px"}}/>}
+            {icon && !(withLoader && pending) && <Icon name={icon} styles={{marginRight: "10px"}}/>}
             {!!children && children}
         </Root>
     );

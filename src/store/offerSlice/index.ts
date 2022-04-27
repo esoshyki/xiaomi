@@ -17,7 +17,9 @@ const initialState: OfferState = {
     hint: "",
     currentQuestion: null,
     currentQuestionGroup: null,
-    givenAnswers: {}
+    givenAnswers: {},
+    photoFront: null,
+    photoBack: null,
 }
 
 export const CheckImei = createRoutine("offer/Check-Imei");
@@ -66,7 +68,15 @@ const offerSlice = createSlice({
                 }
             }
         },
-        restoreOffer: () => ({...initialState})
+        restoreOffer: () => ({...initialState}),
+        setPhotoFront(state, { payload } : PayloadAction<string | null>) {
+            state.photoFront = payload;
+            state.step = "photo-back"
+        },
+        setPhotoBack(state, { payload } : PayloadAction<string | null>) {
+            state.photoBack = payload;
+            state.step = "pending"
+        }
     }, 
     extraReducers: {
         [CheckImei.REQUEST](state) {
@@ -120,7 +130,9 @@ export const {
     setCurrentQuestion,
     giveAnswer,
     changeAnswer,
-    restoreOffer
+    restoreOffer,
+    setPhotoFront,
+    setPhotoBack
 } = offerSlice.actions
 
 export default offerSlice.reducer;

@@ -4,6 +4,7 @@ import Container from "../ui/Container";
 import { Progress, Card, Info, Typography, Button } from "../ui";
 import { useRef, useState } from "react";
 import OfferDevice from "./OfferDevice";
+import AddNewDevice from "../AddNewDevice";
 
 const Offer = () => {
     const { step, phone } = useOfferData();
@@ -28,6 +29,10 @@ const Offer = () => {
                 return <OfferStep.QR />
             case "photo-front":
                 return <OfferStep.PhotoFront />
+            case "photo-back":
+                return <OfferStep.PhotoBack />
+            case "pending":
+                return <OfferStep.Pending />
             default:
                 return null
         }
@@ -61,6 +66,8 @@ const Offer = () => {
                 {getContent()}
                 </Container.Flex>
             </Card>
+
+            {step === "pending" && <AddNewDevice />}
         </Container.Flex>
     );
 };

@@ -23,6 +23,9 @@ export type Props<T> = {
     breakpoints?: {
         [k: number] : CSS.Properties
     }
+    hoverStyles?: CSS.Properties
+    activeStyles?: CSS.Properties
+    focusStyles?: CSS.Properties
     animate?: Animations,
     isHidden?: true
     onAnimationEnd?: () => void
@@ -34,14 +37,14 @@ export type Aligns = "start" | "end" | "center";
 export const getCommonProps = (props: Props<any>) => {
     const { padding, margin, fullWidth, fullHeight } = props;
     const obj = {...props.styles};
-    if (padding) {
+    if (typeof padding !== "undefined") {
         if (typeof padding === "number") {
             obj.padding = `${padding}px`
         } else {
             obj.padding = padding
         }
     }
-    if (margin) {
+    if (typeof margin !== "undefined") {
         if (typeof margin === "number") {
             obj.margin = `${margin}px`
         } else {
@@ -59,6 +62,15 @@ export const getCommonProps = (props: Props<any>) => {
             obj[`@media screen and (max-width: ${media}px)`] = styles
         })
     };
+    if (props.hoverStyles) {
+        obj["&:hover"] = props.hoverStyles
+    };
+    if (props.activeStyles) {
+        obj["&:active"] = props.activeStyles
+    };
+    if (props.focusStyles) {
+        obj["&:focus"] = props.focusStyles
+    }
 
     return obj
 };

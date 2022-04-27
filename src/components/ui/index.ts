@@ -7,4 +7,5 @@ export { default as Button } from './Button'
 export { default as Image } from './Image'
 export { default as Delete } from './Delete'
 export { default as Overlay } from './Overlay'
-export { Box } from './Box/Box'
+export { Box } from './Box/Box';
+export { Img } from './Progress/Progress'

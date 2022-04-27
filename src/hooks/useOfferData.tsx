@@ -11,6 +11,8 @@ import {
     setStep,
     changeAnswer,
     restoreOffer,
+    setPhotoFront,
+    setPhotoBack,
 } from "../store/offerSlice";
 import { GivenAnswer, OfferSteps } from "../store/offerSlice/types";
 
@@ -106,8 +108,11 @@ export const useOfferData = () => {
     }
 
     const _restoreOffer = () => {
-        console.log(`restoreOffer`)
         dispatch(restoreOffer())
+    };
+
+    const setPhoto = (type: "front" | "back", imageURL: string) => {
+        dispatch(type === "front" ? setPhotoFront(imageURL) : setPhotoBack(imageURL))
     }
 
     const checkImei = (emai: string) => dispatch(CheckImei.request(emai));
@@ -133,5 +138,6 @@ export const useOfferData = () => {
         changeAnswer: _changeAnswer,
         restoreOffer: _restoreOffer,
         progress,
+        setPhoto
     };
 };

@@ -1,6 +1,8 @@
 import OfferCostConfirm from './OfferCostConfirm'
 import OfferImei from './OfferImei'
 import OfferIsYourPhone from './OfferIsYourPhone'
+import OfferPending from './OfferPending'
+import OfferPhotoBack from './OfferPhotoBack'
 import OfferPhotoFront from './OfferPhotoFront'
 import OfferQR from './OfferQR'
 import OfferQuestions from './OfferQuestions'
@@ -13,7 +15,9 @@ export const OfferStep = {
     Summary: OfferSummary,
     CostConfirm: OfferCostConfirm,
     QR: OfferQR,
-    PhotoFront: OfferPhotoFront
+    PhotoFront: OfferPhotoFront,
+    PhotoBack: OfferPhotoBack,
+    Pending: OfferPending
 }
 
 export { default } from './Offer'

@@ -8,5 +8,6 @@ export const Tertiary = styled.span<TextProps>`
         ...props.theme.typography.small,
         color: props.theme.colors.text.tertiary,
         ...props.styles,
-    })}
+    })};
+    ${(props) => (props.color ? { color: props.color } : {})};
 `;

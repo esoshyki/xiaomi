@@ -5,7 +5,7 @@ import BranchPNG from '../../../assets/branch.png'
 import styled from 'styled-components/macro';
 import { useOfferData } from '../../../hooks/useOfferData';
 
-const Img = styled.div<{image: string}>`
+export const Img = styled.div<{image: string}>`
     width: 20px;
     height: 20px;
     background-image: ${props => `url(${props.image})`};

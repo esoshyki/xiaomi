@@ -72,5 +72,7 @@ export type OfferState = {
     givenAnswers: {
         [k: string]: GivenAnswer[]
     }
+    photoFront: isString
+    photoBack: isString
 }
 

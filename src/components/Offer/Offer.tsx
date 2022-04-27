@@ -23,6 +23,8 @@ const Offer = () => {
                 return <OfferStep.Questions />;
             case OfferSteps.summary:
                 return <OfferStep.Summary />
+            case OfferSteps.CostConfirm:
+                return <OfferStep.CostConfirm />
             default:
                 return null
         }

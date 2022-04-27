@@ -4,7 +4,8 @@ export enum OfferSteps {
     imei = "Imei",
     isYourPhone = "IsYourPhone",
     questions = "Questions",
-    summary = "Summary"
+    summary = "Summary",
+    CostConfirm = "CostConfirm"
 };
 
 export type OfferError = {

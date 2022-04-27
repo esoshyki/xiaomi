@@ -71,11 +71,11 @@ const OfferQuestion = (
                     questionAnswers.map((question) => {
                         return (
                             <Button
-                                onClick={() =>
+                                onClick={() => {
                                     onAnswer(
                                         question.answerId,
                                         question.answerName
-                                    )
+                                    )}
                                 }
                                 variant={isChosen(question.answerId) ? "primary" : "outline"}
                                 styles={{

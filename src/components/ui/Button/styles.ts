@@ -12,6 +12,7 @@ export const collectButtonStyles = (props: ButtonProps & { theme: DefaultTheme }
         align-items: center;
         padding: 10px;
         transition: background-color 200ms ease-in, padding-left 200ms ease-in;
+        border-radius: 12px;
         position: relative;
         outline: none;
         box-shadow: none;  

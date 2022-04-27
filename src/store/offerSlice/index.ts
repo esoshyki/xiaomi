@@ -25,7 +25,7 @@ export const GetQuestions = createRoutine("offer/Get-Questions");
 
 const offerSlice = createSlice({
     name: "offer",
-    initialState,
+    initialState: {...initialState},
     reducers: {
         setImeiValue(state, { payload } : PayloadAction<string>) {
             state.IMEI = payload
@@ -65,7 +65,8 @@ const offerSlice = createSlice({
                     state.givenAnswers[groupId].push(answer);
                 }
             }
-        }
+        },
+        restoreOffer: () => ({...initialState})
     }, 
     extraReducers: {
         [CheckImei.REQUEST](state) {
@@ -118,7 +119,8 @@ export const {
     setCurrentQuestionGroup,
     setCurrentQuestion,
     giveAnswer,
-    changeAnswer
+    changeAnswer,
+    restoreOffer
 } = offerSlice.actions
 
 export default offerSlice.reducer;

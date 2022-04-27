@@ -14,7 +14,6 @@ const MenuWrapper = styled.div<{ visible: boolean }>`
     border-radius: ${props => props.visible ? 0 : "50%"};
     opacity: ${props => props.visible ? 1 : 0};
     position: absolute;
-    z-index: 2;
     background: radial-gradient(circle, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
     left: ${(props) => (props.visible ? "0" : "-100%")};
     top: ${props => props.visible ? "0" : "-100%"};

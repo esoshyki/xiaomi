@@ -1,11 +1,14 @@
 import { useOfferData } from "../../hooks/useOfferData";
-import { Button, Container, Typography } from "../ui";
+import { Button, Container, Delete, Typography } from "../ui";
 import OfferQuestion from "./OfferQuestion";
-import { memo } from "react";
+import { memo, useState } from "react";
+import { OfferSteps } from "../../store/offerSlice/types";
 
 const OfferSummary = () => {
-    const { givenAnswers, questions } = useOfferData();
+    const { givenAnswers, questions, restoreOffer, changeStep } = useOfferData();
 
+    const [showDelete, setShowDelete] = useState(false);
+ 
     const shouldDisplay = (
         displayConditionQuestion?: string,
         displayConditionAnswers?: string[]
@@ -41,7 +44,9 @@ const OfferSummary = () => {
             )
         );
 
-    console.log(onlyQuestions);
+    const nextStep = () => {
+        changeStep(OfferSteps.CostConfirm)
+    }
 
     return (
         <Container.Flex>
@@ -66,14 +71,17 @@ const OfferSummary = () => {
                     <Button
                         variant="danger"
                         styles={{ width: "120px", height: "40px" }}
+                        onClick={() => setShowDelete(true)}
                     >
                         Отмена
                     </Button>
-                    <Button styles={{ width: "120px", height: "40px" }}>
+                    <Button styles={{ width: "120px", height: "40px" }} onClick={nextStep}>
                         Сохранить
                     </Button>
                 </Container.Flex>
             </Container.Flex>
+
+            {showDelete && <Delete onDelete={restoreOffer} onCancel={() => setShowDelete(false)}/>}
         </Container.Flex>
     );
 };

@@ -1,3 +1,4 @@
+import OfferCostConfirm from './OfferCostConfirm'
 import OfferImei from './OfferImei'
 import OfferIsYourPhone from './OfferIsYourPhone'
 import OfferQuestions from './OfferQuestions'
@@ -7,7 +8,8 @@ export const OfferStep = {
     Imei: OfferImei,
     IsYourPhone: OfferIsYourPhone,
     Questions: OfferQuestions,
-    Summary: OfferSummary
+    Summary: OfferSummary,
+    CostConfirm: OfferCostConfirm
 }
 
 export { default } from './Offer'

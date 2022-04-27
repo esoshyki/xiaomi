@@ -10,6 +10,7 @@ import {
     setImeiValue,
     setStep,
     changeAnswer,
+    restoreOffer,
 } from "../store/offerSlice";
 import { GivenAnswer, OfferSteps } from "../store/offerSlice/types";
 
@@ -104,6 +105,11 @@ export const useOfferData = () => {
         }))
     }
 
+    const _restoreOffer = () => {
+        console.log(`restoreOffer`)
+        dispatch(restoreOffer())
+    }
+
     const checkImei = (emai: string) => dispatch(CheckImei.request(emai));
 
     const progress =
@@ -125,6 +131,7 @@ export const useOfferData = () => {
         nextQuestion,
         giveAnswer: _giveAnswer,
         changeAnswer: _changeAnswer,
+        restoreOffer: _restoreOffer,
         progress,
     };
 };

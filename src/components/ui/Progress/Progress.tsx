@@ -38,8 +38,6 @@ const ProgressContent = styled.div<{ progress: number}>`
 const Progress = () => {
 
     const { progress } = useOfferData();
-
-    console.log(progress);
     
     return (
         <Container.Flex fullWidth>

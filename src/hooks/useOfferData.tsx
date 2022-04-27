@@ -1,6 +1,6 @@
 import { select } from "../store/selector";
 import { useDispatch, useSelector } from "react-redux";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 import {
     CheckImei,
     GetQuestions,
@@ -34,23 +34,58 @@ export const useOfferData = () => {
             typeof currentQuestion !== "number" ||
             typeof currentQuestionGroup !== "number" ||
             !questions
-        )
-            return;
+        ) return;
 
-        const currentGroup = questions[currentQuestion];
+        const currentGroup = questions[currentQuestionGroup];
+
+        if (!currentGroup) {
+            changeStep(OfferSteps.summary)
+        }
 
         if (currentGroup.questions[currentQuestion + 1]) {
             return dispatch(setCurrentQuestion(currentQuestion + 1));
         } else {
             if (questions[currentQuestionGroup + 1]) {
-                return dispatch(
+                dispatch(
                     setCurrentQuestionGroup(currentQuestionGroup + 1)
                 );
-            }
+            } else {
+                changeStep(OfferSteps.summary)
+            }   
         }
     };
 
-    const _giveAnswer = (groupId: number, answer: GivenAnswer) => {
+    useEffect(() => {
+        const shouldDisplay = (
+            displayConditionQuestion?: string,
+            displayConditionAnswers?: string[]
+        ) => {
+            if (!displayConditionQuestion || !displayConditionAnswers) return true;
+            if (displayConditionAnswers && displayConditionQuestion) {
+                return Object.values(offer.givenAnswers).some((questions) =>
+                    questions.some(
+                        (question) =>
+                            question.questionId === displayConditionQuestion &&
+                            displayConditionAnswers.includes(question.answerId)
+                    )
+                );
+            }
+        };
+
+        const { questions, currentQuestion, currentQuestionGroup } = offer;
+        if (currentQuestionGroup && currentQuestion) {
+            if (questions) {
+                const question = questions[currentQuestionGroup].questions[currentQuestion];
+                const { displayConditionAnswers, displayConditionQuestion } = question
+
+                if (!shouldDisplay(displayConditionQuestion, displayConditionAnswers)) {
+                    nextQuestion()
+                }
+            }
+        }
+    }, [offer.currentQuestion, nextQuestion, offer])
+
+      const _giveAnswer = (groupId: number, answer: GivenAnswer) => {
         dispatch(
             giveAnswer({
                 answer,

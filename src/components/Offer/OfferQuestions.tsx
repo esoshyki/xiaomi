@@ -40,13 +40,13 @@ const Question = (
         }
     };
 
-    const onAnswer = (answerId: string) => {
-        console.log(groupId);
+    const onAnswer = (answerId: string, answerName: string) => {
         if (typeof groupId === "number") {
             giveAnswer(groupId, {
                 questionCode,
                 questionId,
                 answerId,
+                answerName,
                 groupShortName: groupShortName || "",
             });
         }
@@ -61,7 +61,12 @@ const Question = (
                     questionAnswers.map((question) => {
                         return (
                             <Button
-                                onClick={() => onAnswer(question.answerId)}
+                                onClick={() =>
+                                    onAnswer(
+                                        question.answerId,
+                                        question.answerName
+                                    )
+                                }
                                 variant="outline"
                                 styles={{
                                     width: "120px",
@@ -82,25 +87,21 @@ const QuestionGroup = (props: QuestionGroupType & { groupId: number }) => {
 
     const { currentQuestion } = useOfferData();
 
-    const slice =
-        typeof currentQuestion === "number"
-            ? questions.slice(0, currentQuestion + 1)
-            : null;
+    const question =
+        typeof currentQuestion === "number" ? questions[currentQuestion] : null;
 
     return (
         <Container.Flex fullHeight fullWidth>
             <Typography.Main>{groupName || ""}</Typography.Main>
-
-            {slice &&
-                slice.map((question, key) => (
-                    <Fragment key={"question" + key}>
-                        <Question
-                            {...question}
-                            groupShortName={groupShortName}
-                            groupId={groupId}
-                        />
-                    </Fragment>
-                ))}
+            <Fragment>
+                {!!question && (
+                    <Question
+                        {...question}
+                        groupShortName={groupShortName}
+                        groupId={groupId}
+                    />
+                )}
+            </Fragment>
         </Container.Flex>
     );
 };

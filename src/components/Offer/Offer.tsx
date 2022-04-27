@@ -21,8 +21,10 @@ const Offer = () => {
                 return <OfferStep.IsYourPhone />;
             case OfferSteps.questions:
                 return <OfferStep.Questions />;
+            case OfferSteps.summary:
+                return <OfferStep.Summary />
             default:
-                return <OfferStep.Imei hint={hint} setHint={setHint} />;
+                return null
         }
     };
 

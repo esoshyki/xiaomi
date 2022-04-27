@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { getCommonProps, Props } from "../../types";
 import Icon from "../Icon";
 import { Icons } from "../Icon/types";
+import { media } from '../../../theme/media'
 
 type ButtonVariants = "primary" | "disabled" | "outline";
 
@@ -44,6 +45,9 @@ const Root = styled.button<ButtonProps>`
         },
     })}
     ${(props) => getCommonProps(props)}
+    @media ${media.mobile} {
+        
+    }
 `;
 
 type ButtonProps = Props<{

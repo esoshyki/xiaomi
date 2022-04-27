@@ -3,7 +3,8 @@ import { N } from '../types';
 export enum OfferSteps {
     imei = "Imei",
     isYourPhone = "IsYourPhone",
-    questions = "Questions"
+    questions = "Questions",
+    summary = "Summary"
 };
 
 export type OfferError = {
@@ -41,6 +42,8 @@ export type Question = {
     questionName: string
     questionCode: string
     questionHelp: string
+    displayConditionQuestion?: string
+    displayConditionAnswers?: string[]
 }
 
 export type QuestionGroup = {
@@ -52,6 +55,7 @@ export type QuestionGroup = {
 export type GivenAnswer = {
     questionId: string
     answerId: string
+    answerName: string
     questionCode: string
     groupShortName: string
 }

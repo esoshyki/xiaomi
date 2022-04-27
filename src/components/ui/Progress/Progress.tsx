@@ -41,7 +41,7 @@ const Progress = () => {
     
     return (
         <Container.Flex fullWidth>
-            <Container.Flex justify='between' direction='row' fullWidth>
+            <Container.Flex justify='between' direction='row' fullWidth margin={"0 0 10px"}>
                 <Img image={RostokPNG} />
                 <Img image={BranchPNG} />
                 <Img image={TreePNG} />                

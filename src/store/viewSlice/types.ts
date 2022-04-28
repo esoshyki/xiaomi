@@ -1,3 +1,5 @@
 export type ViewState = {
-    showMenu: boolean
+    showMenu: boolean,
+    animationOpen: boolean,
+    animationClose: boolean
 }

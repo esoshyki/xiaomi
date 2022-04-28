@@ -27,6 +27,17 @@
     }
 }
 
+@keyframes menuAppearance {
+    0% {
+        width: 30vw;
+        height: 30vw;
+    }
+    100% {
+        width: 300vw;
+        height: 300vh;
+    }
+}
+
 .rotation {
     animation: rotation 500ms ease-in 0s infinite;
 }

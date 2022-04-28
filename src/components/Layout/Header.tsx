@@ -46,7 +46,7 @@ const ButtonContainer = styled.div`
 `;
 
 const Header = () => {
-    const { showMenu } = useMenu();
+    const { showMenu, menuIsShown } = useMenu();
 
     return (
         <Fragment>
@@ -58,7 +58,7 @@ const Header = () => {
             }}
         >
             <ButtonContainer>
-                <Burger onClick={showMenu} />
+                {!menuIsShown && <Burger onClick={showMenu} /> }
             </ButtonContainer>
 
         </Container.Flex>

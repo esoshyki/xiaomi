@@ -1,9 +1,23 @@
 import { Container, Img, Typography } from "../ui";
 import DonePNG from "../../assets/done.png";
 import { useTheme } from "styled-components";
+import { useEffect, useState } from "react";
 
 const OfferPending = () => {
     const theme = useTheme();
+    const [points, setPoints] = useState("");
+
+    useEffect(() => {
+        const tick = () => {
+                if (points.length < 3) {
+                    setPoints(points + ".")
+                } else {
+                    setPoints("")
+                }
+        }
+
+        window.setTimeout(tick, 500)
+    }, [points])
 
     return (
         <Container.Flex fullWidth alignItems="start">
@@ -24,8 +38,8 @@ const OfferPending = () => {
                 проверки не превышает 5 минут
             </Typography.Main>
 
-            <Typography.Title styles={{alignSelf: "center"}} color={theme.colors.info.error}>
-                Ожидайте пожалуйста
+            <Typography.Title fullWidth start styles={{alignSelf: "center", marginLeft: "calc(100% - 400px / 2)"}} color={theme.colors.info.error}>
+                Ожидайте пожалуйста{points}
             </Typography.Title>
         </Container.Flex>
     );

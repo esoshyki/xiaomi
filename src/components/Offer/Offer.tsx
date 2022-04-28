@@ -2,7 +2,7 @@ import { OfferStep } from ".";
 import { useOfferData } from "../../hooks/useOfferData";
 import Container from "../ui/Container";
 import { Progress, Card, Info, Typography, Button } from "../ui";
-import { useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 import OfferDevice from "./OfferDevice";
 import AddNewDevice from "../AddNewDevice";
 
@@ -33,6 +33,8 @@ const Offer = () => {
                 return <OfferStep.PhotoBack />
             case "pending":
                 return <OfferStep.Pending />
+            case "preliminary":
+                return <OfferStep.Preliminary />
             default:
                 return null
         }
@@ -43,7 +45,7 @@ const Offer = () => {
             verticalGap={10}
             fullWidth
             fullHeight
-            styles={{ maxWidth: "400px" }}
+            styles={{ maxWidth: "400px", transition: "all 200ms ease-in" }}
             padding={28}
         >
             {step === "imei" && <Card fullWidth ref={hintRef} isHidden={!hint || undefined} >
@@ -72,4 +74,4 @@ const Offer = () => {
     );
 };
 
-export default Offer;
+export default memo(Offer);

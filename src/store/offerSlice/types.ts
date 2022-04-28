@@ -1,7 +1,18 @@
 import { isString, isNumber } from './../types';
 import { N } from '../types';
 
-export type OfferSteps = "imei" | "isYourPhone" | "questions" | "summary" | "cost-confirm" | "qr-code" | "photo-front" | "photo-back" | "pending" | "success"
+export type OfferSteps = 
+     | "imei" 
+     | "isYourPhone" 
+     | "questions" 
+     | "summary" 
+     | "cost-confirm" 
+     | "qr-code" 
+     | "photo-front" 
+     | "photo-back" 
+     | "pending" 
+     | "success"
+     | "preliminary"
 
 export type OfferError = {
 

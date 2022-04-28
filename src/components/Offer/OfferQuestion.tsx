@@ -81,6 +81,7 @@ const OfferQuestion = (
                                 styles={{
                                     width: "120px",
                                     height: "40px",
+                                    maxWidth: `calc(100% / ${questionAnswers.length === 1 ? 1 : 2} - 20px)`
                                 }}
                             >
                                 {filterAnswerName(question.answerName)}

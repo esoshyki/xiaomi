@@ -48,7 +48,7 @@ const OfferSummary = () => {
     }
 
     return (
-        <Container.Flex>
+        <Container.Flex fullWidth>
             {onlyQuestions.map((question) => (
                 <OfferQuestion
                     {...question}

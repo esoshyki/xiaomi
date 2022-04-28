@@ -43,7 +43,7 @@ export const useOfferData = () => {
         const currentGroup = questions[currentQuestionGroup];
 
         if (!currentGroup) {
-            changeStep("summary")
+            changeStep("preliminary")
         }
 
         if (currentGroup.questions[currentQuestion + 1]) {
@@ -54,7 +54,7 @@ export const useOfferData = () => {
                     setCurrentQuestionGroup(currentQuestionGroup + 1)
                 );
             } else {
-                changeStep("summary")
+                changeStep("preliminary")
             }   
         }
     }, [offer, changeStep, dispatch]);

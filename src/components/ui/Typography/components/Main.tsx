@@ -9,6 +9,6 @@ export const Main = styled.p<TextProps>`
         ...props.theme.typography.main,
         ...props.styles,
     })};
-    ${(props => getCommonProps(props))};
+    ${(props) => getCommonProps(props)};
     ${(props) => (props.color ? { color: props.color } : {})};
 `;

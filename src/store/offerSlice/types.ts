@@ -1,10 +1,18 @@
 import { isString, isNumber } from './../types';
 import { N } from '../types';
-export enum OfferSteps {
-    imei = "Imei",
-    isYourPhone = "IsYourPhone",
-    questions = "Questions"
-};
+
+export type OfferSteps = 
+     | "imei" 
+     | "isYourPhone" 
+     | "questions" 
+     | "summary" 
+     | "cost-confirm" 
+     | "qr-code" 
+     | "photo-front" 
+     | "photo-back" 
+     | "pending" 
+     | "success"
+     | "preliminary"
 
 export type OfferError = {
 
@@ -41,6 +49,8 @@ export type Question = {
     questionName: string
     questionCode: string
     questionHelp: string
+    displayConditionQuestion?: string
+    displayConditionAnswers?: string[]
 }
 
 export type QuestionGroup = {
@@ -52,7 +62,9 @@ export type QuestionGroup = {
 export type GivenAnswer = {
     questionId: string
     answerId: string
+    answerName: string
     questionCode: string
+    groupShortName: string
 }
 
 export type OfferState = {
@@ -68,6 +80,10 @@ export type OfferState = {
     hint: string,
     currentQuestion: isNumber
     currentQuestionGroup: isNumber
-    givenAnswers: GivenAnswer[]
+    givenAnswers: {
+        [k: string]: GivenAnswer[]
+    }
+    photoFront: isString
+    photoBack: isString
 }
 

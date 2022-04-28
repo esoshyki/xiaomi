@@ -1,71 +1,93 @@
-import React from "react";
-import styled from "styled-components";
+import React, {
+    forwardRef,
+    Fragment,
+    MouseEvent,
+    useEffect,
+    useRef,
+    ChangeEvent
+} from "react";
+import { styled } from "../../../helpers/styled";
 import { getCommonProps, Props } from "../../types";
 import Icon from "../Icon";
 import { Icons } from "../Icon/types";
+import { collectButtonStyles } from "./styles";
 
-type ButtonVariants = "primary" | "disabled" | "outline";
+export type ButtonVariants = "primary" | "disabled" | "outline" | "danger";
 
 const Root = styled.button<ButtonProps>`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    transition: background-color 200ms ease-in, padding-left 200ms ease-in;
-    position: relative;
-    outline: none;
-    border-style: solid;
-    box-shadow: none;
-    ${(props) => ({
-        borderRadius: props.square ? "0" : "12px",
-        borderWidth: props.variant === "outline" ? "1px" : "0px",
-        width: props.fullWidth ? "100%" : "auto",
-        height: props.fullHeight ? "100%" : "auto",
-        backgroundColor:
-            props.variant === "outline"
-                ? "#fff"
-                : props.theme.colors.button.default,
-        color:
-            props.variant === "outline"
-                ? props.theme.colors.button.default
-                : props.theme.colors.button.contrast,
-        borderColor: props.theme.colors.button.default,
-        "&:hover": {
-            background: props.theme.colors.button.hover,
-            borderColor: props.theme.colors.button.hover,
-            color: props.theme.colors.button.contrast,
-            cursor: "pointer"
-        },
-        "&:active": {
-            background: props.theme.colors.button.pressed,
-            borderColor: props.theme.colors.button.pressed,
-            color: props.theme.colors.button.contrast,
-        },
-    })}
+    ${(props) => collectButtonStyles(props)}
     ${(props) => getCommonProps(props)}
 `;
 
-type ButtonProps = Props<{
-    onClick?: () => void;
+const Input = styled.input`
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+`
+
+export type ButtonProps = Props<{
+    onClick?: (event?: MouseEvent<HTMLButtonElement>) => void;
+    onFileInput?: (file: File) => void;
     variant?: ButtonVariants;
     withLoader?: true;
     pending?: boolean;
     icon?: Icons;
     square?: true;
     sumbit?: true;
+    fileInput?: true;
 }>;
 
-const Button = (props: ButtonProps) => {
-    const { children, withLoader, pending, icon } = props;
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+    (props: ButtonProps, ref) => {
+        const { children, withLoader, pending, icon, fileInput, onFileInput } = props;
 
-    return (
-        <Root {...props} type={props.sumbit ? "submit" : "button"}>
-            {withLoader && pending && <Icon name="loading" />}
-            {icon && !(withLoader && pending) && <Icon name={icon} />}
-            {!!children && children}
-        </Root>
-    );
-};
+        const buttonRef = useRef<HTMLButtonElement>(null);
+        const inputRef = useRef<HTMLInputElement>(null);
+
+        useEffect(() => {
+            if (buttonRef.current) {
+                buttonRef.current.blur();
+            }
+        });
+
+        const onClick = () => {
+            if (fileInput) {
+                if (inputRef.current) {
+                    inputRef.current.click()
+                }
+            };
+            props.onClick && props.onClick()
+        };
+
+        const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+            const file = e.target.files?.[0];
+            if (file) {
+                onFileInput && onFileInput(file)
+            }
+        }   
+
+        return (
+            <Fragment>
+                <Root
+                    ref={ref ?? buttonRef}
+                    {...props}
+                    onClick={onClick}
+                    type={props.sumbit ? "submit" : "button"}
+                >
+                    {withLoader && pending && (
+                        <Icon name="loading" styles={{ marginRight: "10px" }} />
+                    )}
+                    {icon && !(withLoader && pending) && (
+                        <Icon name={icon} styles={{ marginRight: "10px" }} />
+                    )}
+                    {!!children && children}
+                </Root>
+                {fileInput && <Input type="file" ref={inputRef} onChange={onChange} />}
+            </Fragment>
+        );
+    }
+);
 
 export default Button;

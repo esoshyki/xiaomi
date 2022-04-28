@@ -1,12 +1,13 @@
 import { OfferStep } from ".";
 import { useOfferData } from "../../hooks/useOfferData";
-import { OfferSteps } from "../../store/offerSlice/types";
 import Container from "../ui/Container";
 import { Progress, Card, Info, Typography, Button } from "../ui";
-import { useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
+import OfferDevice from "./OfferDevice";
+import AddNewDevice from "../AddNewDevice";
 
 const Offer = () => {
-    const { step } = useOfferData();
+    const { step, phone } = useOfferData();
 
     const [hint, setHint] = useState(true);
 
@@ -14,14 +15,28 @@ const Offer = () => {
 
     const getContent = () => {
         switch (step) {
-            case OfferSteps.imei:
+            case "imei":
                 return <OfferStep.Imei hint={hint} setHint={setHint} />;
-            case OfferSteps.isYourPhone:
+            case "isYourPhone":
                 return <OfferStep.IsYourPhone />;
-            case OfferSteps.questions:
+            case "questions":
                 return <OfferStep.Questions />;
+            case "summary":
+                return <OfferStep.Summary />
+            case "cost-confirm":
+                return <OfferStep.CostConfirm />
+            case "qr-code":
+                return <OfferStep.QR />
+            case "photo-front":
+                return <OfferStep.PhotoFront />
+            case "photo-back":
+                return <OfferStep.PhotoBack />
+            case "pending":
+                return <OfferStep.Pending />
+            case "preliminary":
+                return <OfferStep.Preliminary />
             default:
-                return <OfferStep.Imei hint={hint} setHint={setHint} />;
+                return null
         }
     };
 
@@ -30,10 +45,10 @@ const Offer = () => {
             verticalGap={10}
             fullWidth
             fullHeight
-            styles={{ maxWidth: "400px" }}
+            styles={{ maxWidth: "400px", transition: "all 200ms ease-in" }}
             padding={28}
         >
-            <Card fullWidth ref={hintRef} isHidden={!hint || undefined} >
+            {step === "imei" && <Card fullWidth ref={hintRef} isHidden={!hint || undefined} >
                 <Container.Flex gap={5} fullWidth padding={28} >
                     <Info>
                         За 2 минуты рассчитайте скидку на покупку у 
@@ -44,16 +59,19 @@ const Offer = () => {
                         ПОДРОБНЕЕ
                     </Button>
                 </Container.Flex>
-            </Card>
+            </Card>}
 
             <Card fullWidth padding={28} >
                 <Container.Flex fullWidth verticalGap={10}>
-                {step !== OfferSteps.imei && <Progress />}
+                {step !== "imei" && <Progress />}
+                {phone?.[0] && <OfferDevice phone={phone[0]} />}
                 {getContent()}
                 </Container.Flex>
             </Card>
+
+            {step === "pending" && <AddNewDevice />}
         </Container.Flex>
     );
 };
 
-export default Offer;
+export default memo(Offer);

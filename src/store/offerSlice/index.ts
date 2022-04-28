@@ -5,7 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
 
 const initialState: OfferState = {
-    step: OfferSteps.imei,
+    step: "imei",
     IMEI: "",
     result: null,
     loading: false,
@@ -17,7 +17,9 @@ const initialState: OfferState = {
     hint: "",
     currentQuestion: null,
     currentQuestionGroup: null,
-    givenAnswers: []
+    givenAnswers: {},
+    photoFront: null,
+    photoBack: null,
 }
 
 export const CheckImei = createRoutine("offer/Check-Imei");
@@ -25,7 +27,7 @@ export const GetQuestions = createRoutine("offer/Get-Questions");
 
 const offerSlice = createSlice({
     name: "offer",
-    initialState,
+    initialState: {...initialState},
     reducers: {
         setImeiValue(state, { payload } : PayloadAction<string>) {
             state.IMEI = payload
@@ -36,7 +38,7 @@ const offerSlice = createSlice({
             state.loading = false;
             state.step = payload;
             switch (payload) {
-                case OfferSteps.imei:
+                case "imei":
                     state.IMEI = ""
             }
         },
@@ -47,8 +49,33 @@ const offerSlice = createSlice({
         setCurrentQuestion(state, { payload } : PayloadAction<number>) {
             state.currentQuestion = payload
         },
-        setGivenAnswers(state, { payload } : PayloadAction<GivenAnswer[]>) {
-            state.givenAnswers = payload
+        giveAnswer(state, { payload } : PayloadAction<{groupId: number, answer: GivenAnswer}>) {
+            const { groupId, answer } = payload;
+            if (state.givenAnswers[groupId]) {
+                state.givenAnswers[groupId].push(answer)
+            } else {
+                state.givenAnswers[groupId] = [answer]
+            }
+        },
+        changeAnswer(state, { payload } : PayloadAction<{groupId: number, answer: GivenAnswer}>) {
+            const { groupId, answer } = payload;
+            if (state.givenAnswers[groupId]) {
+                const givenAnswerIdx = state.givenAnswers[groupId].findIndex(el => el.questionId === answer.questionId);
+                if (givenAnswerIdx >= 0) {
+                    state.givenAnswers[groupId][givenAnswerIdx] = answer
+                } else {
+                    state.givenAnswers[groupId].push(answer);
+                }
+            }
+        },
+        restoreOffer: () => ({...initialState}),
+        setPhotoFront(state, { payload } : PayloadAction<string | null>) {
+            state.photoFront = payload;
+            state.step = "photo-back"
+        },
+        setPhotoBack(state, { payload } : PayloadAction<string | null>) {
+            state.photoBack = payload;
+            state.step = "pending"
         }
     }, 
     extraReducers: {
@@ -64,7 +91,7 @@ const offerSlice = createSlice({
             state.result = "success"
             state.errors = []
             state.phone = payload
-            state.step = OfferSteps.isYourPhone
+            state.step = "isYourPhone"
         },
         [CheckImei.FULFILL](state) {
             state.loading = false
@@ -81,7 +108,7 @@ const offerSlice = createSlice({
             state.result = "success"
             state.errors = [];
             state.questions = payload;
-            state.step = OfferSteps.questions;
+            state.step = "questions";
             state.currentQuestion = 0;
             state.currentQuestionGroup = 0;
         },
@@ -101,7 +128,11 @@ export const {
     setStep,
     setCurrentQuestionGroup,
     setCurrentQuestion,
-    setGivenAnswers
+    giveAnswer,
+    changeAnswer,
+    restoreOffer,
+    setPhotoFront,
+    setPhotoBack
 } = offerSlice.actions
 
 export default offerSlice.reducer;

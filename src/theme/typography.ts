@@ -21,7 +21,7 @@ export type Typography = {
 }
 
 export const typography: Typography = {
-    fontFamily: "Inter",
+    fontFamily: "Inter, Arial, sans-serif",
     title: {
         fontSize: "17px",
         fontWeight: "600",

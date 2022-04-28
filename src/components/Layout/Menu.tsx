@@ -1,68 +1,48 @@
-import React, { ReactNode, useState } from "react";
-import styled, { keyframes, css } from "styled-components/macro";
+import React, { ReactNode } from "react";
+import styled from "styled-components/macro";
 import { useAuth } from "../../hooks/useAuth";
-import { useMenu } from "../../hooks/useMenu";
+import { useMenu, animateTime } from "../../hooks/useMenu";
 import Container from "../ui/Container";
 import Icon from "../ui/Icon";
 import Typography from "../ui/Typography";
 import Login from "../Login";
 
-const show = keyframes`
-    0% {
-        width: 0;
-        height: 0;
-    }
 
-    100% {
-        opacity: 1;
-        height: 120vh;
-        width: 120vh;
-    }
-`;
-
-const hide = keyframes`
-    0% {
-        opacity: 1;
-        height: 120vh;
-        width: 120vh;
-    }
-
-    100% {
-        width: 0;
-        height: 0;
-    }
-`;
-
-const MenuWrapper = styled.div<{ visible: boolean; hide: boolean }>`
-    display: ${(props) => (props.visible ? "block" : "none")};
-    width: ${(props) => (props.visible ? "100vh" : "0")};
-    height: ${(props) => (props.visible ? "100vh" : "0")};
-    top: 0;
+const MenuWrapper = styled.div<{ visible: boolean, animationOpen: boolean, animationClose: boolean }>`
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    display: ${props => props.visible ? "block" : "none"};
+    position: fixed;
     left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
     overflow: hidden;
-    border-bottom-right-radius: 50vh;
-    position: absolute;
-    background: radial-gradient(circle, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
-    backdrop-filter: blur(2px);
-    animation: ${(props) =>
-        props.hide
-            ? css`
-                  ${hide} 300ms ease-in 0s
-              `
-            : css`
-                  ${show} 200ms ease-in 0s
-              `};
-    transition: top 200ms ease-in, left 200ms ease-in, opacity 200ms ease-in,
-        width 200ms ease-in, height 200ms ease-in, border-radius 200ms ease-in;
     z-index: 3;
     padding-top: 10px;
+    &:before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1;
+        width: ${props => (props.animationOpen) ? "30vw" : "300vw"};
+        height: ${props => (props.animationOpen) ? "30vw" : "300vh"};
+		background: rgba(0, 0, 0, 0.7);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        content: "";
+        will-change: auto;
+		animation: ${props => (props.animationOpen) ? `menuAppearance ${animateTime}ms forwards`: (props.animationClose) ? `menuAppearance ${animateTime}ms reverse` : "none"};
+       
+    }
 `;
 
 const Close = styled.svg`
     position: absolute;
     top: 22px;
     left: 32px;
-    transition: color 200ms ease-in;
+    transition: color 200ms;
     color: ${(props) => props.theme.colors.icon.contrast};
     &:hover {
         cursor: pointer;
@@ -74,6 +54,7 @@ const CloseButton = ({ onClick }: { onClick: () => void }) => {
     return (
         <Close
             onClick={onClick}
+
             width="20"
             height="20"
             viewBox="0 0 20 20"
@@ -97,7 +78,7 @@ const MenuLink = styled.a`
     width: 100%;
     margin: 20px 0;
     color: #ffffff;
-    transition: color 200ms ease-in;
+    transition: color 200ms;
     &:hover {
         cursor: pointer;
         color: ${(props) => props.theme.colors.button.hover};
@@ -113,7 +94,7 @@ const Text = ({ children }: { children: ReactNode }) => {
             styles={{
                 color: "#fff",
                 marginLeft: "20px",
-                transition: "color 200ms ease-in",
+                transition: `color ${animateTime}ms`,
             }}
         >
             {children}
@@ -122,10 +103,7 @@ const Text = ({ children }: { children: ReactNode }) => {
 };
 
 const Menu = () => {
-    const { hideMenu, menuIsShown } = useMenu();
-
-    const [hide, setHide] = useState(false);
-
+    const { hideMenu, menuIsShown, animationOpen, animationClose } = useMenu();
     const { showLogin, showLoginForm, isAuth } = useAuth();
 
     const onLoginClick = () => {
@@ -135,47 +113,32 @@ const Menu = () => {
     };
 
     return (
-        <MenuWrapper visible={menuIsShown} hide={hide}>
-            <Container.Flex
-                styles={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100vw",
-                    height: "100vh",
-                }}
-                animate={{ keyframes: "show", duration: 300 }}
-            >
-                <CloseButton
-                    onClick={() => {
-                        hideMenu(() => setHide(false));
-                        setHide(true);
-                    }}
-                />
+        <MenuWrapper visible={menuIsShown} animationOpen={animationOpen} animationClose={animationClose}>
+            <CloseButton onClick={hideMenu} />
 
-                {showLogin && <Login />}
+            {showLogin && <Login />}
 
-                <Container.Flex
-                    styles={{
-                        width: "124px",
-                        marginTop: "60px",
-                    }}
-                >
-                    <MenuLink onClick={onLoginClick}>
-                        <Icon name="user" />
-                        <Text>{isAuth ? "Профиль" : "Войти"}</Text>
-                    </MenuLink>
+            <Container.Flex styles={{
+                width: "124px",
+                marginTop: "60px",
+                marginLeft: "calc((100vw - 124px) / 2)",
+                opacity: (menuIsShown) ? 1 : 0,
+                transition: (menuIsShown) ? `opacity ${animateTime / 2}s` : `opacity ${animateTime}ms`
+            }}>
+                <MenuLink onClick={onLoginClick}>
+                    <Icon name="user" />
+                    <Text>{isAuth ? "Профиль" : "Войти"}</Text>
+                </MenuLink>
 
-                    <MenuLink>
-                        <Icon name="reports" />
-                        <Text>Отчеты</Text>
-                    </MenuLink>
+                <MenuLink>
+                    <Icon name="reports" />
+                    <Text>Отчеты</Text>
+                </MenuLink>
 
-                    <MenuLink>
-                        <Icon name="help" />
-                        <Text>Помощь</Text>
-                    </MenuLink>
-                </Container.Flex>
+                <MenuLink>
+                    <Icon name="help" />
+                    <Text>Помощь</Text>
+                </MenuLink>
             </Container.Flex>
         </MenuWrapper>
     );

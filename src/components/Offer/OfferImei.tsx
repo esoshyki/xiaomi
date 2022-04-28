@@ -18,8 +18,8 @@ const OfferImei = ({ hint, setHint } : OfferImeiProps) => {
     const [IMEI, setImei] = useState("");
 
     return (
-        <Container.Flex verticalGap={10} fullWidth styles={{ transition: "all 500ms ease-in" }}> 
-            <Typography.Title textAlign="start" styles={{ width: "100%", margin: 0 }}>
+        <Container.Flex verticalGap={16} alignItems="stretch" fullWidth styles={{ transition: "all 500ms ease-in" }}>
+            <Typography.Title textAlign="start" styles={{ margin: "0 4px 8px" }}>
                 Я хочу сдать
             </Typography.Title>
 
@@ -29,11 +29,6 @@ const OfferImei = ({ hint, setHint } : OfferImeiProps) => {
                 placeholder="Укажите IMEI устройства"
                 onChange={(e) => setImei(e.target.value)}
                 onFocus={() => setHint(false)}
-                breakpoints={{
-                    600: {
-                        width: "100%",
-                    },
-                }}
             />
 
             {!hint && <Button

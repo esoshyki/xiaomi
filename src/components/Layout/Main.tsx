@@ -6,13 +6,13 @@ const Wrapper = styled.main`
     height: 100%;
     max-width: 1104px;
     margin: 0 auto;
-    transition: all 500ms ease-in;
+    /*transition: all 500ms ease-in;*/
 `
 
 const Main = ({ children } : { children: ReactNode}) => {
 
     return (
-        <Wrapper>{children}</Wrapper>
+        <Wrapper className="container">{children}</Wrapper>
     )
 };
 

@@ -2,6 +2,8 @@ import Container from "../ui/Container";
 import { useMenu } from "../../hooks/useMenu";
 import styled from "styled-components";
 import { Fragment } from "react";
+import Menu from "./Menu";
+import Logo from "../../assets/logo";
 
 interface ButtonProps {
     onClick: () => void;
@@ -38,31 +40,37 @@ const Burger = ({ onClick }: ButtonProps) => {
     );
 };
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled.button`
     position: absolute;
     left: 32px;
     top: 22px;
-    z-index: 4;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    border: none;
+    
 `;
 
 const Header = () => {
     const { showMenu, menuIsShown } = useMenu();
 
     return (
-        <Fragment>
-        <Container.Flex
-            fullWidth
-            styles={{
-                paddingTop: "11px",
-                height: "50px",
-            }}
-        >
-            <ButtonContainer>
-                {!menuIsShown && <Burger onClick={showMenu} /> }
-            </ButtonContainer>
-
-        </Container.Flex>
-        </Fragment>
+        <header className="container">
+            <Container.Flex
+                fullWidth
+                justify="center"
+                direction="row"
+                styles={{
+                    padding: "11px 8px 21px"
+                }}
+            >
+                <ButtonContainer type="button">
+                    {!menuIsShown && <Burger onClick={showMenu} /> }
+                </ButtonContainer>
+                <Menu />
+                <Logo isWhite={menuIsShown} />
+            </Container.Flex>
+        </header>
     );
 };
 

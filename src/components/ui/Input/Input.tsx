@@ -21,21 +21,20 @@ const InputWrapper = styled.input<InputProps>`
     border-radius: 12px;
     padding: 10px 20px;
     width: 100%;
-    height: 100%;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 20px;
+	color: ${props => props.theme.colors.text.default};
+	&::placeholder {
+		color: ${props => props.theme.colors.text.secondary}
+	}
+    
 `;
 
 const Wrapper = styled.div<InputProps>`
-    position: relative;
     width: ${props => props.fullWidth ? "100%" : "auto"};
-    height: ${props => props.fullHeight ? "100%" : "auto"};;
-    font-size: 16px;
-    font-weight: 400;
-    color: ${props => props.theme.colors.text.default};
-    border: none;
     ${props => getCommonProps(props)}
-    &::placeholder {
-        color: ${props => props.theme.colors.text.secondary}
-    }
+    
 `;
 
 const Input = (props: InputProps) => {

@@ -1,5 +1,6 @@
 import styled from "styled-components/macro";
 import { getFlexAligns, getFlexJustify } from "../../../helpers/getFlexProps";
+import { getAnimations } from "../../../theme/animations";
 import { Aligns, collectGap, getCommonProps, Justifies, Props } from "../../types";
 
 export type FlexProps = Props<{
@@ -26,7 +27,8 @@ const FlexContainer = styled.div<FlexProps>`
     align-items: ${(props) => getFlexAligns(props.alignItems || "center")};
     padding: ${props => props.padding ? `${props.padding}px` : 0};
     ${props => getCommonProps(props)};
-    ${props => collectGap(props)}
+    ${props => collectGap(props)};
+    ${props => getAnimations(props)};
 `;
 
 const Flex = (props: FlexProps) => {

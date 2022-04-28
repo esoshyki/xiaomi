@@ -11,8 +11,11 @@ export const useMenu = () => {
         dispatch(showMenu())
     };
 
-    const _hideMenu = () => {
-        dispatch(hideMenu())
+    const _hideMenu = (setHide?: () => void) => {
+        setTimeout(() => {
+            dispatch(hideMenu());
+            setHide && setHide()   
+        }, 300)
     }
 
     return ({

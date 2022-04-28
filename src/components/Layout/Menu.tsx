@@ -1,5 +1,5 @@
-import React, { ReactNode } from "react";
-import styled from "styled-components/macro";
+import React, { ReactNode, useState } from "react";
+import styled, { keyframes, css } from "styled-components/macro";
 import { useAuth } from "../../hooks/useAuth";
 import { useMenu } from "../../hooks/useMenu";
 import Container from "../ui/Container";
@@ -7,17 +7,53 @@ import Icon from "../ui/Icon";
 import Typography from "../ui/Typography";
 import Login from "../Login";
 
-const MenuWrapper = styled.div<{ visible: boolean }>`
-    width: ${props => props.visible ? "100%" : "0"};
-    height: ${props => props.visible ? "100%" : "0"};
-    min-height: 100vh;
-    border-radius: ${props => props.visible ? 0 : "50%"};
-    opacity: ${props => props.visible ? 1 : 0};
+const show = keyframes`
+    0% {
+        width: 0;
+        height: 0;
+    }
+
+    100% {
+        opacity: 1;
+        height: 120vh;
+        width: 120vh;
+    }
+`;
+
+const hide = keyframes`
+    0% {
+        opacity: 1;
+        height: 120vh;
+        width: 120vh;
+    }
+
+    100% {
+        width: 0;
+        height: 0;
+    }
+`;
+
+const MenuWrapper = styled.div<{ visible: boolean; hide: boolean }>`
+    display: ${(props) => (props.visible ? "block" : "none")};
+    width: ${(props) => (props.visible ? "100vh" : "0")};
+    height: ${(props) => (props.visible ? "100vh" : "0")};
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    border-bottom-right-radius: 50vh;
     position: absolute;
     background: radial-gradient(circle, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
-    left: ${(props) => (props.visible ? "0" : "-100%")};
-    top: ${props => props.visible ? "0" : "-100%"};
-    transition: top 200ms ease-in, left 200ms ease-in, opacity 200ms ease-in, width 200ms ease-in, height 200ms ease-in, border-radius 100ms ease-in;
+    backdrop-filter: blur(2px);
+    animation: ${(props) =>
+        props.hide
+            ? css`
+                  ${hide} 300ms ease-in 0s
+              `
+            : css`
+                  ${show} 200ms ease-in 0s
+              `};
+    transition: top 200ms ease-in, left 200ms ease-in, opacity 200ms ease-in,
+        width 200ms ease-in, height 200ms ease-in, border-radius 200ms ease-in;
     z-index: 3;
     padding-top: 10px;
 `;
@@ -88,35 +124,58 @@ const Text = ({ children }: { children: ReactNode }) => {
 const Menu = () => {
     const { hideMenu, menuIsShown } = useMenu();
 
+    const [hide, setHide] = useState(false);
+
     const { showLogin, showLoginForm, isAuth } = useAuth();
 
     const onLoginClick = () => {
         if (!isAuth) {
-            showLoginForm()
+            showLoginForm();
         }
-    }
+    };
 
     return (
-        <MenuWrapper visible={menuIsShown}>
-            <CloseButton onClick={hideMenu} />
+        <MenuWrapper visible={menuIsShown} hide={hide}>
+            <Container.Flex
+                styles={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100vw",
+                    height: "100vh",
+                }}
+                animate={{ keyframes: "show", duration: 300 }}
+            >
+                <CloseButton
+                    onClick={() => {
+                        hideMenu(() => setHide(false));
+                        setHide(true);
+                    }}
+                />
 
-            {showLogin && <Login />}
+                {showLogin && <Login />}
 
-            <Container.Flex styles={{ width: "124px", marginTop: "60px", marginLeft: "calc((100vw - 124px) / 2)" }}>
-                <MenuLink onClick={onLoginClick}>
-                    <Icon name="user" />
-                    <Text>{isAuth ? "Профиль" : "Войти"}</Text>
-                </MenuLink>
+                <Container.Flex
+                    styles={{
+                        width: "124px",
+                        marginTop: "60px",
+                    }}
+                >
+                    <MenuLink onClick={onLoginClick}>
+                        <Icon name="user" />
+                        <Text>{isAuth ? "Профиль" : "Войти"}</Text>
+                    </MenuLink>
 
-                <MenuLink>
-                    <Icon name="reports" />
-                    <Text>Отчеты</Text>
-                </MenuLink>
+                    <MenuLink>
+                        <Icon name="reports" />
+                        <Text>Отчеты</Text>
+                    </MenuLink>
 
-                <MenuLink>
-                    <Icon name="help" />
-                    <Text>Помощь</Text>
-                </MenuLink>
+                    <MenuLink>
+                        <Icon name="help" />
+                        <Text>Помощь</Text>
+                    </MenuLink>
+                </Container.Flex>
             </Container.Flex>
         </MenuWrapper>
     );

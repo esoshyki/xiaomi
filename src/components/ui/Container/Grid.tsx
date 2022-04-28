@@ -1,6 +1,7 @@
 import styled from "styled-components/macro";
 import { getGridJustify, getGridAligns } from "../../../helpers/getGridProps";
 import { Aligns, getCommonProps, Justifies, Props } from "../../types";
+import { getAnimations } from "../../../theme/animations";
 
 export type GridProps = Props<{
     direction?: "row" | "column";
@@ -27,7 +28,8 @@ const GridContainer = styled.div<GridProps>`
         alignItems: getGridAligns(props.alignItems ?? "center"),
     })}
     ${(props) => getCommonProps(props)};
-    ${props => ({padding: props.padding ? `${props.padding}px` : undefined})}
+    ${props => ({padding: props.padding ? `${props.padding}px` : undefined})};
+    ${props => getAnimations(props)};
 `;
 
 const Grid = (props: GridProps) => {

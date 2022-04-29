@@ -12,12 +12,18 @@ const Offer = () => {
 
     const [hint, setHint] = useState(true);
     const [cardHeight, setCardHeight] = useState("auto");
+    const [cardWidth, setCardWidth] = useState("auto");
 
     const hintRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (!!hintRef.current) {
-            setCardHeight(hintRef.current.scrollHeight + "px");
+            if (window.innerWidth < 660) {
+                setCardHeight(hintRef.current.scrollHeight + "px");
+            } else {
+                setCardWidth(hintRef.current.scrollWidth + "px");
+            }
+
         }
     });
 
@@ -68,7 +74,9 @@ const Offer = () => {
                 ref={hintRef}
                 isHidden={!hint || undefined}
                 padding="50px 30px"
-                styles={{maxWidth: "344px", height: cardHeight}}
+                animateHeight={cardHeight !== "auto"}
+                animateWidth={cardWidth !== "auto"}
+                styles={{maxWidth: "344px", height: cardHeight, width: cardWidth}}
             >
                     <Info>
                         За 2 минуты рассчитайте скидку на покупку у 

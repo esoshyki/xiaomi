@@ -6,6 +6,8 @@ import { getAnimations } from "../../../theme/animations";
 type CardProps = Props<{
     noPadding?: boolean;
     noShadow?: true;
+    animateHeight?: boolean;
+    animateWidth?: boolean;
 }>;
 
 const Wrapper = styled.div<CardProps>`
@@ -16,7 +18,8 @@ const Wrapper = styled.div<CardProps>`
     ${(props) => getCommonProps(props)};
 	box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.04);
     transition: all 300ms linear;
-    overflow-y: hidden;
+    overflow-y: ${(props) => (props.animateHeight ? "hidden" : "auto")};
+    overflow-x: ${(props) => (props.animateWidth ? "hidden" : "auto")};
     padding: 0;
     &:before {
         position: absolute;
@@ -25,23 +28,35 @@ const Wrapper = styled.div<CardProps>`
         top: 0;
         bottom: 0;
         z-index: -1;
-		border-radius: 20px;
+		border-radius: inherit;
 		background-color: ${(props) => props.theme.colors.background.opacity};
 		backdrop-filter: blur(8px);
         content: '';
     }
     
+    & > * {
+        opacity: ${(props) => (props.isHidden ? "0" : "1")};
+    }
+    
     ${props => {
         if (props.isHidden) {
-            return ({
-                height: 0
-            })
+            if (props.animateHeight) {
+                return ({
+                    height: 0
+                })
+            } else if (props.animateWidth) {
+				return ({
+                    width: 0
+				})
+			}
         }
     }}
 `;
 
 const Inner = styled.div<{padding: any}>`
-   padding: ${(props) => (props.padding) ? props.padding : ""};
+    padding: ${(props) => (props.padding) ? props.padding : ""};
+    border-radius: inherit;
+    transition: opacity 200ms;
 `;
 
 

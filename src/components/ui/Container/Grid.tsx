@@ -19,6 +19,7 @@ export type GridProps = Props<{
 const GridContainer = styled.div<GridProps>`
     display: grid;
     width: ${(props) => (props.fullWidth ? "100%" : "auto")};
+    max-width: 100%;
     flex-direction: ${(props) => props.direction || "column"};
     ${(props) => ({
         gridTemplateColumns: props.cols ?? "auto",

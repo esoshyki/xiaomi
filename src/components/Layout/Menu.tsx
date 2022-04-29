@@ -6,7 +6,8 @@ import Container from "../ui/Container";
 import Icon from "../ui/Icon";
 import Typography from "../ui/Typography";
 import Login from "../Login";
-
+import {breakpoints} from "../types";
+import { Fragment } from "react";
 
 const MenuWrapper = styled.div<{ visible: boolean, animationOpen: boolean, animationClose: boolean }>`
     width: 100%;
@@ -18,7 +19,7 @@ const MenuWrapper = styled.div<{ visible: boolean, animationOpen: boolean, anima
     top: 0;
     bottom: 0;
     right: 0;
-    overflow: hidden;
+    /*overflow: hidden;*/
     padding: 11px 32px 20px;
     z-index: 3;
     &:before {
@@ -30,21 +31,24 @@ const MenuWrapper = styled.div<{ visible: boolean, animationOpen: boolean, anima
         height: ${props => (props.animationOpen) ? "30vw" : "300vh"};
 		background: rgba(0, 0, 0, 0.7);
         border-radius: 50%;
-		box-shadow: 0 0 25px rgba(0, 0, 0, 0.04);
 		backdrop-filter: blur(8px);
-        transform: translate(-50%, -50%);
+        transform: translate3d(-50%, -50%, 0);
         content: "";
-        will-change: auto;
+        will-change: width, height;
 		animation: ${props => (props.animationOpen) ? `menuAppearance ${animateTime}ms forwards`: (props.animationClose) ? `menuAppearance ${animateTime}ms reverse` : "none"};
        
+    }
+    
+    @media (min-width: ${breakpoints.sm}) {
+		
     }
 `;
 
 const Close = styled.svg`
-    position: absolute;
-    top: 22px;
-    left: 32px;
-    transition: color 200ms;
+	z-index: 5;
+	position: relative;
+    margin-right: auto;
+    transition: ${(props) => `color ${animateTime}ms`};
     color: ${(props) => props.theme.colors.icon.contrast};
     &:hover {
         cursor: pointer;
@@ -84,9 +88,13 @@ const MenuLink = styled.a`
     &:hover {
         cursor: pointer;
         color: ${(props) => props.theme.colors.button.hover};
-        span {
-            color: ${(props) => props.theme.colors.button.hover};
-        }
+    }
+	&:active, &:focus {
+		color: ${(props) => props.theme.colors.link.pressed};
+	}
+    
+    svg {
+		transition: color 200ms;
     }
 `;
 
@@ -94,9 +102,9 @@ const Text = ({ children }: { children: ReactNode }) => {
     return (
         <Typography.Button
             styles={{
-                color: "#fff",
+                color: "currentcolor",
                 marginLeft: "21px",
-                transition: `color ${animateTime}ms`,
+                transition: `color 200ms`,
             }}
         >
             {children}
@@ -122,30 +130,31 @@ const Menu = () => {
     };
 
     return (
-        <MenuWrapper visible={menuIsShown} animationOpen={animationOpen} animationClose={animationClose}>
-            <CloseButton onClick={hideMenu} />
+        <Fragment>
+            {menuIsShown && <CloseButton onClick={hideMenu} />}
+            <MenuWrapper className="container" visible={menuIsShown} animationOpen={animationOpen} animationClose={animationClose}>
+                {showLogin && <Login />}
 
-            {showLogin && <Login />}
+                <NavWrapper visible={menuIsShown}>
+                    <Container.Flex>
+                        <MenuLink onClick={onLoginClick}>
+                            <Icon name="user" />
+                            <Text>{isAuth ? "Профиль" : "Войти"}</Text>
+                        </MenuLink>
 
-            <NavWrapper visible={menuIsShown}>
-                <Container.Flex>
-                    <MenuLink onClick={onLoginClick}>
-                        <Icon name="user" />
-                        <Text>{isAuth ? "Профиль" : "Войти"}</Text>
-                    </MenuLink>
+                        <MenuLink>
+                            <Icon name="reports" />
+                            <Text>Отчеты</Text>
+                        </MenuLink>
 
-                    <MenuLink>
-                        <Icon name="reports" />
-                        <Text>Отчеты</Text>
-                    </MenuLink>
-
-                    <MenuLink>
-                        <Icon name="help" />
-                        <Text>Помощь</Text>
-                    </MenuLink>
-                </Container.Flex>
-            </NavWrapper>
-        </MenuWrapper>
+                        <MenuLink>
+                            <Icon name="help" />
+                            <Text>Помощь</Text>
+                        </MenuLink>
+                    </Container.Flex>
+                </NavWrapper>
+            </MenuWrapper>
+        </Fragment>
     );
 };
 

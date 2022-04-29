@@ -4,7 +4,8 @@ import styled from "styled-components";
 import { Fragment } from "react";
 import Menu from "./Menu";
 import Logo from "../../assets/logo";
-
+import { FlexProps } from "../ui/Container/Flex";
+import {breakpoints} from "../types"
 interface ButtonProps {
     onClick: () => void;
 }
@@ -12,12 +13,18 @@ interface ButtonProps {
 const BurgerWrapper = styled.svg`
     width: 20px;
     height: 20px;
+    margin-right: auto;
     color: ${(props) => props.theme.colors.icon.default};
     transition: color 200ms ease-in;
     &:hover {
         cursor: pointer;
         color: ${(props) => props.theme.colors.icon.secondary};
     }
+`;
+const LogoWrapper = styled.span`
+    margin-right: auto;
+    flex-shrink: 0;
+    font-size: 0;
 `;
 
 const Burger = ({ onClick }: ButtonProps) => {
@@ -41,14 +48,10 @@ const Burger = ({ onClick }: ButtonProps) => {
 };
 
 const ButtonContainer = styled.button`
-    position: absolute;
-    left: 32px;
-    top: 22px;
     padding: 0;
-    margin: 0;
+    margin: 0 auto 0 0;
     background-color: transparent;
     border: none;
-    
 `;
 
 const Header = () => {
@@ -61,14 +64,23 @@ const Header = () => {
                 justify="center"
                 direction="row"
                 styles={{
-                    padding: "11px 8px 21px"
+                    padding: "35px 32px"
+                }}
+                breakpoints={{
+                    659.9: {
+                        padding: "11px 8px"
+                    },
                 }}
             >
-                <ButtonContainer type="button">
-                    {!menuIsShown && <Burger onClick={showMenu} /> }
-                </ButtonContainer>
+                {!menuIsShown &&
+                    <ButtonContainer type="button">
+                         <Burger onClick={showMenu} />
+                    </ButtonContainer>
+                }
                 <Menu />
-                <Logo isWhite={menuIsShown} />
+                <LogoWrapper>
+                    <Logo isWhite={menuIsShown} />
+                </LogoWrapper>
             </Container.Flex>
         </header>
     );

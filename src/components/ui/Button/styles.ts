@@ -28,7 +28,7 @@ export const collectButtonStyles = (props: ButtonProps & { theme: DefaultTheme }
 
         case "disabled":
             return css`
-                ${defaultProps}
+                ${defaultProps};
                 background-color: ${theme.colors.button.disable};
                 color: #fff;
                 &:hover {
@@ -41,8 +41,8 @@ export const collectButtonStyles = (props: ButtonProps & { theme: DefaultTheme }
             `
         case "outline":
             return css`
-                ${defaultProps}
-                background-color: #fff;
+                ${defaultProps};
+                background-color: transparent;
                 color: ${theme.colors.button.default};
                 border: 1px solid ${theme.colors.button.default};
                 &:hover {
@@ -50,12 +50,12 @@ export const collectButtonStyles = (props: ButtonProps & { theme: DefaultTheme }
                     color: ${theme.colors.button.contrast};
                 }
                 &:active, &:focus {
-                    background-color: ${theme.colors.button.hover}
+                    background-color: ${theme.colors.button.pressed}
                 }
             `
         case "danger":
             return css`
-                ${defaultProps}
+                ${defaultProps};
                 background-color: ${theme.colors.info.error};
                 color: ${theme.colors.button.contrast};
                 &:hover {
@@ -67,7 +67,7 @@ export const collectButtonStyles = (props: ButtonProps & { theme: DefaultTheme }
             `
         default:
             return css`
-                ${defaultProps}
+                ${defaultProps};
                 background-color: ${theme.colors.button.default};
                 color: #fff;
                 &:hover {

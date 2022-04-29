@@ -23,9 +23,8 @@ const Offer = () => {
             } else {
                 setCardWidth(hintRef.current.scrollWidth + "px");
             }
-
         }
-    });
+    }, [setCardHeight, setCardWidth]);
 
     const getContent = () => {
         switch (step) {
@@ -56,14 +55,13 @@ const Offer = () => {
 
     return (
         <Container.Flex
-            gap={32}
+            gap={36}
             fullWidth
             fullHeight
             direction="row"
             alignItems="stretch"
-            /*styles={{transition: "all 200ms ease-in" }}*/
             breakpoints={{
-                660: {
+                659.9: {
                     flexDirection: "column",
                     alignItems: "center"
                 },
@@ -72,15 +70,20 @@ const Offer = () => {
             {step === "imei" &&
             <Card
                 ref={hintRef}
+                fullWidth
                 isHidden={!hint || undefined}
                 padding="50px 30px"
                 animateHeight={cardHeight !== "auto"}
                 animateWidth={cardWidth !== "auto"}
-                styles={{maxWidth: "344px", height: cardHeight, width: cardWidth}}
+                styles={{
+                    height: cardHeight,
+                    width: cardWidth,
+                    flexShrink: 0
+                }}
             >
                     <Info>
                         За 2 минуты рассчитайте скидку на покупку у 
-                        <Typography.Link>партнёров</Typography.Link>, взамен
+                        <Typography.Link href="/" target="_blank">партнёров</Typography.Link>, взамен
                         на ваш старый смартфон
                     </Info>
                     <Button variant="outline" fullWidth uppercase styles={{marginTop: "16px"}}>
@@ -88,7 +91,13 @@ const Offer = () => {
                     </Button>
             </Card>}
 
-            <Card padding="28px" styles={{maxWidth: "344px"}}>
+            <Card
+                padding="28px"
+                fullWidth
+                styles={{
+                    flexShrink: 0
+                }}
+            >
                 {step !== "imei" && <Progress />}
                 {phone?.[0] && <OfferDevice phone={phone[0]} />}
                 {getContent()}

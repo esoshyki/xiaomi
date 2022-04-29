@@ -26,7 +26,7 @@ export const typography: Typography = {
         fontSize: "17px",
         fontWeight: "600",
         lineHeight: "20px",
-        color: colors.text.secondary
+        color: colors.text.default
     },
     main: {
         fontSize: "16px",

@@ -1,6 +1,5 @@
 import styled from "styled-components/macro";
 import { getFlexAligns, getFlexJustify } from "../../../helpers/getFlexProps";
-
 import { Aligns, collectGap, collectWrapperMargin, getCommonProps, Justifies, Props } from "../../types";
 import { getAnimations } from "../../../theme/animations";
 
@@ -30,9 +29,10 @@ const FlexContainer = styled.div<FlexProps>`
     padding: ${props => props.padding ? `${props.padding}px` : 0};
     ${props => getCommonProps(props)};
     ${props => collectGap(props)};
+
     ${props => getAnimations(props)};
-    @supports (gap: 10px) {
-        width: ${props => props.fullWidth ? "100%" : "auto"};
+	@supports (gap: 10px) {
+		width: ${props => props.fullWidth ? "100%" : "auto"};
         margin-right: 0;
         margin-top: 0;
         column-gap: ${props => props.horizontalGap ? `${props.horizontalGap}px` : ""};

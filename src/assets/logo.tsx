@@ -10,7 +10,7 @@ export default function Logo({ isWhite }: { isWhite: boolean }) {
             viewBox="0 0 135 32"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            style={{ zIndex: 5, position: "relative", top: "10px" }}
+            style={{ zIndex: 5, position: "relative" }}
         >
             <path
                 style={{ transition: "all 200ms ease-in 100ms" }}

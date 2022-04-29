@@ -6,19 +6,19 @@ export const collectButtonStyles = (props: ButtonProps & { theme: DefaultTheme }
     const theme = props.theme;
 
     const defaultProps = css`
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        padding: 10px;
-        transition: background-color 200ms ease-in, padding-left 200ms ease-in;
+        padding: 9px;
+        transition: background-color 200ms, color 200ms, border-color 200ms;
         border-radius: 12px;
         position: relative;
         outline: none;
         box-shadow: none;  
         width: ${props.fullWidth ? "100%" : "auto"};
         height: ${props.fullHeight ? "100%" : "auto"};
+        text-transform: ${props.uppercase ? "uppercase" : "none"};
         border: none;
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 20px;
         &:hover {
             cursor: pointer;
         }

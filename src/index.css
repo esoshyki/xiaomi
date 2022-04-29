@@ -6,6 +6,7 @@ body {
     font-family: Inter, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
 }
 
 main {
@@ -18,6 +19,11 @@ code {
 
 * {
     box-sizing: border-box;
+}
+
+.container {
+    padding-left: 24px;
+    padding-right: 24px;
 }
 
 

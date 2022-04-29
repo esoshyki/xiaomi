@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components/macro";
 import { useAuth } from "../../hooks/useAuth";
 import { useMenu, animateTime } from "../../hooks/useMenu";
@@ -117,9 +117,9 @@ const Menu = () => {
 
     const onLoginClick = () => {
         if (!isAuth) {
-            showLoginForm()
+            showLoginForm();
         }
-    }
+    };
 
     return (
         <MenuWrapper visible={menuIsShown} animationOpen={animationOpen} animationClose={animationClose}>

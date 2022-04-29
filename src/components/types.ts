@@ -6,9 +6,9 @@ import { Animations } from '../theme/animations';
 
 export const breakpoints = {
     xl: 1536,
-    lg: 1200,
-    md: 900,
-    sm: 600,
+    lg: 1280,
+    md: 1104,
+    sm: 660,
     xs: 450
 }
 
@@ -52,12 +52,12 @@ export const getCommonProps = (props: Props<any>) => {
             obj.margin = margin
         }
     }
-    /*if (fullWidth) {
+    if (fullWidth) {
         obj.width = "100%"
     }
     if (fullHeight) {
         obj.height = "100%"
-    }*/
+    }
     if (props.breakpoints) {
         Object.entries(props.breakpoints).forEach(([media, styles]) => {
             obj[`@media screen and (max-width: ${media}px)`] = styles

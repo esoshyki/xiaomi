@@ -44,24 +44,22 @@ export const withLayout =
         ]);
 
         return (
-            <Container.Flex styles={{ position: "relative" }}>
+            <Container.Flex alignItems="stretch" styles={{ position: "relative" }}>
                 <Background />
-                <Container.Flex fullHeight fullWidth alignItems="stretch" styles={{ zIndex: "1"}}>
-                    <Header />
-                    <Main>
-                        {!needAuth && <Component {...props} />}
-                        {needAuth &&
-                            !user.checkAuth.pending &&
-                            user.checkAuth.result === "success" && (
-                                <Component {...props} />
-                            )}
-                        {needAuth && user.checkAuth.pending && <PageLoading />}
-                        {needAuth && user.checkAuth.result === "error" && (
-                            <Bearer />
+                <Header />
+                <Main>
+                    {!needAuth && <Component {...props} />}
+                    {needAuth &&
+                        !user.checkAuth.pending &&
+                        user.checkAuth.result === "success" && (
+                            <Component {...props} />
                         )}
-                        {needAuth && !user.checkAuth.result && <Bearer />}
-                    </Main>
-                </Container.Flex>
+                    {needAuth && user.checkAuth.pending && <PageLoading />}
+                    {needAuth && user.checkAuth.result === "error" && (
+                        <Bearer />
+                    )}
+                    {needAuth && !user.checkAuth.result && <Bearer />}
+                </Main>
             </Container.Flex>
         );
     };

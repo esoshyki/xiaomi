@@ -1,5 +1,6 @@
 export { Button } from './Button';
 export { Title } from './Title';
+export { TitleSecondary } from './TitleSecondary';
 export { Link } from './Link'
 export { Main } from './Main'
 export { Medium } from './Medium'

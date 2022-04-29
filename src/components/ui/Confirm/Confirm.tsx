@@ -22,33 +22,33 @@ interface ConfirmProps {
 const Confirm = (props: ConfirmProps) => {
     return (
         <ConfirmWrapper {...props}>
-            <Container.Flex fullWidth alignItems="start">
-                <Typography.Title>{props.question}</Typography.Title>
+            <Typography.Title textAlign="start" margin={"16px 0 22px"}>{props.question}</Typography.Title>
 
-                <Container.Grid
-                    direction="row"
-                    gap={10}
-                    cols={"1fr 1fr"}
+            <Container.Grid
+                direction="row"
+                gap={16}
+                cols={"1fr 1fr"}
+            >
+                <Button
+                    variant="outline"
                     fullWidth
+                    onClick={props.onNo}
+                    square
+                    styles={{ margin: "0" }}
                 >
-                    <Button
-                        fullWidth
-                        onClick={props.onNo}
-                        square
-                        styles={{ margin: "0" }}
-                    >
-                        Нет
-                    </Button>
-                    <Button
-                        fullWidth
-                        onClick={props.onYes}
-                        square
-                        styles={{ margin: "0" }}
-                    >
-                        Да
-                    </Button>
-                </Container.Grid>
-            </Container.Flex>
+                    Нет
+                </Button>
+                <Button
+                    variant="outline"
+                    fullWidth
+                    onClick={props.onYes}
+                    square
+                    styles={{ margin: "0" }}
+                >
+                    Да
+                </Button>
+            </Container.Grid>
+
         </ConfirmWrapper>
     );
 };

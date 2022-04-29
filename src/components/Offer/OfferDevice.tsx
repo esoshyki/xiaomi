@@ -2,6 +2,19 @@ import { Fragment } from "react";
 import { useOfferData } from "../../hooks/useOfferData";
 import { GivenAnswer, PhoneInfo } from "../../store/offerSlice/types";
 import { Container, Image, Typography } from "../ui";
+import styled from "styled-components/macro";
+import { animateTime } from "../../hooks/useMenu";
+
+const ImgWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	width: 87px;
+	height: 87px;
+
+	border-radius: 12px;
+    background-color: white;
+`;
 
 const OfferDevice = ({ phone }: { phone: PhoneInfo }) => {
     const { IMEI, givenAnswers } = useOfferData();
@@ -19,6 +32,7 @@ const OfferDevice = ({ phone }: { phone: PhoneInfo }) => {
         return (
             <Fragment>
                 {Object.entries(givenAnswers).map(([k, answers], i) => {
+                    const flexOrder = (i === 0) ? 1 : "";
                     return (
                         <Fragment>
                             <Container.Flex
@@ -26,6 +40,7 @@ const OfferDevice = ({ phone }: { phone: PhoneInfo }) => {
                                 fullWidth
                                 horizontalGap={10}
                                 key={k}
+                                styles={{order: flexOrder}}
                             >
                                 {!!answers?.[0].groupShortName && (
                                     <Typography.Tertiary>
@@ -37,7 +52,7 @@ const OfferDevice = ({ phone }: { phone: PhoneInfo }) => {
                                     {answers.map(prettier).join(", ")}
                                 </Typography.Small>
                             </Container.Flex>
-                            {i === 0 && (
+                           {/* {i === 0 && (
                                 <Container.Flex
                                     direction="row"
                                     fullWidth
@@ -48,7 +63,7 @@ const OfferDevice = ({ phone }: { phone: PhoneInfo }) => {
                                     </Typography.Tertiary>
                                     <Typography.Small>{IMEI}</Typography.Small>
                                 </Container.Flex>
-                            )}
+                            )}*/}
                         </Fragment>
                     );
                 })}
@@ -61,13 +76,29 @@ const OfferDevice = ({ phone }: { phone: PhoneInfo }) => {
             fullWidth
             direction="row"
             alignItems="start"
-            horizontalGap={10}
+            horizontalGap={16}
             justify="start"
         >
-            <Image src={phone.IMAGE} alt={phone.NAME} height={100} />
-            <Container.Flex verticalGap={2}>
-                <Typography.Title>{phone.NAME}</Typography.Title>
+            <ImgWrapper>
+                <Image src={phone.IMAGE} alt={phone.NAME} height={75} styles={{
+                    maxWidth: "75px",
+                    maxHeight: "75px"
+                }}/>
+            </ImgWrapper>
+            <Container.Flex verticalGap={2} alignItems="stretch">
+                <Typography.Title textAlign="start" styles={{ order: 0, margin: "0 0 4px" }}>{phone.NAME}</Typography.Title>
                 <GivenAnswers />
+                <Container.Flex
+                    direction="row"
+                    fullWidth
+                    horizontalGap={10}
+                    styles={{order: 2}}
+                >
+                    <Typography.Tertiary>
+                        IMEI
+                    </Typography.Tertiary>
+                    <Typography.Small>{IMEI}</Typography.Small>
+                </Container.Flex>
             </Container.Flex>
         </Container.Flex>
     );

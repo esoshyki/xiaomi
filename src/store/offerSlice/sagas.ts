@@ -1,5 +1,5 @@
 import { takeLeading, call, put, select, takeEvery } from "redux-saga/effects";
-import { CheckImei, GetQuestions, setStep } from ".";
+import { GetQuestions, setStep } from ".";
 import { phoneAPI } from "../../api/phone";
 import { OfferSteps, QuestionsResponse } from "./types";
 import { ResponseData } from "../../api/types";
@@ -9,7 +9,7 @@ import { RootState } from "..";
 function* getQuestionsWorker ({ payload } : PayloadAction<string>) {
     const state : RootState = yield select();
     const answers = state.offer.answers;
-    const response: ResponseData<QuestionsResponse> = yield call(phoneAPI.getQuestions, payload, state.user.user, answers);
+    const response: ResponseData<QuestionsResponse> = yield call(phoneAPI.getQuestions, state.user.user, answers);
     if (response.status === "success") {
         yield put(GetQuestions.success(response.data))
     };
@@ -20,9 +20,7 @@ function* getQuestionsWorker ({ payload } : PayloadAction<string>) {
 }
 
 function* setStepWorker ({ payload } : PayloadAction<OfferSteps>) {
-    if (payload === "questions") {
-        yield put(GetQuestions.request())
-    };
+
 };
 
 

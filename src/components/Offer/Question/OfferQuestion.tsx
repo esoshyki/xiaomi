@@ -1,8 +1,5 @@
-import { Fragment } from "react";
-import { useOfferData } from "../../../hooks/useOfferData";
 import {
     Question,
-    Question as QuestionType,
 } from "../../../store/offerSlice/types";
 import Container from "../../ui/Container";
 import Typography from "../../ui/Typography";
@@ -11,7 +8,7 @@ import FromList from "./FromList";
 
 export type QuestionData = Question & {
     questionId: number
-    cominationId?: number
+    combinationId?: string
 }
 
 const OfferQuestion = (

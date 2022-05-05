@@ -1,5 +1,4 @@
 import { useOfferData } from "../../../hooks/useOfferData";
-import { Question } from "../../../store/offerSlice/types";
 import { Button, Container } from "../../ui";
 import { QuestionData } from "./OfferQuestion";
 
@@ -7,10 +6,12 @@ const FromList = (props: QuestionData ) => {
 
     const { giveAnswer } = useOfferData()
 
-    const { answers, questionId } = props;
+    const { answers, questionId, combinationId } = props;
+
+    console.log(`props`, props);
 
     const onClick = (answerId: number) => {
-         giveAnswer(questionId, answerId)
+         giveAnswer(questionId, answerId, combinationId)
     }
 
     return (

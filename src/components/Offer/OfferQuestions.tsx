@@ -5,16 +5,20 @@ import Container from "../ui/Container";
 import OfferQuestion, { QuestionData } from "./Question/OfferQuestion";
 
 const OfferQuestions = () => {
-    const { getQuestion, errors, questionsData } = useOfferData();
+    const { getQuestion, errors, getQuestions } = useOfferData();
 
-    const question = getQuestion()
+    const question = getQuestion();
+
+    useEffect(() => {
+        getQuestions()
+    }, [])
 
 
     return (
         <Container.Flex fullWidth fullHeight>
             {!!question && !errors.length && <OfferQuestion {...question}/>}
         </Container.Flex>
-    );
+    );  
 };
 
 export default OfferQuestions;

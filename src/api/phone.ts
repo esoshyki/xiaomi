@@ -5,7 +5,6 @@ import { AxiosResponse } from 'axios';
 import { collectFormData, getErrorResponse } from './helpers';
 import { User } from "../store/userSlice/types"
 import { N } from '../store/types';
-import qs from 'qs'
 
 const getModelByImei = async (imei: string, user: N<User>): Promise<ResponseData<any>> => {
     if (!user) return getErrorResponse();
@@ -17,15 +16,15 @@ const getModelByImei = async (imei: string, user: N<User>): Promise<ResponseData
     }
 };
 
-const getQuestions = async (phoneId: string, user: N<User>, answers: Answers | null): Promise<ResponseData<QuestionGroup[]>> => {
+const getQuestions = async (user: N<User>, answers: Answers | null): Promise<ResponseData<QuestionGroup[]>> => {
     if (!user) return getErrorResponse();
 
     const _answers = answers ? answers : undefined
 
     try {
-        const response: AxiosResponse<ResponseData<QuestionGroup[]>> = await api.post("/devicedata/getquestions/", collectFormData({ id: phoneId }, user), {
+        const response: AxiosResponse<ResponseData<QuestionGroup[]>> = await api.post("/devicedata/getquestions/", collectFormData({}, user), {
             params: {
-                _answers
+               answers: _answers
             }
         })
         return response.data

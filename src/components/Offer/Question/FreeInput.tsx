@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useOfferData } from "../../../hooks/useOfferData";
-import { Question } from "../../../store/offerSlice/types";
 import { Button, Container } from "../../ui";
 import Input from "../../ui/Input";
 import { QuestionData } from "./OfferQuestion";
@@ -11,10 +10,10 @@ const FreeInput = (props: QuestionData ) => {
 
     const [value, setValue] = useState("");
 
-    const { questionId } = props;
+    const { questionId, combinationId } = props;
 
     const onClick = () => {
-        giveAnswer(questionId,value )
+        giveAnswer(questionId,value, combinationId )
     }
 
     return (

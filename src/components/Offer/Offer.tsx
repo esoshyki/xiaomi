@@ -74,4 +74,4 @@ const Offer = () => {
     );
 };
 
-export default memo(Offer);
+export default Offer;

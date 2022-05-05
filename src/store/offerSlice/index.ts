@@ -17,6 +17,8 @@ const initialState: OfferState = {
     currentQuestionGroup: null,
     photoFront: null,
     photoBack: null,
+    answersGiven: [],
+    questionsGiven: []
 }
 
 export const CheckImei = createRoutine("offer/Check-Imei");
@@ -26,7 +28,7 @@ const offerSlice = createSlice({
     name: "offer",
     initialState: {...initialState},
     reducers: {
-        giveAnswer(state, { payload } : PayloadAction<{questionId: number, answer: number | string}>) {
+        giveAnswer(state, { payload } : PayloadAction<{questionId: number, answer: number | string, combinationId?: string}>) {
             if (state.answers) {
                 state.answers[payload.questionId] = payload.answer
             } else {
@@ -34,9 +36,15 @@ const offerSlice = createSlice({
                     [payload.questionId] : payload.answer
                 }
             }
-            state.lastGivenQuestion = payload.questionId;
+            state.questionsGiven.push("" + payload.questionId);
+            if (typeof payload.answer === "number") {
+                state.answersGiven.push("" + payload.answer);
+            }
+            if (payload.combinationId) {
+                state.answers.combinationId = payload.combinationId
+            }
         },
-        setCombinationsId(state, { payload } : PayloadAction<number>) {
+        setCombinationsId(state, { payload } : PayloadAction<string>) {
             if (state.answers) {
                 state.answers.combinationId = payload
             } else {
@@ -98,8 +106,9 @@ const offerSlice = createSlice({
             state.errors = [];
             state.questionsData = payload.questionsData;
             state.questionsTree = payload.questionsTree;
-            state.currentQuestion = 0;
-            state.currentQuestionGroup = 0;
+            state.answersGiven = [];
+            state.questionsGiven = [];
+            state.answers = null;
         },
         [GetQuestions.FULFILL](state) {
             state.loading = false

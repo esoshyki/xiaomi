@@ -21,7 +21,7 @@ export type Answer = {
 }
 
 export type Answers = {
-    combinationId?: number
+    combinationId?: string
     [questionId: number] : number | string
 }
 
@@ -30,12 +30,12 @@ export type QuestionsData = {
 }
 
 export type AnswerTree = {
-    combinationId?: number
+    combinationId?: string
     questions: QuestionTree
 }
 
 export type QuestionTree = {
-    combinationId?: number
+    combinationId?: string
     questions: {
         [id: keyof QuestionsData]: {
             answers: {
@@ -79,5 +79,7 @@ export type OfferState = {
     photoFront: isString
     photoBack: isString
     lastGivenQuestion?: number
+    questionsGiven: string[]
+    answersGiven: string[]
 }
 

@@ -24,6 +24,7 @@ export type Props<T> = {
     breakpoints?: {
         [k: number] : CSS.Properties
     }
+    onClick?: (e?: any) => void;
     hoverStyles?: CSS.Properties
     activeStyles?: CSS.Properties
     focusStyles?: CSS.Properties

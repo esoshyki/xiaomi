@@ -16,7 +16,6 @@ const Wrapper = styled.div<CardProps>`
     width: ${(props) => (props.fullWidth ? "100%" : "auto")};
     height: ${(props) => (props.fullHeight ? "100%" : "auto")};
 	max-width: 344px;
-    ${(props) => getCommonProps(props)};
 	box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.04);
     transition: all 300ms linear;
     overflow-y: ${(props) => (props.animateHeight ? "hidden" : "auto")};
@@ -41,9 +40,8 @@ const Wrapper = styled.div<CardProps>`
     
     @media (min-width: 660px) and (max-width: 768px) {
 		max-width: calc(50% - 18px);
-    }
-}}
-    
+    };
+    ${props => getCommonProps(props)};
     ${props => {
         if (props.isHidden) {
             if (props.animateHeight) {

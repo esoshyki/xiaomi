@@ -1,5 +1,5 @@
 import styled from "styled-components/macro";
-import { TextProps } from "../types";
+import { getTextProps, TextProps } from "../types";
 import { getTextAlign } from "./helpers";
 import { getCommonProps } from "../../../types";
 
@@ -11,6 +11,7 @@ export const Link = styled.a<TextProps>`
     })};
     ${(props) => getCommonProps(props)};
     ${(props) => (props.color ? { color: props.color } : {})}
+    ${props => getTextProps(props)};
     
     &:hover {
         color: ${(props) => props.theme.colors.link.hover};

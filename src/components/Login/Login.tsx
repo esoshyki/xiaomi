@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled, { useTheme } from "styled-components";
 import Button from "../ui/Button";
@@ -11,93 +11,82 @@ import {
 import Container from "../ui/Container";
 import Card from "../ui/Card";
 import Typography from "../ui/Typography";
-
-const LoginWrapper = styled.div`
-    position: fixed;
-    z-index: 2;
-    background-color: rgba(0, 0, 0, 0.8);
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-`;
+import { useAuth } from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-    const [login, setLogin] = useState("");
+    const [loginValue, setLoginValue] = useState("");
     const [password, setPassword] = useState("");
 
+    const { user, isAuth } = useAuth();
+
     const theme = useTheme();
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
 
-    const user = useSelector(getUserData);
+    useEffect(() => {
+        if (isAuth) {
+
+            navigate("/")
+        }
+    }, [isAuth])
+
 
     const onSubmit = () => {
         const formData = new FormData();
 
-        formData.set("login", login);
+        formData.set("login", loginValue);
         formData.set("password", password);
         dispatch(LoginRoutine.request(formData));
     };
 
-    const onClick = (e: any) => {
-        if (e.target.classList.contains("login-wrapper")) {
-            dispatch(toggleLogin(false));
-        }
-    };
 
     return (
-        <LoginWrapper>
+        <Card
+            noShadow
+            padding={28}
+            styles={{
+                width: "auto",
+                margin: "auto",
+            }}
+        >
             <Container.Flex
-                justify="center"
+                verticalGap={16}
+                fullWidth
                 fullHeight
-                onClick={onClick}
-                className="login-wrapper"
-                styles={{ background: theme.colors.background.default }}
+                justify="center"
             >
-                <Card
-                    noShadow
-                    padding={20}
-                    styles={{
-                        width: "auto",
-                        margin: "auto",
-                        backgroundColor: "#fff",
-                    }}
+                <Typography.Small>Логин</Typography.Small>
+                <Input
+                    value={loginValue}
+                    onChange={(e) => setLoginValue(e.target.value)}
+                    fullWidth
+                />
+                <Typography.Small>Пароль</Typography.Small>
+                <Input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    fullWidth
+                    secure
+                />
+
+                <Typography.Link textAlign="end" fullWidth href="/restore-password">Вспомнить пароль?</Typography.Link>
+                <Button
+                    withLoader
+                    pending={user.login.pending}
+                    onClick={onSubmit}
+                    square
                 >
-                    <Container.Flex
-                        verticalGap={10}
-                        styles={{
-                            width: "300px",
-                            margin: "auto",
-                            height: "100%",
-                        }}
-                        justify="center"
-                    >
-                        <Typography.Small>Логин</Typography.Small>
-                        <Input
-                            value={login}
-                            onChange={(e) => setLogin(e.target.value)}
-                            fullWidth
-                        />
-                        <Typography.Small>Пароль</Typography.Small>
-                        <Input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            fullWidth
-                        />
-                        <Button
-                            withLoader
-                            pending={user.login.pending}
-                            onClick={onSubmit}
-                            square
-                        >
-                            Отправить
-                        </Button>
-                    </Container.Flex>
-                </Card>
+                    Отправить
+                </Button>
+
+                {!!user?.login?.errors?.length && <Typography.Error>
+                        {user.login.errors.map(el => el.message).join(". ")}
+                    </Typography.Error>}
             </Container.Flex>
-        </LoginWrapper>
+        </Card>
     );
 };
 

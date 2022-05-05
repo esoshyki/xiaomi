@@ -6,9 +6,9 @@ export type User = {
 
 export type ErrorFieldKey<T> = keyof (T & { catched: string })
 
-export type ErrorType<T> = {
-    [key in ErrorFieldKey<T>]?: string[]
-}
+export type ErrorType = {
+    message: string
+}[]
 
 export type LoginData = {
     login: string
@@ -20,7 +20,7 @@ export type UserState = {
     login: {
         pending: boolean,
         result?: "success" | "error"
-        errors?: ErrorType<LoginData>
+        errors?: ErrorType
         show: boolean
     }
     checkAuth: {

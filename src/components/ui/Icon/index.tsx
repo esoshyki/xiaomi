@@ -6,6 +6,8 @@ import ReportsIcon from './icons/reports';
 import InfoIcon from './icons/info';
 import PhotoIcon from './icons/photo';
 import AddPlus from './icons/addPlus';
+import Hidden from './icons/hidden';
+import Eye from './icons/eye';
 
 const Icon = (props: IconProps) => {
 
@@ -26,6 +28,10 @@ const Icon = (props: IconProps) => {
             return <PhotoIcon {...props} />
         case "add-plus":
             return <AddPlus {...props} />
+        case "hidden":
+            return <Hidden {...props} />
+        case "eye":
+            return <Eye {...props} />
     };
 }
 

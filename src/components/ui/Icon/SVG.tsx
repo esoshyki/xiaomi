@@ -13,6 +13,7 @@ const Wrapper = styled.svg<SVGProps>`
 const SVG = (props: SVGProps) => {
     return (
         <Wrapper
+            onClick={props.onClick}
             className={props.className}
             type={props.name}
             xmlns="http://www.w3.org/2000/svg"

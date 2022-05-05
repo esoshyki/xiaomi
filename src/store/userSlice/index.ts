@@ -48,7 +48,7 @@ const userSlice = createSlice({
             state.login.pending = false
             state.login.show = false;
         },
-        [Login.FAILURE](state, { payload } : PayloadAction<ErrorType<LoginData>>) {
+        [Login.FAILURE](state, { payload } : PayloadAction<ErrorType>) {
             state.login.pending = false;
             state.login.result = "error";
             state.login.errors = payload;

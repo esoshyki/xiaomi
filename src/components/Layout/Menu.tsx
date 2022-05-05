@@ -121,23 +121,16 @@ const NavWrapper = styled.nav<{ visible: boolean }>`
 
 const Menu = () => {
     const { hideMenu, menuIsShown, animationOpen, animationClose } = useMenu();
-    const { showLogin, showLoginForm, isAuth } = useAuth();
-
-    const onLoginClick = () => {
-        if (!isAuth) {
-            showLoginForm();
-        }
-    };
+    const { isAuth } = useAuth();
 
     return (
         <Fragment>
             {menuIsShown && <CloseButton onClick={hideMenu} />}
             <MenuWrapper className="container" visible={menuIsShown} animationOpen={animationOpen} animationClose={animationClose}>
-                {showLogin && <Login />}
 
                 <NavWrapper visible={menuIsShown}>
                     <Container.Flex>
-                        <MenuLink onClick={onLoginClick}>
+                        <MenuLink href={isAuth ? "/profile" : "/login"}>
                             <Icon name="user" />
                             <Text>{isAuth ? "Профиль" : "Войти"}</Text>
                         </MenuLink>

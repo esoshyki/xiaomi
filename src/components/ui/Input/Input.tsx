@@ -1,9 +1,10 @@
-import React, { ChangeEvent, KeyboardEvent } from "react";
+import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import styled from "styled-components";
 import { getCommonProps, Props } from "../../types";
 import Typography from "../Typography";
 import { InputTypes } from "./types";
 import { useTheme } from 'styled-components/macro'
+import Icon from "../Icon";
 
 type InputProps = Props<{
     label?: string;
@@ -15,6 +16,7 @@ type InputProps = Props<{
     error?: string;
     placeholder?: string
     defaultValue?: string
+    secure?: boolean
 }>;
 
 const InputWrapper = styled.input<InputProps>`
@@ -35,25 +37,39 @@ const InputWrapper = styled.input<InputProps>`
 const Wrapper = styled.div<InputProps>`
     width: ${props => props.fullWidth ? "100%" : "auto"};
     ${props => getCommonProps(props)}
-    
+    position: relative;
 `;
 
 const Input = (props: InputProps) => {
-    const { label, value, onChange, onFocus, onKeyPress } = props;
+    const { label, value, onChange, onFocus, onKeyPress, secure } = props;
+
+    const [_secure, setSecure] = useState(secure);
 
     const theme = useTheme();
+
+    const getType = () => {
+        if (_secure === true) return "password";
+        if (_secure === false) return "text";
+        return props.type ?? "text"
+    }
 
     return (
         <Wrapper {...props}>
             <InputWrapper
                 {...props}
-                type={props.type ?? "text"}
+                type={getType()}
                 onChange={onChange}
                 onFocus={onFocus}
                 onKeyPress={onKeyPress}
                 value={value}
                 placeholder={props.placeholder}
             ></InputWrapper>
+
+            {typeof _secure === "boolean" && <Icon 
+                onClick={() => setSecure(!_secure)}
+                name={_secure ? "hidden" : "eye"}
+                styles={{ position: "absolute", top: "10px", right: "12px" }} hoverStyles={{ cursor: "pointer" }} 
+                />}
             {label && (
                 <Typography.Tertiary
                     styles={{

@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components/macro";
 import { useAuth } from "../../hooks/useAuth";
 import { useMenu, animateTime } from "../../hooks/useMenu";
@@ -84,8 +84,8 @@ const MenuLink = styled.a`
     width: 100%;
     margin-top: 37px;
 	color: ${(props) => props.theme.colors.link.contrast};
-    text-decoration: none;
     transition: color 200ms;
+    text-decoration: none;
     &:hover {
         cursor: pointer;
         color: ${(props) => props.theme.colors.button.hover};

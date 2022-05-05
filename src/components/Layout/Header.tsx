@@ -2,7 +2,10 @@ import Container from "../ui/Container";
 import { useMenu } from "../../hooks/useMenu";
 import styled from "styled-components";
 import { Fragment } from "react";
-
+import Menu from "./Menu";
+import Logo from "../../assets/logo";
+import { FlexProps } from "../ui/Container/Flex";
+import {breakpoints} from "../types"
 interface ButtonProps {
     onClick: () => void;
 }
@@ -10,12 +13,18 @@ interface ButtonProps {
 const BurgerWrapper = styled.svg`
     width: 20px;
     height: 20px;
+    margin-right: auto;
     color: ${(props) => props.theme.colors.icon.default};
     transition: color 200ms ease-in;
     &:hover {
         cursor: pointer;
         color: ${(props) => props.theme.colors.icon.secondary};
     }
+`;
+const LogoWrapper = styled.span`
+    margin-right: auto;
+    flex-shrink: 0;
+    font-size: 0;
 `;
 
 const Burger = ({ onClick }: ButtonProps) => {
@@ -38,31 +47,42 @@ const Burger = ({ onClick }: ButtonProps) => {
     );
 };
 
-const ButtonContainer = styled.div`
-    position: absolute;
-    left: 32px;
-    top: 22px;
-    z-index: 4;
+const ButtonContainer = styled.button`
+    padding: 0;
+    margin: 0 auto 0 0;
+    background-color: transparent;
+    border: none;
 `;
 
 const Header = () => {
     const { showMenu, menuIsShown } = useMenu();
 
     return (
-        <Fragment>
-        <Container.Flex
-            fullWidth
-            styles={{
-                paddingTop: "11px",
-                height: "50px",
-            }}
-        >
-            <ButtonContainer>
-                {!menuIsShown && <Burger onClick={showMenu} /> }
-            </ButtonContainer>
-
-        </Container.Flex>
-        </Fragment>
+        <header className="container">
+            <Container.Flex
+                fullWidth
+                justify="center"
+                direction="row"
+                styles={{
+                    padding: "35px 32px"
+                }}
+                breakpoints={{
+                    659.9: {
+                        padding: "11px 8px"
+                    },
+                }}
+            >
+                {!menuIsShown &&
+                    <ButtonContainer type="button">
+                         <Burger onClick={showMenu} />
+                    </ButtonContainer>
+                }
+                <Menu />
+                <LogoWrapper>
+                    <Logo isWhite={menuIsShown} />
+                </LogoWrapper>
+            </Container.Flex>
+        </header>
     );
 };
 

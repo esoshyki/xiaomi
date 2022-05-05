@@ -5,6 +5,7 @@ import Button from "../ui/Button";
 import Container from "../ui/Container";
 import Input from "../ui/Input";
 import Typography from "../ui/Typography";
+import theme from "@storybook/addon-interactions/dist/ts3.4/theme";
 
 interface OfferImeiProps {
     hint: boolean
@@ -24,10 +25,12 @@ const OfferImei = ({ hint, setHint } : OfferImeiProps) => {
     }
 
     return (
-        <Container.Flex verticalGap={10} fullWidth styles={{ transition: "all 500ms ease-in" }}> 
-            <Typography.Title textAlign="start" styles={{ width: "100%", margin: 0 }}>
+        <Container.Flex verticalGap={16} alignItems="stretch" fullWidth styles={{ transition: "all 500ms ease-in" }}>
+            <Typography.TitleSecondary
+                textAlign="start"
+                styles={{ margin: "0 4px 8px" }}>
                 Я хочу сдать
-            </Typography.Title>
+            </Typography.TitleSecondary>
 
             <Input
                 value={IMEI}
@@ -35,12 +38,6 @@ const OfferImei = ({ hint, setHint } : OfferImeiProps) => {
                 placeholder="Укажите IMEI устройства"
                 onChange={(e) => setImei(e.target.value)}
                 onFocus={() => setHint(false)}
-                breakpoints={{
-                    600: {
-                        width: "100%",
-                    },
-                }}
-                onKeyPress={onKeyPress}
             />
 
             {!hint && <Button

@@ -6,7 +6,8 @@ import Container from "../ui/Container";
 import Icon from "../ui/Icon";
 import Typography from "../ui/Typography";
 import Login from "../Login";
-
+import {breakpoints} from "../types";
+import { Fragment } from "react";
 
 const MenuWrapper = styled.div<{ visible: boolean, animationOpen: boolean, animationClose: boolean }>`
     width: 100%;
@@ -18,9 +19,9 @@ const MenuWrapper = styled.div<{ visible: boolean, animationOpen: boolean, anima
     top: 0;
     bottom: 0;
     right: 0;
-    overflow: hidden;
+    /*overflow: hidden;*/
+    padding: 11px 32px 20px;
     z-index: 3;
-    padding-top: 10px;
     &:before {
         position: absolute;
         left: 0;
@@ -30,19 +31,24 @@ const MenuWrapper = styled.div<{ visible: boolean, animationOpen: boolean, anima
         height: ${props => (props.animationOpen) ? "30vw" : "300vh"};
 		background: rgba(0, 0, 0, 0.7);
         border-radius: 50%;
-        transform: translate(-50%, -50%);
+		backdrop-filter: blur(8px);
+        transform: translate3d(-50%, -50%, 0);
         content: "";
-        will-change: auto;
+        will-change: width, height;
 		animation: ${props => (props.animationOpen) ? `menuAppearance ${animateTime}ms forwards`: (props.animationClose) ? `menuAppearance ${animateTime}ms reverse` : "none"};
        
+    }
+    
+    @media (min-width: ${breakpoints.sm}) {
+		
     }
 `;
 
 const Close = styled.svg`
-    position: absolute;
-    top: 22px;
-    left: 32px;
-    transition: color 200ms;
+	z-index: 5;
+	position: relative;
+    margin-right: auto;
+    transition: ${(props) => `color ${animateTime}ms`};
     color: ${(props) => props.theme.colors.icon.contrast};
     &:hover {
         cursor: pointer;
@@ -76,15 +82,19 @@ const MenuLink = styled.a`
     flex-direction: row;
     align-items: center;
     width: 100%;
-    margin: 20px 0;
+    margin-top: 37px;
     color: #ffffff;
     transition: color 200ms;
     &:hover {
         cursor: pointer;
         color: ${(props) => props.theme.colors.button.hover};
-        span {
-            color: ${(props) => props.theme.colors.button.hover};
-        }
+    }
+	&:active, &:focus {
+		color: ${(props) => props.theme.colors.link.pressed};
+	}
+    
+    svg {
+		transition: color 200ms;
     }
 `;
 
@@ -92,15 +102,22 @@ const Text = ({ children }: { children: ReactNode }) => {
     return (
         <Typography.Button
             styles={{
-                color: "#fff",
-                marginLeft: "20px",
-                transition: `color ${animateTime}ms`,
+                color: "currentcolor",
+                marginLeft: "21px",
+                transition: `color 200ms`,
             }}
         >
             {children}
         </Typography.Button>
     );
 };
+
+const NavWrapper = styled.nav<{ visible: boolean }>`
+	width: 124px;
+	margin: 88px auto 0;
+	opacity: ${props => (props.visible) ?  1: 0};
+	transition: ${props => (props.visible) ? `opacity ${animateTime / 2}ms`: `opacity ${animateTime}ms`};
+`;
 
 const Menu = () => {
     const { hideMenu, menuIsShown, animationOpen, animationClose } = useMenu();
@@ -117,34 +134,31 @@ const Menu = () => {
     }, [isAuth])
 
     return (
-        <MenuWrapper visible={menuIsShown} animationOpen={animationOpen} animationClose={animationClose}>
-            <CloseButton onClick={hideMenu} />
+        <Fragment>
+            {menuIsShown && <CloseButton onClick={hideMenu} />}
+            <MenuWrapper className="container" visible={menuIsShown} animationOpen={animationOpen} animationClose={animationClose}>
+                {showLogin && <Login />}
 
-            {showLogin && <Login />}
+                <NavWrapper visible={menuIsShown}>
+                    <Container.Flex>
+                        <MenuLink onClick={onLoginClick}>
+                            <Icon name="user" />
+                            <Text>{isAuth ? "Профиль" : "Войти"}</Text>
+                        </MenuLink>
 
-            <Container.Flex styles={{
-                width: "124px",
-                marginTop: "60px",
-                marginLeft: "calc((100vw - 124px) / 2)",
-                opacity: (menuIsShown) ? 1 : 0,
-                transition: (menuIsShown) ? `opacity ${animateTime / 2}s` : `opacity ${animateTime}ms`
-            }}>
-                <MenuLink onClick={onLoginClick}>
-                    <Icon name="user" />
-                    <Text>{isAuth ? "Профиль" : "Войти"}</Text>
-                </MenuLink>
+                        <MenuLink>
+                            <Icon name="reports" />
+                            <Text>Отчеты</Text>
+                        </MenuLink>
 
-                <MenuLink>
-                    <Icon name="reports" />
-                    <Text>Отчеты</Text>
-                </MenuLink>
-
-                <MenuLink>
-                    <Icon name="help" />
-                    <Text>Помощь</Text>
-                </MenuLink>
-            </Container.Flex>
-        </MenuWrapper>
+                        <MenuLink>
+                            <Icon name="help" />
+                            <Text>Помощь</Text>
+                        </MenuLink>
+                    </Container.Flex>
+                </NavWrapper>
+            </MenuWrapper>
+        </Fragment>
     );
 };
 

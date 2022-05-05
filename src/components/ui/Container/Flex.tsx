@@ -1,7 +1,7 @@
 import styled from "styled-components/macro";
 import { getFlexAligns, getFlexJustify } from "../../../helpers/getFlexProps";
+import { Aligns, collectGap, collectWrapperMargin, getCommonProps, Justifies, Props } from "../../types";
 import { getAnimations } from "../../../theme/animations";
-import { Aligns, collectGap, getCommonProps, Justifies, Props } from "../../types";
 
 export type FlexProps = Props<{
     direction?: "row" | "column"
@@ -19,16 +19,16 @@ export type FlexProps = Props<{
 
 const FlexContainer = styled.div<FlexProps>`
     display: flex;
-    width: ${props => props.fullWidth ? "100%" : "auto"};
-    height: ${props => props.fullHeight ? "100%" : "auto"};
+	${props => getCommonProps(props)};
     flex-direction: ${(props) => props.direction || "column"};
     flex-wrap: ${props => props.wrapped ? "wrap" : "no-wrap"};
     justify-content: ${(props) => getFlexJustify(props.justify || "start")};
     align-items: ${(props) => getFlexAligns(props.alignItems || "center")};
-    padding: ${props => props.padding ? `${props.padding}px` : 0};
-    ${props => getCommonProps(props)};
-    ${props => collectGap(props)};
+    padding: ${props => props.padding ? `${props.padding}px` : ""};
     ${props => getAnimations(props)};
+	column-gap: ${props => props.horizontalGap ? `${props.horizontalGap}px` : ""};
+	row-gap: ${props => props.verticalGap ? `${props.verticalGap}px` : ""};
+	gap: ${props => props.gap ? `${props.gap}px` : ""};
 `;
 
 const Flex = (props: FlexProps) => {

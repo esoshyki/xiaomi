@@ -2,16 +2,29 @@ import { OfferStep } from ".";
 import { useOfferData } from "../../hooks/useOfferData";
 import Container from "../ui/Container";
 import { Progress, Card, Info, Typography, Button } from "../ui";
-import { memo, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import OfferDevice from "./OfferDevice";
 import AddNewDevice from "../AddNewDevice";
+import { resetCheckout } from "../../store/userSlice";
 
 const Offer = () => {
     const { step } = useOfferData();
 
     const [hint, setHint] = useState(true);
+    const [cardHeight, setCardHeight] = useState("auto");
+    const [cardWidth, setCardWidth] = useState("auto");
 
     const hintRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!!hintRef.current) {
+            if (window.innerWidth < 660) {
+                setCardHeight(hintRef.current.scrollHeight + "px");
+            } else {
+                setCardWidth(hintRef.current.scrollWidth + "px");
+            }
+        }
+    }, [setCardHeight, setCardWidth]);
 
     const getContent = () => {
         switch (step) {
@@ -42,31 +55,52 @@ const Offer = () => {
 
     return (
         <Container.Flex
-            verticalGap={10}
+            gap={36}
             fullWidth
             fullHeight
-            styles={{ maxWidth: "400px", transition: "all 200ms ease-in" }}
-            padding={28}
+            direction="row"
+            alignItems="stretch"
+            breakpoints={{
+                659.9: {
+                    flexDirection: "column",
+                    alignItems: "center"
+                },
+            }}
         >
-            {step === "imei" && <Card fullWidth ref={hintRef} isHidden={!hint || undefined} >
-                <Container.Flex gap={5} fullWidth padding={28} >
+            {step === "imei" &&
+            <Card
+                ref={hintRef}
+                fullWidth
+                isHidden={!hint || undefined}
+                padding="50px 30px"
+                animateHeight={cardHeight !== "auto"}
+                animateWidth={cardWidth !== "auto"}
+                styles={{
+                    height: cardHeight,
+                    width: cardWidth,
+                    flexShrink: 0
+                }}
+            >
                     <Info>
                         За 2 минуты рассчитайте скидку на покупку у 
-                        <Typography.Link>партнёров</Typography.Link>, взамен
+                        <Typography.Link href="/" target="_blank">партнёров</Typography.Link>, взамен
                         на ваш старый смартфон
                     </Info>
-                    <Button variant="outline">
-                        ПОДРОБНЕЕ
+                    <Button variant="outline" fullWidth uppercase styles={{marginTop: "16px"}}>
+                        Подробнее
                     </Button>
-                </Container.Flex>
             </Card>}
 
-            <Card fullWidth padding={28} >
-                <Container.Flex fullWidth verticalGap={10}>
+            <Card
+                padding="28px"
+                fullWidth
+                styles={{
+                    flexShrink: 0
+                }}
+            >
                 {step !== "imei" && <Progress />}
                 {/* {phone?.[0] && <OfferDevice phone={phone[0]} />} */}
                 {getContent()}
-                </Container.Flex>
             </Card>
 
             {step === "pending" && <AddNewDevice />}

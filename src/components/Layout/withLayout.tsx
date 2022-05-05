@@ -7,9 +7,6 @@ import PageLoading from "./PageLoading";
 import { CheckAuth, getUserData, resetCheckout } from "../../store/userSlice";
 import Container from "../ui/Container";
 import Background from "./Backgorund";
-import Menu from "./Menu";
-import Logo from "../../assets/logo";
-import { useMenu } from "../../hooks/useMenu";
 
 export const withLayout =
     <T extends object>(
@@ -46,29 +43,23 @@ export const withLayout =
             user.checkAuth.result,
         ]);
 
-        const { menuIsShown } = useMenu()
-
         return (
-            <Container.Flex styles={{ position: "relative" }}>
+            <Container.Flex alignItems="stretch" styles={{ position: "relative" }}>
                 <Background />
-                <Menu />
-                <Logo isWhite={menuIsShown} />
-                <Container.Flex fullHeight fullWidth styles={{ zIndex: "1"}}>
-                    <Header />
-                    <Main>
-                        {!needAuth && <Component {...props} />}
-                        {needAuth &&
-                            !user.checkAuth.pending &&
-                            user.checkAuth.result === "success" && (
-                                <Component {...props} />
-                            )}
-                        {needAuth && user.checkAuth.pending && <PageLoading />}
-                        {needAuth && user.checkAuth.result === "error" && (
-                            <Bearer />
+                <Header />
+                <Main>
+                    {!needAuth && <Component {...props} />}
+                    {needAuth &&
+                        !user.checkAuth.pending &&
+                        user.checkAuth.result === "success" && (
+                            <Component {...props} />
                         )}
-                        {needAuth && !user.checkAuth.result && <Bearer />}
-                    </Main>
-                </Container.Flex>
+                    {needAuth && user.checkAuth.pending && <PageLoading />}
+                    {needAuth && user.checkAuth.result === "error" && (
+                        <Bearer />
+                    )}
+                    {needAuth && !user.checkAuth.result && <Bearer />}
+                </Main>
             </Container.Flex>
         );
     };

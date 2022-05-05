@@ -6,9 +6,9 @@ import { Animations } from '../theme/animations';
 
 export const breakpoints = {
     xl: 1536,
-    lg: 1200,
-    md: 900,
-    sm: 600,
+    lg: 1280,
+    md: 1104,
+    sm: 660,
     xs: 450
 }
 
@@ -17,6 +17,7 @@ export type Props<T> = {
     children?: ReactNode
     fullWidth?: true
     fullHeight?: true
+    uppercase?: true
     padding?: number | string
     margin?: number | string
     className?: string
@@ -32,7 +33,7 @@ export type Props<T> = {
 } & T
 
 export type Justifies = "start" | "end" | "center" | "around" | "between"
-export type Aligns = "start" | "end" | "center";
+export type Aligns = "start" | "end" | "center" | "stretch";
 
 export const getCommonProps = (props: Props<any>) => {
     const { padding, margin, fullWidth, fullHeight } = props;
@@ -78,19 +79,16 @@ export const getCommonProps = (props: Props<any>) => {
 export const collectGap = (props: GridProps | FlexProps) => {
     return ({
         "& > *" : {
-            margin: props.gap ? `${props.gap}px` : undefined,
+            margin: props.gap ? `${props.gap}px ${props.gap}px 0 0` : undefined,
             marginTop: props.verticalGap ? `${props.verticalGap}px` : undefined,
-            marginBottom: props.verticalGap ? `${props.verticalGap}px` : undefined,
-            marginLeft: props.horizontalGap ? `${props.horizontalGap}px` : undefined,
             marginRight: props.horizontalGap ? `${props.horizontalGap}px` : undefined,
-            "&:first-child": {
-                marginTop: props.verticalGap ? 0 : undefined,
-                marginLeft: props.horizontalGap ? 0 : undefined,
-            },
-            "&:last-child": {
-                marginBottom: props.verticalGap ? 0 : undefined,
-                marginRight: props.horizontalGap ? 0 : undefined,
-            }
         }
+    })
+}
+export const collectWrapperMargin = (props: GridProps | FlexProps) => {
+    return ({
+        margin: props.gap ? `-${props.gap}px -${props.gap}px 0 0` : undefined,
+        marginTop: props.verticalGap ? `-${props.verticalGap}px` : undefined,
+        marginRight: props.horizontalGap ? `-${props.horizontalGap}px` : undefined
     })
 }

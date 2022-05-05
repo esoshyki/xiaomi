@@ -17,9 +17,10 @@ export const Img = styled.div<{image: string}>`
 const ProgressContainer = styled.div`
     width: 100%;
     height: 8px;
+    margin-bottom: 28px;
     overflow: hidden;
-    border-radius: 4px;
-    background-color: #fff;
+    border-radius: 8px;
+    background-color: ${props => props.theme.colors.statusBar.contrast};
     position: relative;
 `;
 
@@ -27,7 +28,7 @@ const ProgressContent = styled.div<{ progress: number}>`
     min-width: 8px;
     width: ${props => `${100 * props.progress}%`};
     height: 8px;
-    border-radius: 4px;
+    border-radius: 8px;
     background-color: ${props => props.theme.colors.statusBar.default};
     position: absolute;
     transition: width 200ms ease-in;
@@ -41,7 +42,7 @@ const Progress = () => {
     
     return (
         <Container.Flex fullWidth>
-            <Container.Flex justify='between' direction='row' fullWidth margin={"0 0 10px"}>
+            <Container.Flex justify='between' direction='row' fullWidth margin={"0 0 4px"}>
                 <Img image={RostokPNG} />
                 <Img image={BranchPNG} />
                 <Img image={TreePNG} />                

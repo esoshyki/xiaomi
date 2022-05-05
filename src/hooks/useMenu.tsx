@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { select } from "../store/selector";
 import { hideMenu, showMenu, animationOpen, animationClose, animationClear } from "../store/viewSlice";
 
-export const animateTime = 200;
+export const animateTime = 400;
 
 export const useMenu = () => {
     const dispatch = useDispatch();

@@ -11,4 +11,11 @@ export const Link = styled.a<TextProps>`
     })};
     ${(props) => getCommonProps(props)};
     ${(props) => (props.color ? { color: props.color } : {})}
+    
+    &:hover {
+        color: ${(props) => props.theme.colors.link.hover};
+    }
+    &:active, &:focus {
+        color: ${(props) => props.theme.colors.link.pressed};
+    }
 `;

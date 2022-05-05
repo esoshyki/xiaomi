@@ -83,7 +83,8 @@ const MenuLink = styled.a`
     align-items: center;
     width: 100%;
     margin-top: 37px;
-    color: #ffffff;
+	color: ${(props) => props.theme.colors.link.contrast};
+    text-decoration: none;
     transition: color 200ms;
     &:hover {
         cursor: pointer;
@@ -94,7 +95,7 @@ const MenuLink = styled.a`
 	}
     
     svg {
-		transition: color 200ms;
+		transition: all 200ms;
     }
 `;
 
@@ -113,7 +114,6 @@ const Text = ({ children }: { children: ReactNode }) => {
 };
 
 const NavWrapper = styled.nav<{ visible: boolean }>`
-	width: 124px;
 	margin: 88px auto 0;
 	opacity: ${props => (props.visible) ?  1: 0};
 	transition: ${props => (props.visible) ? `opacity ${animateTime / 2}ms`: `opacity ${animateTime}ms`};
@@ -136,18 +136,18 @@ const Menu = () => {
                 {showLogin && <Login />}
 
                 <NavWrapper visible={menuIsShown}>
-                    <Container.Flex>
+                    <Container.Flex styles={{width: "fit-content", marginLeft: "auto", marginRight: "auto"}}>
                         <MenuLink onClick={onLoginClick}>
                             <Icon name="user" />
                             <Text>{isAuth ? "Профиль" : "Войти"}</Text>
                         </MenuLink>
 
-                        <MenuLink>
+                        <MenuLink href="partner">
                             <Icon name="reports" />
-                            <Text>Отчеты</Text>
+                            <Text>Стать партнером</Text>
                         </MenuLink>
 
-                        <MenuLink>
+                        <MenuLink href="help">
                             <Icon name="help" />
                             <Text>Помощь</Text>
                         </MenuLink>

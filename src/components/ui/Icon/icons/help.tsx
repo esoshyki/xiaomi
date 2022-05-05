@@ -8,6 +8,7 @@ const HelpIcon = (props: IconProps) => {
             name="user"
             width={props.width ?? 24}
             height={props.height ?? 24}
+            styles={{flexShrink: 0}}
         >
             <path
                 fillRule="evenodd"

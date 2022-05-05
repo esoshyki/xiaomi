@@ -6,7 +6,7 @@ import Container from "../ui/Container";
 import Icon from "../ui/Icon";
 import Typography from "../ui/Typography";
 import Login from "../Login";
-import {breakpoints} from "../types";
+import { breakpoints } from "../types";
 import { Fragment } from "react";
 
 const MenuWrapper = styled.div<{ visible: boolean, animationOpen: boolean, animationClose: boolean }>`
@@ -35,7 +35,7 @@ const MenuWrapper = styled.div<{ visible: boolean, animationOpen: boolean, anima
         transform: translate3d(-50%, -50%, 0);
         content: "";
         will-change: width, height;
-		animation: ${props => (props.animationOpen) ? `menuAppearance ${animateTime}ms forwards`: (props.animationClose) ? `menuAppearance ${animateTime}ms reverse` : "none"};
+		animation: ${props => (props.animationOpen) ? `menuAppearance ${animateTime}ms forwards` : (props.animationClose) ? `menuAppearance ${animateTime}ms reverse` : "none"};
        
     }
     
@@ -83,7 +83,8 @@ const MenuLink = styled.a`
     align-items: center;
     width: 100%;
     margin-top: 37px;
-    color: #ffffff;
+	color: ${(props) => props.theme.colors.link.contrast};
+    text-decoration: none;
     transition: color 200ms;
     &:hover {
         cursor: pointer;
@@ -94,7 +95,7 @@ const MenuLink = styled.a`
 	}
     
     svg {
-		transition: color 200ms;
+		transition: all 200ms;
     }
 `;
 
@@ -113,10 +114,9 @@ const Text = ({ children }: { children: ReactNode }) => {
 };
 
 const NavWrapper = styled.nav<{ visible: boolean }>`
-	width: 124px;
 	margin: 88px auto 0;
-	opacity: ${props => (props.visible) ?  1: 0};
-	transition: ${props => (props.visible) ? `opacity ${animateTime / 2}ms`: `opacity ${animateTime}ms`};
+	opacity: ${props => (props.visible) ? 1 : 0};
+	transition: ${props => (props.visible) ? `opacity ${animateTime / 2}ms` : `opacity ${animateTime}ms`};
 `;
 
 const Menu = () => {
@@ -129,18 +129,19 @@ const Menu = () => {
             <MenuWrapper className="container" visible={menuIsShown} animationOpen={animationOpen} animationClose={animationClose}>
 
                 <NavWrapper visible={menuIsShown}>
-                    <Container.Flex>
+
+                    <Container.Flex styles={{ width: "fit-content", marginLeft: "auto", marginRight: "auto" }}>
                         <MenuLink href={isAuth ? "/profile" : "/login"}>
                             <Icon name="user" />
                             <Text>{isAuth ? "Профиль" : "Войти"}</Text>
                         </MenuLink>
 
-                        <MenuLink>
+                        <MenuLink href="partner">
                             <Icon name="reports" />
-                            <Text>Отчеты</Text>
+                            <Text>Стать партнером</Text>
                         </MenuLink>
 
-                        <MenuLink>
+                        <MenuLink href="help">
                             <Icon name="help" />
                             <Text>Помощь</Text>
                         </MenuLink>

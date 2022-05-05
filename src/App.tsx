@@ -6,6 +6,8 @@ import Theme from "./pages/Theme";
 import styled from "styled-components/macro";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
+import Partner from "./pages/Partner";
+import Help from "./pages/Help";
 
 const AppWrapper = styled.div`
     width: 100%;
@@ -21,6 +23,8 @@ function App() {
                     <Route path="/theme" element={<Theme />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/partner" element={<Partner />} />
+                    <Route path="/help" element={<Help />} />
                 </Routes>
             </Router>
         </AppWrapper>

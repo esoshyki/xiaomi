@@ -9,6 +9,11 @@ import PhotoIcon from './icons/photo';
 import AddPlus from './icons/addPlus';
 import Hidden from './icons/hidden';
 import Eye from './icons/eye';
+import SettingsIcon from './icons/settings';
+import EmployeeIcon from './icons/employee';
+import OrderList from './icons/orderList';
+import NewOrderIcon from './icons/newOrder';
+import ExitIcon from './icons/exit';
 
 const Icon = (props: IconProps) => {
 
@@ -17,6 +22,10 @@ const Icon = (props: IconProps) => {
             return <TelegramIcon {...props}/>;
         case "loading":
             return <LoadingIcon {...props}/>
+        case "employee":
+            return <EmployeeIcon {...props} />
+        case "exit":
+            return <ExitIcon {...props} />
         case "user":
             return <UserIcon {...props} />
         case "reports":
@@ -25,6 +34,10 @@ const Icon = (props: IconProps) => {
             return <HelpIcon {...props} />
         case "info":
             return <InfoIcon {...props} />
+        case "new-order":
+            return <NewOrderIcon {...props} />
+        case "order-list":
+            return <OrderList {...props} />
         case "photo":
             return <PhotoIcon {...props} />
         case "add-plus":
@@ -33,6 +46,8 @@ const Icon = (props: IconProps) => {
             return <Hidden {...props} />
         case "eye":
             return <Eye {...props} />
+        case "settings":
+            return <SettingsIcon {...props} />
     };
 }
 

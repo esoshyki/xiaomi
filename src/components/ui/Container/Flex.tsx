@@ -37,6 +37,8 @@ const Flex = (props: FlexProps) => {
         <FlexContainer 
             className={props.className}
             onClick={props.onClick}
+            onMouseEnter={props.onMouseEnter}
+            onMouseLeave={props.onMouseLeave}
             {...props}
         >
             {!!props.children && props.children}

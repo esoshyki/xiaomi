@@ -1,6 +1,7 @@
 import { Props } from "../../types";
 
 export type Icons = "telegram" | "loading" | "user" | "reports" | "help" | "info" | "photo" | "add-plus" | "hidden" | "eye"
+    | "settings" | "employee" | "order-list" | "new-order" | "exit"
 
 export type IconProps = Props<{
     name: Icons,

@@ -31,6 +31,8 @@ export type Props<T> = {
     animate?: Animations,
     isHidden?: true
     onAnimationEnd?: () => void
+    onMouseEnter?: (e?: any) => void;
+    onMouseLeave?: (e?: any) => void;
 } & T
 
 export type Justifies = "start" | "end" | "center" | "around" | "between"

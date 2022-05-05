@@ -7,7 +7,7 @@ import OfferDevice from "./OfferDevice";
 import AddNewDevice from "../AddNewDevice";
 
 const Offer = () => {
-    const { step, phone } = useOfferData();
+    const { step } = useOfferData();
 
     const [hint, setHint] = useState(true);
 
@@ -64,7 +64,7 @@ const Offer = () => {
             <Card fullWidth padding={28} >
                 <Container.Flex fullWidth verticalGap={10}>
                 {step !== "imei" && <Progress />}
-                {phone?.[0] && <OfferDevice phone={phone[0]} />}
+                {/* {phone?.[0] && <OfferDevice phone={phone[0]} />} */}
                 {getContent()}
                 </Container.Flex>
             </Card>

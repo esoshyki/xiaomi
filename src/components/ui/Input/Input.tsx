@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, KeyboardEvent } from "react";
 import styled from "styled-components";
 import { getCommonProps, Props } from "../../types";
 import Typography from "../Typography";
@@ -8,8 +8,9 @@ import { useTheme } from 'styled-components/macro'
 type InputProps = Props<{
     label?: string;
     type?: InputTypes;
-    onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void
     onFocus?: () => void
+    onKeyPress?: (e: KeyboardEvent<HTMLInputElement>) => void
     value?: string | number;
     error?: string;
     placeholder?: string
@@ -39,7 +40,7 @@ const Wrapper = styled.div<InputProps>`
 `;
 
 const Input = (props: InputProps) => {
-    const { label, value, onChange, onFocus } = props;
+    const { label, value, onChange, onFocus, onKeyPress } = props;
 
     const theme = useTheme();
 
@@ -50,6 +51,7 @@ const Input = (props: InputProps) => {
                 type={props.type ?? "text"}
                 onChange={onChange}
                 onFocus={onFocus}
+                onKeyPress={onKeyPress}
                 value={value}
                 placeholder={props.placeholder}
             ></InputWrapper>

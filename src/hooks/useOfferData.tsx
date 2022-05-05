@@ -4,108 +4,115 @@ import { ChangeEvent, useCallback, useEffect } from "react";
 import {
     CheckImei,
     GetQuestions,
-    setCurrentQuestion,
-    setCurrentQuestionGroup,
     giveAnswer,
-    setImeiValue,
     setStep,
-    changeAnswer,
     restoreOffer,
     setPhotoFront,
     setPhotoBack,
+    setCombinationsId,
 } from "../store/offerSlice";
-import { GivenAnswer, OfferSteps } from "../store/offerSlice/types";
+import { OfferSteps, Question, QuestionTree } from "../store/offerSlice/types";
+import { N } from "../store/types";
 
 export const useOfferData = () => {
     const offer = useSelector(select.offer);
     const dispatch = useDispatch();
 
     const setImei = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setImeiValue(e.target.value));
+
     };
 
-    const getQuestions = (phoneID: string) => {
-        dispatch(GetQuestions.request(phoneID));
-    };
 
     const changeStep = useCallback((step: OfferSteps) => {
         dispatch(setStep(step));
     }, [dispatch]);
 
     const nextQuestion = useCallback(() => {
-        const { currentQuestion, currentQuestionGroup, questions } = offer;
-        if (
-            typeof currentQuestion !== "number" ||
-            typeof currentQuestionGroup !== "number" ||
-            !questions
-        ) return;
 
-        const currentGroup = questions[currentQuestionGroup];
-
-        if (!currentGroup) {
-            changeStep("preliminary")
-        }
-
-        if (currentGroup.questions[currentQuestion + 1]) {
-            return dispatch(setCurrentQuestion(currentQuestion + 1));
-        } else {
-            if (questions[currentQuestionGroup + 1]) {
-                dispatch(
-                    setCurrentQuestionGroup(currentQuestionGroup + 1)
-                );
-            } else {
-                changeStep("preliminary")
-            }   
-        }
     }, [offer, changeStep, dispatch]);
 
     useEffect(() => {
-        if (offer.step !== "questions") return;
-        const shouldDisplay = (
-            displayConditionQuestion?: string,
-            displayConditionAnswers?: string[]
-        ) => {
-            if (!displayConditionQuestion || !displayConditionAnswers) return true;
-            if (displayConditionAnswers && displayConditionQuestion) {
-                return Object.values(offer.givenAnswers).some((questions) =>
-                    questions.some(
-                        (question) =>
-                            question.questionId === displayConditionQuestion &&
-                            displayConditionAnswers.includes(question.answerId)
-                    )
-                );
-            }
-        };
 
-        const { questions, currentQuestion, currentQuestionGroup } = offer;
-        if (currentQuestionGroup && currentQuestion) {
-            if (questions) {
-                const question = questions[currentQuestionGroup].questions[currentQuestion];
-                const { displayConditionAnswers, displayConditionQuestion } = question
+    }, [offer, nextQuestion]);
 
-                if (!shouldDisplay(displayConditionQuestion, displayConditionAnswers)) {
-                    nextQuestion()
-                }
-            }
+    const getTree = (questionId: number, answerId: number, root?: QuestionTree): QuestionTree | null => {
+
+        if (root) {
+            const { questions } = root;
+            const newAnswers = questions[questionId]?.answers;
+            if (!newAnswers) return null;
+            const newTree = newAnswers[answerId];
+            return Array.isArray(newTree) ? null : newTree;
         }
-    }, [offer, nextQuestion])
 
-      const _giveAnswer = (groupId: number, answer: GivenAnswer) => {
+        return null
+    }
+
+    const getQuestion = (): Question & { questionId: number } | null => {
+        const { questionsData, questionsTree, answers, loading, errors } = offer;
+
+        if (errors.length > 0) return null;
+
+        if (loading) return null;
+
+        if (!questionsData || !questionsTree) return null
+
+        if (!answers) {
+            const idx = Object.keys(questionsTree.questions)[0];
+            if (idx) {
+                const question = questionsData[+idx];
+                if (question) {
+                    return { ...question, questionId: +idx }
+                }
+                return null
+            } else {
+                dispatch(GetQuestions.request());
+                return null
+            }
+        } else {
+            let tree: QuestionTree | null = questionsTree;
+            Object.entries(answers).forEach(([questionId, answerId]) => {
+                if (+questionId) {
+                    const newTree = getTree(+questionId, +answerId, questionsTree);
+                    if (newTree) {
+                        tree = newTree
+                    }
+                }
+            });
+
+            if (tree) {
+                if (Object.keys(tree.questions).every(el => Object.keys(answers).includes(el))) {
+                    dispatch(GetQuestions.request());
+                    return null;
+                }
+                if (tree.combinationId && answers.combinationId !== tree.combinationId) {
+                    dispatch(setCombinationsId(tree.combinationId));
+                }
+                const key = Object.keys(tree.questions).filter(key => !Object.keys(answers).includes(key))[0];
+                if (key) {
+                    return { ...questionsData[+key], questionId: +key }
+                } else {
+                    dispatch(GetQuestions.request())
+                    return null;
+                }
+            } else {
+                return null
+            }
+
+        }
+
+        return null
+    }
+
+    const _giveAnswer = (questionId: number, answer: number | string) => {
         dispatch(
             giveAnswer({
                 answer,
-                groupId,
+                questionId,
             })
         );
         nextQuestion();
     };
-
-    const _changeAnswer = (groupId: number, answer: GivenAnswer) => {
-        dispatch(changeAnswer({
-            answer,
-            groupId
-        }))
-    }
 
     const _restoreOffer = () => {
         dispatch(restoreOffer())
@@ -117,27 +124,18 @@ export const useOfferData = () => {
 
     const checkImei = (emai: string) => dispatch(CheckImei.request(emai));
 
-    const progress =
-        (Object.values(offer.givenAnswers).reduce(
-            (acc, next) => acc + next.length,
-            0
-        ) || 0) /
-        (offer.questions?.reduce(
-            (acc, next) => acc + next.questions.length,
-            0
-        ) || 1);
+    const progress = 1;
 
     return {
         ...offer,
         setImei,
         checkImei,
-        getQuestions,
         changeStep,
         nextQuestion,
         giveAnswer: _giveAnswer,
-        changeAnswer: _changeAnswer,
         restoreOffer: _restoreOffer,
         progress,
-        setPhoto
+        setPhoto,
+        getQuestion
     };
 };

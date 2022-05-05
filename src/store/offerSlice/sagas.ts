@@ -1,27 +1,15 @@
-import { takeLeading, call, put, select } from "redux-saga/effects";
-import { CheckImei, GetQuestions, setImeiValue } from ".";
+import { takeLeading, call, put, select, takeEvery } from "redux-saga/effects";
+import { CheckImei, GetQuestions, setStep } from ".";
 import { phoneAPI } from "../../api/phone";
-import { PhoneInfo, QuestionGroup } from "./types";
+import { OfferSteps, QuestionsResponse } from "./types";
 import { ResponseData } from "../../api/types";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
 
-function* checkImeiWorker ({ payload } : PayloadAction<string>) {
-    const state : RootState = yield select();
-    const response: ResponseData<PhoneInfo[]> = yield call(phoneAPI.getModelByImei, payload, state.user.user);
-    if (response.status === "success") {
-        yield put(CheckImei.success(response.data))
-        yield put(setImeiValue(payload))
-    }
-    if (response.status === "error") {
-        yield put(CheckImei.failure(response.errors))
-    }
-    yield put(CheckImei.fulfill())
-}
-
 function* getQuestionsWorker ({ payload } : PayloadAction<string>) {
     const state : RootState = yield select();
-    const response: ResponseData<QuestionGroup[]> = yield call(phoneAPI.getQuestions, payload, state.user.user);
+    const answers = state.offer.answers;
+    const response: ResponseData<QuestionsResponse> = yield call(phoneAPI.getQuestions, payload, state.user.user, answers);
     if (response.status === "success") {
         yield put(GetQuestions.success(response.data))
     };
@@ -31,7 +19,14 @@ function* getQuestionsWorker ({ payload } : PayloadAction<string>) {
     yield put(GetQuestions.fulfill())
 }
 
+function* setStepWorker ({ payload } : PayloadAction<OfferSteps>) {
+    if (payload === "questions") {
+        yield put(GetQuestions.request())
+    };
+};
+
+
 export default function* offerSagas () {
-    yield takeLeading(CheckImei.REQUEST, checkImeiWorker);
     yield takeLeading(GetQuestions.REQUEST, getQuestionsWorker);
+    yield takeEvery(setStep, setStepWorker)
 }

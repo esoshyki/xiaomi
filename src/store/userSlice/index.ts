@@ -74,6 +74,7 @@ const userSlice = createSlice({
         [Logout.SUCCESS](state) {
             state.logout.pending = false;
             state.user = null;
+            state.login.show = false;
         },
         [Logout.FAILURE](state) {
             state.logout.pending = false

@@ -14,43 +14,49 @@ export type OfferSteps =
      | "success"
      | "preliminary"
 
-export type OfferError = {
-
-}
-
-export type PhoneInfo = {
-    ID: string
-    NAME: string
-    IMAGE: string
-}
-
-export type PhoneVariant = {
-    offerId: number
-    properties: {
-        MEMORY: number
-        BRAND: string
-        MODEL: string
-    }
-}
+export type AnswerType = "from_list" | "free_input"
 
 export type Answer = {
     answerName: string
-    answerId: string
 }
 
-export type QuestionAnswer = {
-    answerId: string
-    answerName: string
+export type Answers = {
+    combinationId?: number
+    [questionId: number] : number | string
+}
+
+export type QuestionsData = {
+    [id: number]: Question
+}
+
+export type AnswerTree = {
+    combinationId?: number
+    questions: QuestionTree
+}
+
+export type QuestionTree = {
+    combinationId?: number
+    questions: {
+        [id: keyof QuestionsData]: {
+            answers: {
+                [id: keyof QuestionsData] : QuestionTree | []
+            }
+        }
+    }
+}
+
+export type QuestionsResponse = {
+    questionsData: QuestionsData
+    questionsTree: QuestionTree
 }
 
 export type Question = {
-    questionId: string
-    questionAnswers: QuestionAnswer[]
+    answerType: AnswerType
     questionName: string
-    questionCode: string
-    questionHelp: string
-    displayConditionQuestion?: string
-    displayConditionAnswers?: string[]
+    questionGroup: string
+    questionShortName: isString
+    questionHelp?: isString
+    answers: {[id: number] : Answer}
 }
 
 export type QuestionGroup = {
@@ -59,31 +65,19 @@ export type QuestionGroup = {
     questions: Question[]
 };
 
-export type GivenAnswer = {
-    questionId: string
-    answerId: string
-    answerName: string
-    questionCode: string
-    groupShortName: string
-}
-
 export type OfferState = {
     step: OfferSteps
-    IMEI: string;
     loading: boolean,
     result: "success" | "error" | null
     errors: string[]
-    phone: N<PhoneInfo[]>,
-    questions: N<QuestionGroup[]>,
-    variants: N<PhoneVariant[]>,
-    variant: N<PhoneVariant>,
+    answers: Answers | null
+    questionsData: QuestionsData | null
+    questionsTree: QuestionTree | null
     hint: string,
     currentQuestion: isNumber
     currentQuestionGroup: isNumber
-    givenAnswers: {
-        [k: string]: GivenAnswer[]
-    }
     photoFront: isString
     photoBack: isString
+    lastGivenQuestion?: number
 }
 

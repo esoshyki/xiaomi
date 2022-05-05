@@ -8,11 +8,11 @@ enum Content {
 }
 
 const OfferIsYourPhone = () => {
-    const { phone, getQuestions, changeStep, errors } = useOfferData();
+    // const { phone, getQuestions, changeStep, errors } = useOfferData();
 
     return (
         <Fragment>
-            {phone && (
+            {/* {phone && (
                 <Confirm
                     onNo={() => {
                         changeStep("imei");
@@ -23,7 +23,7 @@ const OfferIsYourPhone = () => {
             )}
             {!!errors.length && (
                 <Typography.Error>{errors.join(". ")}</Typography.Error>
-            )}
+            )} */}
         </Fragment>
     );
 };

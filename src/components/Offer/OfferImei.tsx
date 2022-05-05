@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 import { useOfferData } from "../../hooks/useOfferData";
 import { Info } from "../ui";
 import Button from "../ui/Button";
@@ -17,6 +17,12 @@ const OfferImei = ({ hint, setHint } : OfferImeiProps) => {
 
     const [IMEI, setImei] = useState("");
 
+    const onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            checkImei(IMEI)
+        }
+    }
+
     return (
         <Container.Flex verticalGap={10} fullWidth styles={{ transition: "all 500ms ease-in" }}> 
             <Typography.Title textAlign="start" styles={{ width: "100%", margin: 0 }}>
@@ -34,6 +40,7 @@ const OfferImei = ({ hint, setHint } : OfferImeiProps) => {
                         width: "100%",
                     },
                 }}
+                onKeyPress={onKeyPress}
             />
 
             {!hint && <Button

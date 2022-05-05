@@ -58,7 +58,7 @@ const Wrapper = styled.div<CardProps>`
 `;
 
 const Inner = styled.div<{padding: any}>`
-    padding: ${(props) => (props.padding) ? props.padding : ""};
+    padding: ${(props) => (props.padding) ? Number.isInteger(props.padding) ? `${props.padding}px` : props.padding : ""};
     border-radius: inherit;
     transition: opacity 200ms;
 `;

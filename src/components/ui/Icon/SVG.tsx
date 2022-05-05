@@ -20,6 +20,7 @@ const SVG = (props: SVGProps) => {
             viewBox={`0 0 ${props.width} ${props.height}`}
             fill={props.fill ?? "currentColor"}
             {...props}
+            style={{...props.styles}}
         >
             {props.children}
         </Wrapper>

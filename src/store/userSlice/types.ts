@@ -2,6 +2,8 @@ export type User = {
     auth_param_name: string
     auth_param_value: string
     isAuthorised: boolean
+    image?: string
+    userName?: string
 }
 
 export type ErrorFieldKey<T> = keyof (T & { catched: string })

@@ -4,8 +4,7 @@ import styled from "styled-components";
 import { Fragment } from "react";
 import Menu from "./Menu";
 import Logo from "../../assets/logo";
-import { FlexProps } from "../ui/Container/Flex";
-import {breakpoints} from "../types"
+import { Link } from 'react-router-dom'
 interface ButtonProps {
     onClick: () => void;
 }
@@ -74,12 +73,14 @@ const Header = () => {
             >
                 {!menuIsShown &&
                     <ButtonContainer type="button">
-                         <Burger onClick={showMenu} />
+                        <Burger onClick={showMenu} />
                     </ButtonContainer>
                 }
                 <Menu />
                 <LogoWrapper>
-                    <Logo isWhite={menuIsShown} />
+                    <Link to={"/"}>
+                        <Logo isWhite={menuIsShown} />
+                    </Link>
                 </LogoWrapper>
             </Container.Flex>
         </header>

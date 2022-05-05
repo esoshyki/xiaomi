@@ -48,6 +48,7 @@ export type QuestionTree = {
 export type QuestionsResponse = {
     questionsData: QuestionsData
     questionsTree: QuestionTree
+    complete?: true
 }
 
 export type Question = {

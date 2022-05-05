@@ -10,6 +10,9 @@ function* getQuestionsWorker ({ payload } : PayloadAction<string>) {
     const state : RootState = yield select();
     const answers = state.offer.answers;
     const response: ResponseData<QuestionsResponse> = yield call(phoneAPI.getQuestions, state.user.user, answers);
+    if (response.data?.complete) {
+        yield put(setStep("summary"));
+    }
     if (response.status === "success") {
         yield put(GetQuestions.success(response.data))
     };

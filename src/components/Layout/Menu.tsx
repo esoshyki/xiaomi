@@ -129,10 +129,6 @@ const Menu = () => {
         }
     };
 
-    useEffect(() => {
-        console.log(isAuth)
-    }, [isAuth])
-
     return (
         <Fragment>
             {menuIsShown && <CloseButton onClick={hideMenu} />}

@@ -35,7 +35,6 @@ const getTheme = async (id: number) : Promise<ResponseData<{ theme: DefaultTheme
 
         const data: ResponseData<{ theme: DefaultTheme }> = response.data;
 
-        console.log(data);
         return {
             data: data.data,
             errors: data.errors,

@@ -8,8 +8,6 @@ const FromList = (props: QuestionData ) => {
 
     const { answers, questionId, combinationId } = props;
 
-    console.log(`props`, props);
-
     const onClick = (answerId: number) => {
          giveAnswer(questionId, answerId, combinationId)
     }

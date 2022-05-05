@@ -7,7 +7,11 @@ import OfferQuestion, { QuestionData } from "./Question/OfferQuestion";
 const OfferQuestions = () => {
     const { getQuestion, errors, getQuestions } = useOfferData();
 
-    const question = getQuestion();
+    const question = errors.length? null : getQuestion();
+
+    if (!question && !errors.length) {
+        getQuestions();
+    }
 
     useEffect(() => {
         getQuestions()

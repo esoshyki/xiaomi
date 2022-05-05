@@ -33,6 +33,7 @@ const OfferSummary = () => {
 
     return (
         <Container.Flex fullWidth>
+            <Typography.Title>Успех</Typography.Title>
             {/* {onlyQuestions.map((question) => (
                 <OfferQuestion
                     {...question}

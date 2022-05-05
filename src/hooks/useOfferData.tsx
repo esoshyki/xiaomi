@@ -26,7 +26,7 @@ export const useOfferData = () => {
     }
 
     const giveNextQuestions = () => {
-        console.log("next questions")
+        getQuestions()
     };
 
     const getQuestion = (): Question & { questionId: number } | null => {
@@ -52,10 +52,15 @@ export const useOfferData = () => {
             }
         }, {...questionsTree}) : questionsTree;
 
-        console.log(tree);
+        console.log(`tree`, tree);
 
         if (tree.combinationId && answers?.combinationId !== tree.combinationId) {
             dispatch(setCombinationsId(tree.combinationId));
+        };
+
+        if (Object.keys(tree.questions).length === 0) {
+            giveNextQuestions();
+            return null;
         }
 
         const key = Object.keys(tree.questions).filter(el => !questionsGiven.includes(el))[0];

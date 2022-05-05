@@ -98,7 +98,6 @@ const offerSlice = createSlice({
         },
         [GetQuestions.FAILURE](state, { payload } : PayloadAction<string[]>) {
             state.result = "error";
-            console.log(payload);
             state.errors = payload
         },
         [GetQuestions.SUCCESS](state, { payload } : PayloadAction<QuestionsResponse>) {

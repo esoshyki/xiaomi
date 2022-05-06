@@ -1,26 +1,6 @@
 import { colors } from './colors';
 
-type TextProps = {
-    fontWeight: string
-    fontSize: string
-    lineHeight: string
-    color: string
-    textDecorationLine?: string
-}
-
-export type Typography = {
-    fontFamily: string,
-    title: TextProps
-    main: TextProps
-    medium: TextProps
-    small: TextProps
-    button: TextProps
-    link: TextProps
-    largeRubles: TextProps
-    mediumRubles: TextProps
-}
-
-export const typography: Typography = {
+export const typography = {
     fontFamily: "Inter, Arial, sans-serif",
     title: {
         fontSize: "17px",
@@ -72,3 +52,5 @@ export const typography: Typography = {
         color: colors.text.default
     }
 }
+
+export type Typography = typeof typography

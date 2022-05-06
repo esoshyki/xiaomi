@@ -1,52 +1,5 @@
-export type Colors = {
-    background: {
-        contrast: string
-        opacity: string
-        default: string
-        first: string
-        second: string
-    }
-    accent: {
-        default: string
-        hover: string
-        pressed: string
-    }
-    link: {
-        contrast: string
-        default: string
-        hover: string
-        pressed: string
-        visited: string
-    }
-    button: {
-        contrast: string
-        default: string
-        hover: string
-        pressed: string
-        disable: string
-    }
-    text: {
-        contrast: string
-        default: string
-        secondary: string
-        tertiary: string
-    }
-    icon: {
-        contrast: string
-        default: string
-        secondary: string
-    }
-    statusBar: {
-        contrast: string
-        default: string
-    }
-    info: {
-        error: string
-        success: string
-    }
-}
 
-export const colors : Colors = {
+export const colors = {
     background: {
         contrast: "#fff",
         opacity: "rgba(255, 255, 255, 0.6);",
@@ -90,7 +43,14 @@ export const colors : Colors = {
     },
     info: {
         error: "#E7372D",
-        success: "#78C25E"
+        success: "#78C25E",
+        grey: "#C7C9C7",
+        yellow: "#FFD600",
+        orange: "#F6AE3B",
+        blue: "#5DA3EC",
+        purple: "#C469FA"
     }
 }
+
+export type Colors = typeof colors;
 

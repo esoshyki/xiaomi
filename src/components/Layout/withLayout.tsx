@@ -55,10 +55,10 @@ export const withLayout =
                             <Component {...props} />
                         )}
                     {needAuth && user.checkAuth.pending && <PageLoading />}
-                    {needAuth && user.checkAuth.result === "error" && (
+                    {needAuth && !user.checkAuth.pending && user.checkAuth.result === "error" && (
                         <Bearer />
                     )}
-                    {needAuth && !user.checkAuth.result && <Bearer />}
+                    {needAuth && !user.checkAuth.pending && !user.checkAuth.result && <Bearer />}
                 </Main>
             </Container.Flex>
         );

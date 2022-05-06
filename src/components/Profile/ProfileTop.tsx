@@ -5,8 +5,7 @@ import Icon from "../ui/Icon";
 
 const ProfileTop = () => {
 
-    const { user: userData } = useAuth();
-    const { user } = userData;
+    const { user } = useAuth();
 
     return (
         <Card fullWidth padding={28} styles={{padding: "28px"}}>

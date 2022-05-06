@@ -4,6 +4,7 @@ export type User = {
     isAuthorised: boolean
     image?: string
     userName?: string
+    rostokCount?: number
 }
 
 export type ErrorFieldKey<T> = keyof (T & { catched: string })

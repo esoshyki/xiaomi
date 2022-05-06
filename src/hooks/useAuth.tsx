@@ -18,7 +18,8 @@ export const useAuth = () => {
     const checkAuth = () => dispatch(CheckAuth.request());
 
     return ({
-        user,
+        userData: user,
+        user: user.user,
         isAuth: userData.user?.isAuthorised,
         showLogin: userData.login.show,
         login,

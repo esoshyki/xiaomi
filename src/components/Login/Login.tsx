@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import styled, { useTheme } from "styled-components";
+import { useDispatch } from "react-redux";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import {
-    getUserData,
     Login as LoginRoutine,
-    toggleLogin,
 } from "../../store/userSlice";
 import Container from "../ui/Container";
 import Card from "../ui/Card";
@@ -18,9 +15,8 @@ const Login = () => {
     const [loginValue, setLoginValue] = useState("");
     const [password, setPassword] = useState("");
 
-    const { user, isAuth } = useAuth();
+    const { userData, isAuth } = useAuth();
 
-    const theme = useTheme();
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
@@ -75,15 +71,15 @@ const Login = () => {
                 <Typography.Link textAlign="end" fullWidth href="/restore-password">Вспомнить пароль?</Typography.Link>
                 <Button
                     withLoader
-                    pending={user.login.pending}
+                    pending={userData.login.pending}
                     onClick={onSubmit}
                     square
                 >
                     Отправить
                 </Button>
 
-                {!!user?.login?.errors?.length && <Typography.Error>
-                        {user.login.errors.map(el => el.message).join(". ")}
+                {!!userData?.login?.errors?.length && <Typography.Error>
+                        {userData.login.errors.map(el => el.message).join(". ")}
                     </Typography.Error>}
             </Container.Flex>
         </Card>

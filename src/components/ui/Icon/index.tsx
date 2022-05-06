@@ -14,6 +14,8 @@ import EmployeeIcon from './icons/employee';
 import OrderList from './icons/orderList';
 import NewOrderIcon from './icons/newOrder';
 import ExitIcon from './icons/exit';
+import BellIcon from './icons/bell';
+import EditIcon from "./icons/edit";
 
 const Icon = (props: IconProps) => {
 
@@ -48,6 +50,10 @@ const Icon = (props: IconProps) => {
             return <Eye {...props} />
         case "settings":
             return <SettingsIcon {...props} />
+        case "bell":
+            return <BellIcon {...props} />
+        case "edit":
+            return <EditIcon {...props} />
     };
 }
 

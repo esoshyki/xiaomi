@@ -1,10 +1,11 @@
 import Container from "../ui/Container";
 import { useMenu } from "../../hooks/useMenu";
 import styled from "styled-components";
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import Menu from "./Menu";
 import Logo from "../../assets/logo";
 import { Link } from 'react-router-dom'
+import Icon from "../ui/Icon";
 interface ButtonProps {
     onClick: () => void;
 }
@@ -12,7 +13,6 @@ interface ButtonProps {
 const BurgerWrapper = styled.svg`
     width: 20px;
     height: 20px;
-    margin-right: auto;
     color: ${(props) => props.theme.colors.icon.default};
     transition: color 200ms ease-in;
     &:hover {
@@ -21,7 +21,6 @@ const BurgerWrapper = styled.svg`
     }
 `;
 const LogoWrapper = styled.span`
-    margin-right: auto;
     flex-shrink: 0;
     font-size: 0;
 `;
@@ -48,9 +47,34 @@ const Burger = ({ onClick }: ButtonProps) => {
 
 const ButtonContainer = styled.button`
     padding: 0;
-    margin: 0 auto 0 0;
+    margin: 0;
     background-color: transparent;
     border: none;
+`;
+
+
+const BidLink = styled.a<{ active: boolean }>`
+    position: relative;
+    width: 20px;
+    height: 20px;
+    color: ${(props) => props.theme.colors.icon.secondary};
+    text-align: center;
+    
+    svg {
+        fill: currentColor;
+    }
+    
+    &:after {
+        position: absolute;
+        right: 0;
+        top: 0;
+		display: ${props => props.active ? "block" : "none"};
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background-color: ${(props) => props.theme.colors.info.error};
+        content: '';
+    }
 `;
 
 const Header = () => {
@@ -60,7 +84,7 @@ const Header = () => {
         <header className="container">
             <Container.Flex
                 fullWidth
-                justify="center"
+                justify="between"
                 direction="row"
                 styles={{
                     padding: "35px 32px"
@@ -82,6 +106,10 @@ const Header = () => {
                         <Logo isWhite={menuIsShown} />
                     </Link>
                 </LogoWrapper>
+
+                <BidLink href="/" active={true}>
+                    <Icon name="bell" />
+                </BidLink>
             </Container.Flex>
         </header>
     );

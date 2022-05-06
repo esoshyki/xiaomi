@@ -56,7 +56,7 @@ const ProfileMenu = () => {
 
     return (
         <Card padding={0} fullWidth>
-            <Container.Flex fullWidth padding={53}>
+            <Container.Flex fullWidth styles={{padding: "48px 0 48px 52px"}}>
                 {links.map((props, idx) => <Link key={idx} {...props} />)}
             </Container.Flex>
         </Card>

@@ -5,7 +5,6 @@ import { useMenu, animateTime } from "../../hooks/useMenu";
 import Container from "../ui/Container";
 import Icon from "../ui/Icon";
 import Typography from "../ui/Typography";
-import Login from "../Login";
 import { breakpoints } from "../types";
 import { Fragment } from "react";
 
@@ -37,10 +36,6 @@ const MenuWrapper = styled.div<{ visible: boolean, animationOpen: boolean, anima
         will-change: width, height;
 		animation: ${props => (props.animationOpen) ? `menuAppearance ${animateTime}ms forwards` : (props.animationClose) ? `menuAppearance ${animateTime}ms reverse` : "none"};
        
-    }
-    
-    @media (min-width: ${breakpoints.sm}) {
-		
     }
 `;
 

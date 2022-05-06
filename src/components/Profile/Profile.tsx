@@ -9,7 +9,7 @@ const Profile = () => {
     const theme = useTheme()
 
     return (
-        <Container.Flex styles={{maxWidth: "312px", color: theme.colors.text.secondary}} fullWidth verticalGap={20}>
+        <Container.Flex styles={{color: theme.colors.text.secondary}} fullWidth verticalGap={24} >
             <ProfileTop />
             <ProfileMenu />
             <ProfileRostokCount />

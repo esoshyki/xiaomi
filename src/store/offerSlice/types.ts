@@ -1,5 +1,4 @@
 import { isString, isNumber } from './../types';
-import { N } from '../types';
 
 export type OfferSteps = 
      | "imei" 
@@ -17,22 +16,22 @@ export type OfferSteps =
 export type AnswerType = "from_list" | "free_input"
 
 export type Answer = {
-    [id: number]: { answerName: string }
-};
+    answerName: string 
+}
 
 export type Answers = {
     combinationId?: string
-    [questionId: number] : number | string
+    [questionId: number] : string
 }
 
 export type Question = {
     questionId: string
-    answerType: AnswerType
     questionName: string
-    questionGroup: string
+    questionDescription: string
     questionShortName: isString
-    questionHelp?: isString
-    answers: {[id: number] : Answer}
+    questionGroup: string
+    answerType: AnswerType
+    answers?: {[id: number] : Answer}
 }
 
 export type QuestionsData = {
@@ -53,6 +52,25 @@ export type QuestionsResponse = {
     complete?: true
 }
 
+export type GivenAnswer = {
+    questionId: string
+    questionName: string
+    questionDescription: string
+    questionShortName: isString
+    answerId?: string
+    answerName: string
+    questionGroup: isString
+}
+
+export type RequestAnswers = {
+    [questionId: string] : string
+}
+
+export type GivenAnswers = {
+    currentCombinationId?: string
+    answers: GivenAnswer[]
+}
+
 export type OfferState = {
     step: OfferSteps
     loading: boolean,
@@ -69,5 +87,6 @@ export type OfferState = {
     lastGivenQuestion?: number
     questionsGiven: string[]
     answersGiven: string[]
+    givenAnswers: GivenAnswers
 }
 

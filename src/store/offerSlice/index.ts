@@ -1,6 +1,6 @@
 import { RootState } from '..';
 import { createSelector, PayloadAction } from '@reduxjs/toolkit';
-import { OfferState, OfferSteps, QuestionsResponse } from './types';
+import { GivenAnswer, OfferState, OfferSteps, QuestionsResponse } from './types';
 import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
 
@@ -18,7 +18,10 @@ const initialState: OfferState = {
     photoFront: null,
     photoBack: null,
     answersGiven: [],
-    questionsGiven: []
+    questionsGiven: [],
+    givenAnswers: {
+        answers: []
+    }
 }
 
 export const CheckImei = createRoutine("offer/Check-Imei");
@@ -28,30 +31,16 @@ const offerSlice = createSlice({
     name: "offer",
     initialState: {...initialState},
     reducers: {
-        giveAnswer(state, { payload } : PayloadAction<{questionId: number, answer: number | string, combinationId?: string}>) {
-            if (state.answers) {
-                state.answers[payload.questionId] = payload.answer
+        giveAnswer(state, { payload } : PayloadAction<GivenAnswer>) {
+            const answerIndex = state.givenAnswers.answers.findIndex(el => el.questionId === payload.questionId);
+            if (answerIndex >= 0) {
+                state.givenAnswers.answers[answerIndex] = payload
             } else {
-                state.answers = {
-                    [payload.questionId] : payload.answer
-                }
-            }
-            state.questionsGiven.push("" + payload.questionId);
-            if (typeof payload.answer === "number") {
-                state.answersGiven.push("" + payload.answer);
-            }
-            if (payload.combinationId) {
-                state.answers.combinationId = payload.combinationId
+                state.givenAnswers.answers.push(payload)
             }
         },
-        setCombinationsId(state, { payload } : PayloadAction<string>) {
-            if (state.answers) {
-                state.answers.combinationId = payload
-            } else {
-                state.answers = {
-                    combinationId: payload
-                }
-            }
+        setCombinationsId(state, { payload } : PayloadAction<string | undefined>) {
+            state.givenAnswers.currentCombinationId = payload;
         },
         setStep(state, { payload } : PayloadAction<OfferSteps>) {
             state.result = null;
@@ -77,21 +66,6 @@ const offerSlice = createSlice({
         }
     }, 
     extraReducers: {
-        [CheckImei.REQUEST](state) {
-            state.result = null;
-            state.loading = true;
-        },
-        [CheckImei.FAILURE](state, { payload }: PayloadAction<string[]>) {
-            state.result = "error";
-            state.errors = payload
-        },
-        [CheckImei.SUCCESS](state, { payload } : PayloadAction<{}>) {
-            state.result = "success"
-            state.errors = []
-        },
-        [CheckImei.FULFILL](state) {
-            state.loading = false
-        },
         [GetQuestions.REQUEST](state) {
             state.result = null;
             state.loading = true;

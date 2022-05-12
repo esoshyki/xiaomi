@@ -2,18 +2,21 @@ import { useState } from "react";
 import { useOfferData } from "../hooks/useOfferData";
 import { Button, Container } from "../../ui";
 import Input from "../../ui/Input";
-import { QuestionData } from "./OfferQuestion";
+import { OfferQuestionProps } from "./OfferQuestion";
+import { GivenAnswer } from "../../../store/offerSlice/types";
+import { collectAnswerData } from "../helpers/collectAnswerData";
 
-const FreeInput = (props: QuestionData ) => {
+
+const FreeInput = (props: OfferQuestionProps ) => {
 
     const { giveAnswer } = useOfferData();
 
     const [value, setValue] = useState("");
 
-    const { questionId, combinationId } = props;
+    const { questionData, combinationId } = props;
 
     const onClick = () => {
-        giveAnswer(questionId,value, combinationId )
+        giveAnswer(collectAnswerData(questionData, value), combinationId )
     }
 
     return (

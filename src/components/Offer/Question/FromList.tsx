@@ -1,28 +1,47 @@
 import { useOfferData } from "../hooks/useOfferData";
 import { Button, Container } from "../../ui";
-import { QuestionData } from "./OfferQuestion";
+import { OfferQuestionProps } from "./OfferQuestion";
+import { GivenAnswer } from "../../../store/offerSlice/types";
+import { collectAnswerData } from "../helpers/collectAnswerData";
 
-const FromList = (props: QuestionData ) => {
+const FromList = (props: OfferQuestionProps) => {
+    const { giveAnswer } = useOfferData();
 
-    const { giveAnswer } = useOfferData()
+    const { questionData, combinationId } = props;
+    const { answers } = questionData;
 
-    const { answers, questionId, combinationId } = props;
-
-    const onClick = (answerId: number) => {
-         giveAnswer(questionId, answerId, combinationId)
-    }
+    const onClick = (answerName: string, answerId: string) => {
+        giveAnswer(
+            collectAnswerData(questionData,answerName, answerId),
+            combinationId
+        );
+    };
 
     return (
-        <Container.Flex fullWidth direction="row" justify="between" wrapped gap={16} alignItems="center">
-            {!!answers && Object.entries(answers).map(([answerId, answer], idx) => {
-                return (
-                    <Button styles={{ width: "calc(50% - 8px)"}} key={idx} variant="outline" onClick={() => onClick(+answerId)}>
-                        {/* {answer.answerName} */}
-                    </Button>
-                )
-            })}
+        <Container.Flex
+            fullWidth
+            direction="row"
+            justify="between"
+            wrapped
+            gap={16}
+            alignItems="center"
+        >
+            {!!answers &&
+                Object.entries(answers).map(([answerId, answer], idx) => {
+                    const { answerName } = answer;
+                    return (
+                        <Button
+                            styles={{ width: "calc(50% - 8px)" }}
+                            key={idx}
+                            variant="outline"
+                            onClick={() => onClick(answerName, answerId)}
+                        >
+                            {answerName}
+                        </Button>
+                    );
+                })}
         </Container.Flex>
-    )
+    );
 };
 
 export default FromList;

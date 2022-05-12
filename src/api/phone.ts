@@ -1,4 +1,4 @@
-import { Answers, QuestionsResponse } from './../store/offerSlice/types';
+import {  QuestionsResponse, RequestAnswers } from './../store/offerSlice/types';
 import { ResponseData } from './types'
 import { api } from './instance';
 import { AxiosResponse } from 'axios';
@@ -16,7 +16,7 @@ const getModelByImei = async (imei: string, user: N<User>): Promise<ResponseData
     }
 };
 
-const getQuestions = async (user: N<User>, answers: Answers | null): Promise<ResponseData<QuestionsResponse>> => {
+const getQuestions = async (user: N<User>, answers: RequestAnswers ): Promise<ResponseData<QuestionsResponse>> => {
     if (!user) return getErrorResponse();
 
     const _answers = answers ? answers : null

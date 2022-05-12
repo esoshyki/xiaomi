@@ -43,6 +43,14 @@ export type QuestionTree = {
             }
         }
     }
+    /*questions: Array<{
+        questionId: keyof QuestionsData,
+        answers: Array<{
+            answerId: number,
+            questions: Array<{}>,
+            offerId: number
+        }>
+    }>;*/
 }
 
 export type QuestionsResponse = {

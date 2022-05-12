@@ -35,7 +35,8 @@ export const colors = {
     icon: {
         contrast: "#fff",
         default: "#464646",
-        secondary: "#7A7A7A"
+        secondary: "#7A7A7A",
+        tertiary: "#8F8F8F"
     },
     statusBar: {
         contrast: "#fff",

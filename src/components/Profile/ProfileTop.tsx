@@ -6,7 +6,7 @@ import React from "react";
 import styled from "styled-components/macro";
 
 
-const EditButton = styled.button`
+const EditButton = styled.a`
     position: absolute;
     right: 16px;
     bottom: 16px;
@@ -45,7 +45,7 @@ const ProfileTop = () => {
                         <Typography.Small>С возвращением</Typography.Small>
                         <Typography.Title start styles={{margin: "4px 0 0"}}>{user.userName ?? "Неизвестный Человек"}</Typography.Title>
                     </Container.Flex>
-                    <EditButton onClick={() => {console.log(123)}}>
+                    <EditButton href="/edit">
                         <Icon name="edit"/>
                     </EditButton>
                 </Container.Grid>

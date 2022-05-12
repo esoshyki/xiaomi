@@ -53,29 +53,33 @@ const Login = () => {
                 fullHeight
                 justify="center"
             >
-                <Typography.Small>Логин</Typography.Small>
+               {/* <Typography.Small>Логин</Typography.Small>*/}
                 <Input
                     value={loginValue}
                     onChange={(e) => setLoginValue(e.target.value)}
                     fullWidth
+                    placeholder="Логин или email"
                 />
-                <Typography.Small>Пароль</Typography.Small>
+               {/* <Typography.Small>Пароль</Typography.Small>*/}
                 <Input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     fullWidth
-                    secure
+                    secure={true}
+                    placeholder="Пароль"
                 />
 
-                <Typography.Link textAlign="end" fullWidth href="/restore-password">Вспомнить пароль?</Typography.Link>
+                <Typography.Link textAlign="end" fullWidth href="/restore-password" styles={{fontSize: "14px", lineHeight: "16px", fontWeight: "4"}}>Вспомнить пароль?</Typography.Link>
                 <Button
                     withLoader
                     pending={userData.login.pending}
                     onClick={onSubmit}
                     square
+                    fullWidth
+                    sumbit
                 >
-                    Отправить
+                    Войти
                 </Button>
 
                 {!!userData?.login?.errors?.length && <Typography.Error>

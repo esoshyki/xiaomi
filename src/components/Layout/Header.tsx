@@ -47,7 +47,7 @@ const Burger = ({ onClick }: ButtonProps) => {
 
 const ButtonContainer = styled.button`
     padding: 0;
-    margin: 0;
+    margin: 0 auto 0 0;
     background-color: transparent;
     border: none;
 `;
@@ -57,6 +57,7 @@ const BidLink = styled.a<{ active: boolean }>`
     position: relative;
     width: 20px;
     height: 20px;
+    margin-left: auto;
     color: ${(props) => props.theme.colors.icon.secondary};
     text-align: center;
     
@@ -84,7 +85,7 @@ const Header = () => {
         <header className="container">
             <Container.Flex
                 fullWidth
-                justify="between"
+                justify="center"
                 direction="row"
                 styles={{
                     padding: "35px 32px"
@@ -107,7 +108,7 @@ const Header = () => {
                     </Link>
                 </LogoWrapper>
 
-                <BidLink href="/" active={true}>
+                <BidLink href="/" active={false}>
                     <Icon name="bell" />
                 </BidLink>
             </Container.Flex>

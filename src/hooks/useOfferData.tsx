@@ -36,7 +36,7 @@ export const useOfferData = () => {
         if (errors.length > 0) return null;
         if (!questionsTree) return null;
         if (!questionsData) return null;
-
+        console.log(questionsGiven);
         const tree = questionsGiven.length ? questionsGiven.reduce((acc, next) => {
             const obj = acc.questions[+next].answers;
             const idx = Object.keys(obj).find(id => answersGiven.includes(id));
@@ -52,7 +52,8 @@ export const useOfferData = () => {
             }
         }, {...questionsTree}) : questionsTree;
 
-        console.log(`tree`, tree);
+        console.log(tree.questions);
+
 
         if (tree.combinationId && answers?.combinationId !== tree.combinationId) {
             dispatch(setCombinationsId(tree.combinationId));
@@ -62,9 +63,7 @@ export const useOfferData = () => {
             giveNextQuestions();
             return null;
         }
-
         const key = Object.keys(tree.questions).filter(el => !questionsGiven.includes(el))[0];
-
         return { ...questionsData[+key], questionId: +key }
     }
 
@@ -88,7 +87,7 @@ export const useOfferData = () => {
 
     const checkImei = (emai: string) => dispatch(CheckImei.request(emai));
 
-    const progress = 1;
+    const progress = 0;
 
     return {
         ...offer,

@@ -41,7 +41,7 @@ const Progress = () => {
     const { progress } = useOfferData();
     
     return (
-        <Container.Flex fullWidth>
+        <>
             <Container.Flex justify='between' direction='row' fullWidth margin={"0 0 4px"}>
                 <Img image={RostokPNG} />
                 <Img image={BranchPNG} />
@@ -52,7 +52,7 @@ const Progress = () => {
                 <ProgressContent progress={progress} />
             </ProgressContainer>
             
-        </Container.Flex>
+        </>
     )
 };
 

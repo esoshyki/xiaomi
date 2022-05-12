@@ -6,7 +6,7 @@ export const collectButtonStyles = (props: ButtonProps & { theme: DefaultTheme }
     const theme = props.theme;
 
     const defaultProps = css`
-        padding: 9px;
+        padding: 10px;
         transition: background-color 200ms, color 200ms, border-color 200ms;
         border-radius: 12px;
         position: relative;
@@ -34,6 +34,7 @@ export const collectButtonStyles = (props: ButtonProps & { theme: DefaultTheme }
                 &:hover {
                     background-color: ${theme.colors.button.disable};
                     color: ${theme.colors.button.contrast};
+                    cursor: not-allowed;
                 }
                 &:active, &:focus {
                     background-color: ${theme.colors.button.disable}

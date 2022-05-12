@@ -37,6 +37,7 @@ const Wrapper = styled.div<CardProps>`
     
     & > * {
         opacity: ${(props) => (props.isHidden ? "0" : "1")};
+        height: ${(props) => (props.isHidden ? "0" : "auto")};
     }
     
     @media (min-width: 660px) and (max-width: 768px) {

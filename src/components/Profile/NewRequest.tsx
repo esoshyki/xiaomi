@@ -3,13 +3,15 @@ import { Container } from "../ui"
 import ProfileMenu from "./ProfileMenu"
 import ProfileRostokCount from "./ProfileRostokCount"
 import ProfileTop from "./ProfileTop"
-import styled from "styled-components/macro";
-import { animateTime } from "../../hooks/useMenu";
 
-const Profile = () => {
+
+const NewRequest = () => {
+
+    const theme = useTheme()
     return (
         <Container.Flex fullWidth alignItems="stretch" horizontalGap={36}>
-            <Container.Flex verticalGap={24} >
+            <Container.Flex  verticalGap={24} >
+                Редактирование
                 <ProfileTop />
                 <ProfileMenu />
                 <ProfileRostokCount />
@@ -19,4 +21,4 @@ const Profile = () => {
     )
 }
 
-export default Profile
+export default NewRequest

@@ -17,11 +17,11 @@ const FreeInput = (props: QuestionData ) => {
     }
 
     return (
-        <Container.Flex fullWidth direction="row" justify="between" wrapped gap={10} alignItems="center">
+        <Container.Flex fullWidth direction="row" justify="between" wrapped gap={16} alignItems="center">
             <Input value={value} onChange={e => setValue(e.target.value)} fullWidth />
 
-            <Button styles={{ width: "120px", height: "40px" }}  onClick={onClick}>
-                Поиск
+            <Button fullWidth onClick={onClick}>
+                Проверить
             </Button>
         </Container.Flex>
     )

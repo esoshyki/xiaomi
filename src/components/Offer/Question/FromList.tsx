@@ -13,10 +13,10 @@ const FromList = (props: QuestionData ) => {
     }
 
     return (
-        <Container.Flex fullWidth direction="row" justify="between" wrapped gap={10} alignItems="center">
+        <Container.Flex fullWidth direction="row" justify="between" wrapped gap={16} alignItems="center">
             {!!answers && Object.entries(answers).map(([answerId, answer], idx) => {
                 return (
-                    <Button styles={{ width: "120px", height: "40px" }} key={idx} variant="outline" onClick={() => onClick(+answerId)}>
+                    <Button styles={{ width: "calc(50% - 8px)"}} key={idx} variant="outline" onClick={() => onClick(+answerId)}>
                         {answer.answerName}
                     </Button>
                 )

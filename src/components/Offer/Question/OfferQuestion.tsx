@@ -18,8 +18,8 @@ const OfferQuestion = (
     const { answerType, questionName } = props;
 
      return (
-        <Container.Flex fullWidth alignItems="start" verticalGap={10}>
-            <Typography.Title textAlign="start">{questionName}</Typography.Title>
+        <Container.Flex fullWidth alignItems="start" verticalGap={16}>
+            <Typography.Main textAlign="start" styles={{marginBottom: "6px", marginTop: "0"}}>{questionName}</Typography.Main>
             {answerType !== "free_input" && <FromList {...props} />}
             {answerType === "free_input" && <FreeInput {...props} />}
         </Container.Flex>

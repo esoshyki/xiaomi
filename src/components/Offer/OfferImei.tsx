@@ -5,7 +5,6 @@ import Button from "../ui/Button";
 import Container from "../ui/Container";
 import Input from "../ui/Input";
 import Typography from "../ui/Typography";
-import theme from "@storybook/addon-interactions/dist/ts3.4/theme";
 
 interface OfferImeiProps {
     hint: boolean

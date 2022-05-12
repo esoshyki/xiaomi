@@ -16,6 +16,7 @@ import NewOrderIcon from './icons/newOrder';
 import ExitIcon from './icons/exit';
 import BellIcon from './icons/bell';
 import EditIcon from "./icons/edit";
+import EyeClose from "./icons/eye-close";
 
 const Icon = (props: IconProps) => {
 
@@ -48,6 +49,8 @@ const Icon = (props: IconProps) => {
             return <Hidden {...props} />
         case "eye":
             return <Eye {...props} />
+        case "eye-close":
+            return <EyeClose {...props} />
         case "settings":
             return <SettingsIcon {...props} />
         case "bell":

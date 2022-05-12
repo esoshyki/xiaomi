@@ -5,6 +5,7 @@ export type User = {
     image?: string
     userName?: string
     rostokCount?: number
+    type?: string
 }
 
 export type ErrorFieldKey<T> = keyof (T & { catched: string })

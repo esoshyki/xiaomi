@@ -19,7 +19,7 @@ const getModelByImei = async (imei: string, user: N<User>): Promise<ResponseData
 const getQuestions = async (user: N<User>, answers: Answers | null): Promise<ResponseData<QuestionGroup[]>> => {
     if (!user) return getErrorResponse();
 
-    const _answers = answers ? answers : undefined
+    const _answers = answers ? answers : null
 
     try {
         const response: AxiosResponse<ResponseData<QuestionGroup[]>> = await api.post("/devicedata/getquestions/", collectFormData({}, user), {

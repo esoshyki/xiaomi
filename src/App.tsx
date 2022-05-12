@@ -8,6 +8,8 @@ import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Partner from "./pages/Partner";
 import Help from "./pages/Help";
+import ProfileEdit from "./pages/ProfileEdit";
+import NewRequest from "./pages/NewRequest";
 
 const AppWrapper = styled.div`
     width: 100%;
@@ -22,6 +24,8 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/theme" element={<Theme />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/profile/new_request" element={<NewRequest />} />
+                    <Route path="/edit" element={<ProfileEdit />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/partner" element={<Partner />} />
                     <Route path="/help" element={<Help />} />

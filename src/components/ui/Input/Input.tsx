@@ -54,7 +54,7 @@ const Input = (props: InputProps) => {
     }
 
     return (
-        <Wrapper {...props}>
+        <Wrapper fullWidth>
             <InputWrapper
                 {...props}
                 type={getType()}
@@ -65,10 +65,10 @@ const Input = (props: InputProps) => {
                 placeholder={props.placeholder}
             ></InputWrapper>
 
-            {typeof _secure === "boolean" && <Icon 
+            {typeof _secure === "boolean" && <Icon
                 onClick={() => setSecure(!_secure)}
-                name={_secure ? "hidden" : "eye"}
-                styles={{ position: "absolute", top: "10px", right: "12px" }} hoverStyles={{ cursor: "pointer" }} 
+                name={_secure ? "eye-close" : "eye"}
+                styles={{ position: "absolute", top: "10px", right: "12px", fill: theme.colors.icon.tertiary}} hoverStyles={{ cursor: "pointer" }}
                 />}
             {label && (
                 <Typography.Tertiary

@@ -26,6 +26,6 @@ export const useAuth = () => {
         logout,
         checkAuth,
         showLoginForm,
-        hideLoginForm
+        hideLoginForm,
     })
 };

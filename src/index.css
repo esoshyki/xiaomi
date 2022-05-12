@@ -37,3 +37,8 @@ code {
     }
 }
 
+@media (max-width: 659.9px) {
+    .hidden-mobile {
+        display: none !important;
+    }
+}

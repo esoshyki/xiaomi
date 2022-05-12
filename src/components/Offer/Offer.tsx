@@ -67,7 +67,7 @@ const Offer = () => {
                 },
             }}
         >
-            {step === "imei" &&
+
             <Card
                 ref={hintRef}
                 fullWidth
@@ -89,7 +89,7 @@ const Offer = () => {
                     <Button variant="outline" fullWidth uppercase styles={{marginTop: "16px"}}>
                         Подробнее
                     </Button>
-            </Card>}
+            </Card>
 
             <Card
                 padding="28px"
@@ -97,8 +97,9 @@ const Offer = () => {
                 styles={{
                     flexShrink: 0
                 }}
+                onClick={() => setHint(false)}
             >
-                {step !== "imei" && <Progress />}
+                <Progress />
                 {/* {phone?.[0] && <OfferDevice phone={phone[0]} />} */}
                 {getContent()}
             </Card>

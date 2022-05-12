@@ -6,17 +6,21 @@ import ProfileTop from "./ProfileTop"
 import styled from "styled-components/macro";
 import { animateTime } from "../../hooks/useMenu";
 
-const Profile = () => {
+
+const ProfileEdit = () => {
+
+    const theme = useTheme()
     return (
         <Container.Flex fullWidth alignItems="stretch" horizontalGap={36}>
-            <Container.Flex verticalGap={24} >
-                <ProfileTop />
+            <Container.Flex  verticalGap={24} >
+                Редактирование
+                {/*<ProfileTop />
                 <ProfileMenu />
-                <ProfileRostokCount />
+                <ProfileRostokCount />*/}
             </Container.Flex>
 
         </Container.Flex>
     )
 }
 
-export default Profile
+export default ProfileEdit

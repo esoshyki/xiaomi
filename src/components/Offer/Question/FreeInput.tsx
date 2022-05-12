@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useOfferData } from "../../../hooks/useOfferData";
+import { useOfferData } from "../hooks/useOfferData";
 import { Button, Container } from "../../ui";
 import Input from "../../ui/Input";
 import { QuestionData } from "./OfferQuestion";

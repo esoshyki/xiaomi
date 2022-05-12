@@ -1,4 +1,4 @@
-import { useOfferData } from "../../hooks/useOfferData";
+import { useOfferData } from "./hooks/useOfferData";
 import { Button, Container, Info, Typography } from "../ui";
 
 const OfferPhotoFront = () => {

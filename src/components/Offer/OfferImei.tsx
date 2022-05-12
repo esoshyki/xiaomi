@@ -1,5 +1,5 @@
 import { KeyboardEvent, useState } from "react";
-import { useOfferData } from "../../hooks/useOfferData";
+import { useOfferData } from "./hooks/useOfferData";
 import { Info } from "../ui";
 import Button from "../ui/Button";
 import Container from "../ui/Container";

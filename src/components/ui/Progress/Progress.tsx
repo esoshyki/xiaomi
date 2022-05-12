@@ -3,7 +3,7 @@ import TreePNG from '../../../assets/tree.png'
 import RostokPNG from '../../../assets/rostok.png'
 import BranchPNG from '../../../assets/branch.png'
 import styled from 'styled-components/macro';
-import { useOfferData } from '../../../hooks/useOfferData';
+import { useOfferData } from '../../Offer/hooks/useOfferData';
 
 export const Img = styled.div<{image: string}>`
     width: 20px;

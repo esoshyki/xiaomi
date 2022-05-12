@@ -1,5 +1,5 @@
 import { OfferStep } from ".";
-import { useOfferData } from "../../hooks/useOfferData";
+import { useOfferData } from "./hooks/useOfferData";
 import Container from "../ui/Container";
 import { Progress, Card, Info, Typography, Button } from "../ui";
 import { memo, useEffect, useRef, useState } from "react";

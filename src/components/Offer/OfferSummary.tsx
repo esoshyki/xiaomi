@@ -1,4 +1,4 @@
-import { useOfferData } from "../../hooks/useOfferData";
+import { useOfferData } from "./hooks/useOfferData";
 import { Button, Container, Delete, Typography } from "../ui";
 import OfferQuestion from "./Question/OfferQuestion";
 import { memo, useState } from "react";

@@ -1,6 +1,6 @@
 import { Box, Button, Container, Info, Typography } from "../ui";
 import QRCode from "react-qr-code";
-import { useOfferData } from "../../hooks/useOfferData";
+import { useOfferData } from "./hooks/useOfferData";
 
 const OfferQR = () => {
     const { changeStep } = useOfferData();

@@ -17,49 +17,16 @@ export type OfferSteps =
 export type AnswerType = "from_list" | "free_input"
 
 export type Answer = {
-    answerName: string
-}
+    [id: number]: { answerName: string }
+};
 
 export type Answers = {
     combinationId?: string
     [questionId: number] : number | string
 }
 
-export type QuestionsData = {
-    [id: number]: Question
-}
-
-export type AnswerTree = {
-    combinationId?: string
-    questions: QuestionTree
-}
-
-export type QuestionTree = {
-    combinationId?: string
-    questions: {
-        [id: keyof QuestionsData]: {
-            answers: {
-                [id: keyof QuestionsData] : QuestionTree | []
-            }
-        }
-    }
-    /*questions: Array<{
-        questionId: keyof QuestionsData,
-        answers: Array<{
-            answerId: number,
-            questions: Array<{}>,
-            offerId: number
-        }>
-    }>;*/
-}
-
-export type QuestionsResponse = {
-    questionsData: QuestionsData
-    questionsTree: QuestionTree
-    complete?: true
-}
-
 export type Question = {
+    questionId: string
     answerType: AnswerType
     questionName: string
     questionGroup: string
@@ -68,11 +35,23 @@ export type Question = {
     answers: {[id: number] : Answer}
 }
 
-export type QuestionGroup = {
-    groupName: string
-    groupShortName: isString
-    questions: Question[]
-};
+export type QuestionsData = {
+    [id: number]: Question
+}
+
+export type QuestionTree = {
+    combinationId?: string
+    questions: Array<{
+        questionId: string
+        answers: any[]
+    }>
+}
+
+export type QuestionsResponse = {
+    questionsData: QuestionsData
+    questionsTree: QuestionTree
+    complete?: true
+}
 
 export type OfferState = {
     step: OfferSteps

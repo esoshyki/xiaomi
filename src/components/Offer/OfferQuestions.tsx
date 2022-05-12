@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { useOfferData } from "../../hooks/useOfferData";
+import { useOfferData } from "./hooks/useOfferData";
 import Container from "../ui/Container";
 import OfferQuestion, { QuestionData } from "./Question/OfferQuestion";
 

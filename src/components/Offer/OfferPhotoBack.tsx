@@ -1,7 +1,7 @@
 import { Container, Img, Info, Typography, Button } from "../ui";
 import DonePNG from "../../assets/done.png";
 import { useTheme } from "styled-components";
-import { useOfferData } from "../../hooks/useOfferData";
+import { useOfferData } from "./hooks/useOfferData";
 
 const OfferPhotoBack = () => {
     const theme = useTheme();

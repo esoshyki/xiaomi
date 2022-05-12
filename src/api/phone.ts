@@ -1,4 +1,4 @@
-import { Answers, QuestionGroup } from './../store/offerSlice/types';
+import { Answers, QuestionsResponse } from './../store/offerSlice/types';
 import { ResponseData } from './types'
 import { api } from './instance';
 import { AxiosResponse } from 'axios';
@@ -16,13 +16,13 @@ const getModelByImei = async (imei: string, user: N<User>): Promise<ResponseData
     }
 };
 
-const getQuestions = async (user: N<User>, answers: Answers | null): Promise<ResponseData<QuestionGroup[]>> => {
+const getQuestions = async (user: N<User>, answers: Answers | null): Promise<ResponseData<QuestionsResponse>> => {
     if (!user) return getErrorResponse();
 
     const _answers = answers ? answers : null
 
     try {
-        const response: AxiosResponse<ResponseData<QuestionGroup[]>> = await api.post("/devicedata/getquestions/", collectFormData({}, user), {
+        const response: AxiosResponse<ResponseData<QuestionsResponse>> = await api.post("/devicedata/getquestions/", collectFormData({}, user), {
             params: {
                answers: _answers
             }

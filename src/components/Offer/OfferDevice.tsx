@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { useOfferData } from "../../hooks/useOfferData";
+import { useOfferData } from "./hooks/useOfferData";
 import { Container, Image, Typography } from "../ui";
 import styled from "styled-components/macro";
 import { animateTime } from "../../hooks/useMenu";

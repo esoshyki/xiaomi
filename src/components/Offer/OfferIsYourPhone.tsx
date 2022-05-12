@@ -1,4 +1,4 @@
-import { useOfferData } from "../../hooks/useOfferData";
+import { useOfferData } from "./hooks/useOfferData";
 import Confirm from "../ui/Confirm";
 import Typography from "../ui/Typography";
 import { Fragment } from "react";

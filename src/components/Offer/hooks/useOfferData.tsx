@@ -1,8 +1,6 @@
-import { select } from "../../../store/selector";
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import {
-    CheckImei,
     GetQuestions,
     giveAnswer,
     setStep,
@@ -11,21 +9,21 @@ import {
     setPhotoBack,
     setCombinationsId,
     getOfferData,
+    setOfferId,
 } from "../../../store/offerSlice";
 import {
     GivenAnswer,
     OfferSteps,
-    Question,
     QuestionTree,
 } from "../../../store/offerSlice/types";
+import { N } from "../../../store/types";
+import { getTree } from "../helpers/getTree";
 
 // 350320523229662
 
 export const useOfferData = () => {
+    const offer = useSelector(getOfferData);
 
-    const selectOfferData = useMemo(() => getOfferData, [])
-    const offer = useSelector(selectOfferData)
-    
     const dispatch = useDispatch();
 
     const changeStep = (step: OfferSteps) => {
@@ -33,86 +31,52 @@ export const useOfferData = () => {
     };
 
     const getQuestions = useCallback(() => {
-        dispatch(GetQuestions.request());
+        if (!offer.loading) {
+            dispatch(GetQuestions.request());
+        }
     }, []);
 
-    const getNextQuestion = () : Question | null => {
-        const { questionsTree, currentGivenAnswers, questionsData } = offer;
-        const givenAnswers = currentGivenAnswers.answers.map(el => el.questionId);
-        const nextQuestion = questionsTree?.questions.find(el => !givenAnswers.includes(el.questionId));
-        if (!nextQuestion || !questionsTree || !questionsData) { 
-            getQuestions();
-            return null
-        }
-
-        const questionId = nextQuestion.questionId;
-        const question = questionsData[+questionId];
-
-        return question;
-    };
-
-    const getQuestion = (_questionsTree?: QuestionTree): Question | null => {
-        const { questionsData, currentGivenAnswers } = offer;
-
-        const questionsTree = _questionsTree || offer.questionsTree;
-
-        const { answers } = currentGivenAnswers;
-        let currentQuestion: Question | null = null;
+    const getQuestion = () => {
+        const { questionsTree, givenAnswers, questionsData } = offer;
+        const { answers } = givenAnswers;
 
         if (!questionsTree || !questionsData) {
-            getQuestions();
             return null;
         }
 
-        if (questionsTree.combinationId) {
-            dispatch(setCombinationsId(questionsTree.combinationId));
-        }
+        let tree: QuestionTree = questionsTree;
 
-        const lastGivenAnswer = answers[answers.length - 1];
+        answers.forEach((answer) => {
+            const { questionId, answerId } = answer;
 
-        if (!lastGivenAnswer) {
-            currentQuestion =
-                questionsData[+questionsTree.questions?.[0]?.questionId] || null;
-            if (!currentQuestion) {
-                getQuestions();
-                return null;
+            if (!answerId) {
+                return;
             }
 
-            return currentQuestion;
+            tree = getTree(tree, questionId, answerId) || tree;
+        });
+
+        if (tree.combinationId) {
+            dispatch(setCombinationsId(tree.combinationId))
         }
 
+        if (tree.offerId) {
+            dispatch(setOfferId(tree.offerId))
+        }
 
-        const lastAnswerId = lastGivenAnswer.answerId;
-        const lastQuestionId = lastGivenAnswer.questionId;
+        const question = tree.questions.find(
+            (q) => !answers.map((el) => el.questionId).includes(q.questionId)
+        );
 
-        if (!lastAnswerId) {
-            getQuestions();
+        if (!question) {
             return null;
         }
 
-        const question = questionsTree.questions.find(
-            (el) => el.questionId === lastQuestionId
-        );
-
-        if (!question?.answers) {
-            getQuestions();
-            return null;
-        }
-
-        if (question.answers.length === 0) {
-            return getNextQuestion();
-        }
-
-        const newTree = question?.answers.find(
-            (el) => el.answerId === lastAnswerId
-        );
-
-        return getQuestion(newTree);
+        return questionsData[+question.questionId];
     };
 
-    const _giveAnswer = (answer: GivenAnswer, combinationId?: string) => {
+    const _giveAnswer = (answer: GivenAnswer ) => {
         dispatch(giveAnswer(answer));
-        combinationId && dispatch(setCombinationsId(combinationId));
     };
 
     const _restoreOffer = () => {
@@ -125,13 +89,10 @@ export const useOfferData = () => {
         );
     };
 
-    const checkImei = (emai: string) => dispatch(CheckImei.request(emai));
-
     const progress = 0;
 
     return {
         ...offer,
-        checkImei,
         changeStep,
         giveAnswer: _giveAnswer,
         restoreOffer: _restoreOffer,

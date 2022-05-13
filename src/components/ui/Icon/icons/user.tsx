@@ -3,12 +3,7 @@ import { IconProps } from "../types";
 
 const UserIcon = (props: IconProps) => {
     return (
-        <SVG
-            {...props}
-            name="user"
-            width={props.width ?? 24}
-            height={props.height ?? 24}
-        >
+        <SVG {...props} width={props.width ?? 24} height={props.height ?? 24}>
             <path
                 fillRule="evenodd"
                 clipRule="evenodd"

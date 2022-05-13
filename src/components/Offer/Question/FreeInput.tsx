@@ -13,10 +13,10 @@ const FreeInput = (props: OfferQuestionProps ) => {
 
     const [value, setValue] = useState("");
 
-    const { questionData, combinationId } = props;
+    const { questionData } = props;
 
     const onClick = () => {
-        giveAnswer(collectAnswerData(questionData, value), combinationId )
+        giveAnswer(collectAnswerData(questionData, value))
     }
 
     return (

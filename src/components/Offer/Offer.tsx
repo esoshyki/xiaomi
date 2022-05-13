@@ -1,3 +1,4 @@
+import { Fragment, useCallback, useMemo } from "react";
 import { OfferStep } from ".";
 import { useOfferData } from "./hooks/useOfferData";
 import Container from "../ui/Container";
@@ -6,16 +7,13 @@ import { memo, useEffect, useRef, useState } from "react";
 import OfferDevice from "./OfferDevice";
 import AddNewDevice from "../AddNewDevice";
 import { resetCheckout } from "../../store/userSlice";
+import { OfferQuestions } from ".";
 
 const Offer = () => {
     const {
         step,
         getQuestions,
-        questionsTree,
-        questionsData,
-        changeStep,
-        loading,
-        deviceInfo
+        deviceInfo,
     } = useOfferData();
 
     const [hint, setHint] = useState(true);
@@ -23,12 +21,6 @@ const Offer = () => {
     const [cardWidth, setCardWidth] = useState("auto");
 
     const hintRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (!loading && step === "start") {
-            getQuestions();
-        }
-    }, [loading, step]);
 
     useEffect(() => {
         if (!!hintRef.current) {
@@ -40,28 +32,11 @@ const Offer = () => {
         }
     }, [setCardHeight, setCardWidth]);
 
-    const getContent = () => {
-        switch (step) {
-            case "questions":
-                return <OfferStep.Questions />;
-            case "summary":
-                return <OfferStep.Summary />;
-            case "cost-confirm":
-                return <OfferStep.CostConfirm />;
-            case "qr-code":
-                return <OfferStep.QR />;
-            case "photo-front":
-                return <OfferStep.PhotoFront />;
-            case "photo-back":
-                return <OfferStep.PhotoBack />;
-            case "pending":
-                return <OfferStep.Pending />;
-            case "preliminary":
-                return <OfferStep.Preliminary />;
-            default:
-                return null;
+    useEffect(() => {
+        if (step === "start") {
+            getQuestions()
         }
-    };
+    }, [])
 
     return (
         <Container.Flex
@@ -117,8 +92,8 @@ const Offer = () => {
             >
                 <Progress />
                 {/* {phone?.[0] && <OfferDevice phone={phone[0]} />} */}
-                {deviceInfo && <OfferDevice deviceInfo={deviceInfo}/>}
-                {getContent()}
+                {deviceInfo && <OfferDevice deviceInfo={deviceInfo} />}
+                {step === "questions" && <OfferQuestions />}
             </Card>
 
             {step === "pending" && <AddNewDevice />}

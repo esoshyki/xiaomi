@@ -1,8 +1,9 @@
 import { RootState } from '..';
 import { createSelector, PayloadAction } from '@reduxjs/toolkit';
-import { DeviceInfo, GivenAnswer, OfferState, OfferSteps, QuestionsResponse, ServerError } from './types';
+import { DeviceInfo, GivenAnswer, OfferState, OfferSteps, QuestionsResponse, QuestionTree, ServerError } from './types';
 import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
+import { N } from '../types'
 
 const initialState: OfferState = {
     step: "start",
@@ -15,9 +16,6 @@ const initialState: OfferState = {
     photoFront: null,
     photoBack: null,
     givenAnswers: {
-        answers: []
-    },
-    currentGivenAnswers: {
         answers: []
     },
     deviceInfo: null
@@ -37,16 +35,15 @@ const offerSlice = createSlice({
             } else {
                 state.givenAnswers.answers.push(payload)
             }
-            const currentAnswerIndex = state.currentGivenAnswers.answers.findIndex(el => el.questionId === payload.questionId);
-            if (currentAnswerIndex >= 0) {
-                state.currentGivenAnswers.answers[currentAnswerIndex] = payload
-            } else {
-                state.currentGivenAnswers.answers.push(payload)
-            }
+        },
+        setQuestionsTree(state: OfferState, { payload } : PayloadAction<N<QuestionTree>>) {
+            state.questionsTree = payload
         },
         setCombinationsId(state: OfferState, { payload } : PayloadAction<string | undefined>) {
             state.givenAnswers.combinationId = payload;
-            state.currentGivenAnswers.combinationId = payload;
+        },
+        setOfferId(state: OfferState, { payload } : PayloadAction<string | undefined>) {
+            state.givenAnswers.offerId = payload;
         },
         setStep(state: OfferState, { payload } : PayloadAction<OfferSteps>) {
             state.result = null;
@@ -81,9 +78,6 @@ const offerSlice = createSlice({
             state.errors = [];
             state.questionsData = payload.questionsData;
             state.questionsTree = payload.questionsTree;
-            state.currentGivenAnswers = {
-                answers: []
-            };
         },
         [GetQuestions.FULFILL](state) {
             state.loading = false
@@ -102,6 +96,8 @@ export const getOfferData = createSelector(
 export const { 
     setStep,
     setCombinationsId,
+    setQuestionsTree,
+    setOfferId,
     giveAnswer,
     restoreOffer,
     setPhotoFront,

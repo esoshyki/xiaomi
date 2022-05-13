@@ -1,4 +1,4 @@
-import {  QuestionsResponse, RequestAnswers } from './../store/offerSlice/types';
+import { QuestionsResponse, RequestAnswers } from './../store/offerSlice/types';
 import { ResponseData } from './types'
 import { api } from './instance';
 import { AxiosResponse } from 'axios';
@@ -16,16 +16,17 @@ const getModelByImei = async (imei: string, user: N<User>): Promise<ResponseData
     }
 };
 
-const getQuestions = async (user: N<User>, answers: RequestAnswers ): Promise<ResponseData<QuestionsResponse>> => {
+const getQuestions = async (user: N<User>, answers: RequestAnswers): Promise<ResponseData<QuestionsResponse>> => {
     if (!user) return getErrorResponse();
 
-    const _answers = answers ? answers : null
+    console.log(answers)
+
+    const _answers = Object.keys(answers).length !== 0 ? answers : "[]"
+
+    console.log(answers);
 
     try {
-        const response: AxiosResponse<ResponseData<QuestionsResponse>> = await api.post("/devicedata/getquestions/", collectFormData({}, user), {
-            params: {
-               answers: _answers
-            }
+        const response: AxiosResponse<ResponseData<QuestionsResponse>> = await api.post("/devicedata/getquestions/", collectFormData({ answers: _answers }, user), {
         })
         return response.data
     } catch (error: any) {
@@ -33,11 +34,11 @@ const getQuestions = async (user: N<User>, answers: RequestAnswers ): Promise<Re
     }
 }
 
-const getPhoneVariants = async (phoneId: string, user: N<User>) : Promise<ResponseData<any>> => {
+const getPhoneVariants = async (phoneId: string, user: N<User>): Promise<ResponseData<any>> => {
     if (!user) return getErrorResponse();
     try {
-        const response: AxiosResponse<ResponseData<any>> = await api.post("/phonedata/getvariants/", collectFormData({ id: phoneId}, user));
-        return response.data 
+        const response: AxiosResponse<ResponseData<any>> = await api.post("/phonedata/getvariants/", collectFormData({ id: phoneId }, user));
+        return response.data
     } catch (error: any) {
         return getErrorResponse(error.message)
     }

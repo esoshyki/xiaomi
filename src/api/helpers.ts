@@ -1,11 +1,15 @@
 import { User } from './../store/userSlice/types';
 import { ResponseData } from './types';
+import { toFormData } from './toFormData';
+
+
 export const collectFormData = (data: object, user: User) : FormData => {
-    const formData = new FormData();
-    Object.entries(data).forEach(([key, val]) => {
-        formData.set(key, val);
-    });
-    formData.set(user.auth_param_name, user.auth_param_value)
+
+    console.log(data);
+
+    const formData = toFormData(data);
+    formData.set(user.auth_param_name, user.auth_param_value);
+
     return formData
 }
 

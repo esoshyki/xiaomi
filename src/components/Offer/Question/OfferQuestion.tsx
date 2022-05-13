@@ -13,7 +13,7 @@ export interface OfferQuestionProps {
 
 const OfferQuestion = (props: OfferQuestionProps) => {
 
-    const { givenAnswers, errors } = useOfferData();
+    const { givenAnswers } = useOfferData();
     const { combinationId } = givenAnswers;
 
     const { questionData } = props;

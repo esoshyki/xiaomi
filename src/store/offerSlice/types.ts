@@ -42,6 +42,7 @@ export type QuestionsData = {
 export type QuestionTree = {
     answerId?: string
     combinationId?: string
+    offerId?: string
     questions: Array<{
         questionId: string
         answers: QuestionTree[]
@@ -67,10 +68,11 @@ export type GivenAnswer = {
 
 export type RequestAnswers = {
     [questionId: string]: string
-}
+} & { deviceInfo? : DeviceInfo }
 
 export type GivenAnswers = {
     combinationId?: string
+    offerId?: string
     answers: GivenAnswer[]
 }
 
@@ -96,7 +98,6 @@ export type OfferState = {
     photoFront: isString
     photoBack: isString
     givenAnswers: GivenAnswers
-    currentGivenAnswers: GivenAnswers
     deviceInfo: N<DeviceInfo>
 }
 

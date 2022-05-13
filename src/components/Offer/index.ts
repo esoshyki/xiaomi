@@ -4,11 +4,11 @@ import OfferPhotoBack from './OfferPhotoBack'
 import OfferPhotoFront from './OfferPhotoFront'
 import OfferPreliminary from './OfferPreliminary'
 import OfferQR from './OfferQR'
-import OfferQuestions from './OfferQuestions'
 import OfferSummary from './OfferSummary'
 
+export { default as OfferQuestions } from './OfferQuestions'
+
 export const OfferStep = {
-    Questions: OfferQuestions,
     Summary: OfferSummary,
     CostConfirm: OfferCostConfirm,
     QR: OfferQR,

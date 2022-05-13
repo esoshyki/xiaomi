@@ -1,18 +1,24 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useOfferData } from "./hooks/useOfferData";
 import Container from "../ui/Container";
 import OfferQuestion from "./Question/OfferQuestion";
 import { Typography } from "../ui";
+import { Question, ServerError } from "../../store/offerSlice/types";
+
 
 const OfferQuestions = () => {
-    const { getQuestion, errors, getQuestions, step, currentGivenAnswers } = useOfferData();
 
-    const question = useMemo(() => {
-        if (step === "questions") {
-            return getQuestion();
+    const { errors, getQuestion, givenAnswers, getQuestions, questionsTree } = useOfferData();
+
+    const question = useMemo(getQuestion, [givenAnswers, questionsTree]);
+
+    useEffect(() => {
+        console.log(question)
+        if (!question) {
+            getQuestions()
         }
-    }, [currentGivenAnswers, step]);
-
+    }, [question])
+    
     return (
         <Container.Flex fullWidth fullHeight>
             {!!question && !errors.length && <OfferQuestion questionData={question} />}

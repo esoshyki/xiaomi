@@ -3,14 +3,9 @@ import SVG from "../SVG";
 import { IconProps } from "../types";
 
 const InfoIcon = (props: IconProps) => {
-    const theme = useTheme()
+    const theme = useTheme();
     return (
-        <SVG
-            {...props}
-            name="user"
-            width={props.width ?? 20}
-            height={props.height ?? 20}
-        >
+        <SVG {...props} width={props.width ?? 20} height={props.height ?? 20}>
             <path
                 fillRule="evenodd"
                 clipRule="evenodd"

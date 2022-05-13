@@ -9,6 +9,7 @@ export type TextProps = Props<{
   underline?: boolean
   onClick?: () => void
   start?: true
+  withIndicator?: true
 }>
 
 export const getTextProps = (props: TextProps) => {

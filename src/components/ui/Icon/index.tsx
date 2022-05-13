@@ -1,3 +1,5 @@
+import AddPlus from './icons/addPlus';
+import ColorIndicatorIcon from './icons/colorIndicator'; 
 import TelegramIcon from './icons/telegram'
 import LoadingIcon from './icons/loading'
 import { IconProps } from './types';
@@ -6,7 +8,6 @@ import ReportsIcon from './icons/reports';
 import HelpIcon from './icons/help';
 import InfoIcon from './icons/info';
 import PhotoIcon from './icons/photo';
-import AddPlus from './icons/addPlus';
 import Hidden from './icons/hidden';
 import Eye from './icons/eye';
 import SettingsIcon from './icons/settings';
@@ -21,6 +22,10 @@ import EyeClose from "./icons/eye-close";
 const Icon = (props: IconProps) => {
 
     switch (props.name) {
+        case "add-plus":
+            return <AddPlus {...props} />
+        case "color-indicator":
+            return <ColorIndicatorIcon {...props} />
         case "telegram":
             return <TelegramIcon {...props}/>;
         case "loading":
@@ -43,8 +48,6 @@ const Icon = (props: IconProps) => {
             return <OrderList {...props} />
         case "photo":
             return <PhotoIcon {...props} />
-        case "add-plus":
-            return <AddPlus {...props} />
         case "hidden":
             return <Hidden {...props} />
         case "eye":

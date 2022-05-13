@@ -1,7 +1,6 @@
 import { useOfferData } from "../hooks/useOfferData";
 import { Button, Container } from "../../ui";
 import { OfferQuestionProps } from "./OfferQuestion";
-import { GivenAnswer } from "../../../store/offerSlice/types";
 import { collectAnswerData } from "../helpers/collectAnswerData";
 
 const FromList = (props: OfferQuestionProps) => {
@@ -13,7 +12,6 @@ const FromList = (props: OfferQuestionProps) => {
     const onClick = (answerName: string, answerId: string) => {
         giveAnswer(
             collectAnswerData(questionData,answerName, answerId),
-            combinationId
         );
     };
 

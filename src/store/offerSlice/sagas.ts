@@ -15,7 +15,6 @@ function* getQuestionsWorker ({ payload } : PayloadAction<string>) {
         yield put(setStep("summary"));
     }
     if (response.status === "success") {
-        yield put(setCombinationsId());
         yield put(GetQuestions.success(response.data))
         if (response.data?.deviceInfo && !Array.isArray(response.data.deviceInfo)) {
             yield put(setDeviceInfo(response.data.deviceInfo))

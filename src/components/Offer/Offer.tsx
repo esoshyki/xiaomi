@@ -8,13 +8,26 @@ import AddNewDevice from "../AddNewDevice";
 import { resetCheckout } from "../../store/userSlice";
 
 const Offer = () => {
-    const { step } = useOfferData();
+    const {
+        step,
+        getQuestions,
+        questionsTree,
+        questionsData,
+        changeStep,
+        loading,
+    } = useOfferData();
 
     const [hint, setHint] = useState(true);
     const [cardHeight, setCardHeight] = useState("auto");
     const [cardWidth, setCardWidth] = useState("auto");
 
     const hintRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!loading && step === "start") {
+            getQuestions();
+        }
+    }, [loading, step]);
 
     useEffect(() => {
         if (!!hintRef.current) {
@@ -35,21 +48,21 @@ const Offer = () => {
             case "questions":
                 return <OfferStep.Questions />;
             case "summary":
-                return <OfferStep.Summary />
+                return <OfferStep.Summary />;
             case "cost-confirm":
-                return <OfferStep.CostConfirm />
+                return <OfferStep.CostConfirm />;
             case "qr-code":
-                return <OfferStep.QR />
+                return <OfferStep.QR />;
             case "photo-front":
-                return <OfferStep.PhotoFront />
+                return <OfferStep.PhotoFront />;
             case "photo-back":
-                return <OfferStep.PhotoBack />
+                return <OfferStep.PhotoBack />;
             case "pending":
-                return <OfferStep.Pending />
+                return <OfferStep.Pending />;
             case "preliminary":
-                return <OfferStep.Preliminary />
+                return <OfferStep.Preliminary />;
             default:
-                return null
+                return null;
         }
     };
 
@@ -63,11 +76,10 @@ const Offer = () => {
             breakpoints={{
                 659.9: {
                     flexDirection: "column",
-                    alignItems: "center"
+                    alignItems: "center",
                 },
             }}
         >
-
             <Card
                 ref={hintRef}
                 fullWidth
@@ -78,24 +90,31 @@ const Offer = () => {
                 styles={{
                     height: cardHeight,
                     width: cardWidth,
-                    flexShrink: 0
+                    flexShrink: 0,
                 }}
             >
-                    <Info>
-                        За 2 минуты рассчитайте скидку на покупку у 
-                        <Typography.Link href="/" target="_blank">партнёров</Typography.Link>, взамен
-                        на ваш старый смартфон
-                    </Info>
-                    <Button variant="outline" fullWidth uppercase styles={{marginTop: "16px"}}>
-                        Подробнее
-                    </Button>
+                <Info>
+                    За 2 минуты рассчитайте скидку на покупку у 
+                    <Typography.Link href="/" target="_blank">
+                        партнёров
+                    </Typography.Link>
+                    , взамен на ваш старый смартфон
+                </Info>
+                <Button
+                    variant="outline"
+                    fullWidth
+                    uppercase
+                    styles={{ marginTop: "16px" }}
+                >
+                    Подробнее
+                </Button>
             </Card>
 
             <Card
                 padding="28px"
                 fullWidth
                 styles={{
-                    flexShrink: 0
+                    flexShrink: 0,
                 }}
                 onClick={() => setHint(false)}
             >

@@ -1,25 +1,23 @@
 import { RootState } from '..';
 import { createSelector, PayloadAction } from '@reduxjs/toolkit';
-import { GivenAnswer, OfferState, OfferSteps, QuestionsResponse } from './types';
+import { GivenAnswer, OfferState, OfferSteps, QuestionsResponse, ServerError } from './types';
 import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
 
 const initialState: OfferState = {
-    step: "questions",
+    step: "start",
     result: null,
     loading: false,
     errors: [],
     questionsData: null,
     questionsTree: null,
-    answers: null,
     hint: "",
-    currentQuestion: null,
-    currentQuestionGroup: null,
     photoFront: null,
     photoBack: null,
-    answersGiven: [],
-    questionsGiven: [],
     givenAnswers: {
+        answers: []
+    },
+    currentGivenAnswers: {
         answers: []
     }
 }
@@ -31,36 +29,36 @@ const offerSlice = createSlice({
     name: "offer",
     initialState: {...initialState},
     reducers: {
-        giveAnswer(state, { payload } : PayloadAction<GivenAnswer>) {
+        giveAnswer(state: OfferState, { payload } : PayloadAction<GivenAnswer>) {
             const answerIndex = state.givenAnswers.answers.findIndex(el => el.questionId === payload.questionId);
             if (answerIndex >= 0) {
                 state.givenAnswers.answers[answerIndex] = payload
             } else {
                 state.givenAnswers.answers.push(payload)
             }
+            const currentAnswerIndex = state.currentGivenAnswers.answers.findIndex(el => el.questionId === payload.questionId);
+            if (currentAnswerIndex >= 0) {
+                state.currentGivenAnswers.answers[currentAnswerIndex] = payload
+            } else {
+                state.currentGivenAnswers.answers.push(payload)
+            }
         },
-        setCombinationsId(state, { payload } : PayloadAction<string | undefined>) {
-            state.givenAnswers.currentCombinationId = payload;
+        setCombinationsId(state: OfferState, { payload } : PayloadAction<string | undefined>) {
+            state.givenAnswers.combinationId = payload;
+            state.currentGivenAnswers.combinationId = payload;
         },
-        setStep(state, { payload } : PayloadAction<OfferSteps>) {
+        setStep(state: OfferState, { payload } : PayloadAction<OfferSteps>) {
             state.result = null;
             state.errors = [];
             state.loading = false;
             state.step = payload;
         },
-        setCurrentQuestionGroup(state, { payload } : PayloadAction<number>) {
-            state.currentQuestionGroup = payload;
-            state.currentQuestion = 0;
-        },
-        setCurrentQuestion(state, { payload } : PayloadAction<number>) {
-            state.currentQuestion = payload
-        },
         restoreOffer: () => ({...initialState}),
-        setPhotoFront(state, { payload } : PayloadAction<string | null>) {
+        setPhotoFront(state: OfferState, { payload } : PayloadAction<string | null>) {
             state.photoFront = payload;
             state.step = "photo-back"
         },
-        setPhotoBack(state, { payload } : PayloadAction<string | null>) {
+        setPhotoBack(state: OfferState, { payload } : PayloadAction<string | null>) {
             state.photoBack = payload;
             state.step = "pending"
         }
@@ -70,7 +68,7 @@ const offerSlice = createSlice({
             state.result = null;
             state.loading = true;
         },
-        [GetQuestions.FAILURE](state, { payload } : PayloadAction<string[]>) {
+        [GetQuestions.FAILURE](state, { payload } : PayloadAction<ServerError[]>) {
             state.result = "error";
             state.errors = payload
         },
@@ -79,12 +77,15 @@ const offerSlice = createSlice({
             state.errors = [];
             state.questionsData = payload.questionsData;
             state.questionsTree = payload.questionsTree;
-            state.answersGiven = [];
-            state.questionsGiven = [];
-            state.answers = null;
+            state.currentGivenAnswers = {
+                answers: []
+            };
         },
         [GetQuestions.FULFILL](state) {
             state.loading = false
+            if (state.step === "start") {
+                state.step = "questions"
+            }
         }
     }
 });
@@ -97,8 +98,6 @@ export const getOfferData = createSelector(
 export const { 
     setStep,
     setCombinationsId,
-    setCurrentQuestionGroup,
-    setCurrentQuestion,
     giveAnswer,
     restoreOffer,
     setPhotoFront,

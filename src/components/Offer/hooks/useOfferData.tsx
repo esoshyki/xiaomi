@@ -15,49 +15,100 @@ import {
     GivenAnswer,
     OfferSteps,
     Question,
+    QuestionTree,
 } from "../../../store/offerSlice/types";
+
+// 123451234512345
 
 export const useOfferData = () => {
     const offer = useSelector(select.offer);
     const dispatch = useDispatch();
 
-    const changeStep = useCallback(
-        (step: OfferSteps) => {
-            dispatch(setStep(step));
-        },
-        [dispatch]
-    );
+    const changeStep = (step: OfferSteps) => {
+        dispatch(setStep(step));
+    };
 
     const getQuestions = () => {
         dispatch(GetQuestions.request());
     };
 
-    const getQuestion = () => {
-        const { questionsTree, questionsData, givenAnswers } = offer;
-        if (!questionsTree || !questionsData) {
+    const getNextQuestion = () : Question | null => {
+        console.log("get next question");
+        const { questionsTree, currentGivenAnswers, questionsData } = offer;
+        const givenAnswers = currentGivenAnswers.answers.map(el => el.questionId);
+        const nextQuestion = questionsTree?.questions.find(el => !givenAnswers.includes(el.questionId));
+        if (!nextQuestion || !questionsTree || !questionsData) { 
             getQuestions();
             return null
-        };
+        }
+
+        const questionId = nextQuestion.questionId;
+        const question = questionsData[+questionId];
+
+        return question;
+    };
+
+    const getQuestion = (_questionsTree?: QuestionTree): Question | null => {
+        const { questionsData, currentGivenAnswers } = offer;
+
+        const questionsTree = _questionsTree || offer.questionsTree;
+
+        const { answers } = currentGivenAnswers;
+        let currentQuestion: Question | null = null;
+
+        if (!questionsTree || !questionsData) {
+            getQuestions();
+            return null;
+        }
 
         if (questionsTree.combinationId) {
             dispatch(setCombinationsId(questionsTree.combinationId));
         }
 
-        const currentQuestion = questionsTree.questions.find((question) =>
-            givenAnswers.answers.every(
-                (ans) => ans.questionId !== question.questionId
-            )
-        )
+        const lastGivenAnswer = answers[answers.length - 1];
 
-        if (!currentQuestion) {
-            getQuestions();
-            return null
+        console.log(lastGivenAnswer);
+
+        if (!lastGivenAnswer) {
+            currentQuestion =
+                questionsData[+questionsTree.questions?.[0]?.questionId] || null;
+            if (!currentQuestion) {
+                getQuestions();
+                return null;
+            }
+
+            return currentQuestion;
         }
 
-        const { questionId } = currentQuestion
 
-        return questionsData[+questionId]
+        const lastAnswerId = lastGivenAnswer.answerId;
+        const lastQuestionId = lastGivenAnswer.questionId;
 
+        if (!lastAnswerId) {
+            getQuestions();
+            return null;
+        }
+
+        const question = questionsTree.questions.find(
+            (el) => el.questionId === lastQuestionId
+        );
+
+        if (!question?.answers) {
+            getQuestions();
+            return null;
+        }
+
+        if (question.answers.length === 0) {
+            return getNextQuestion();
+        }
+
+        const newTree = question?.answers.find(
+            (el) => el.answerId === lastAnswerId
+        );
+
+        console.log(newTree);
+
+        return getQuestion(newTree);
     };
 
     const _giveAnswer = (answer: GivenAnswer, combinationId?: string) => {

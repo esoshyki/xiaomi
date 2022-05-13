@@ -12,11 +12,13 @@ export interface OfferQuestionProps {
 
 const OfferQuestion = (props: OfferQuestionProps) => {
 
-    const { givenAnswers } = useOfferData();
-    const { currentCombinationId } = givenAnswers;
+    const { givenAnswers, errors } = useOfferData();
+    const { combinationId } = givenAnswers;
 
     const { questionData } = props;
     const { answerType, questionName } = questionData;
+
+    console.log(errors);
 
     return (
         <Container.Flex fullWidth alignItems="start" verticalGap={16}>
@@ -27,11 +29,15 @@ const OfferQuestion = (props: OfferQuestionProps) => {
                 {questionName}
             </Typography.Main>
             {answerType !== "free_input" && (
-                <FromList {...props} combinationId={currentCombinationId} />
+                <FromList {...props} combinationId={combinationId} />
             )}
             {answerType === "free_input" && (
-                <FreeInput {...props} combinationId={currentCombinationId} />
+                <FreeInput {...props} combinationId={combinationId} />
             )}
+
+            {!!errors.length && <Typography.Error>
+                {errors.join(". ")}
+                </Typography.Error>}
         </Container.Flex>
     );
 };

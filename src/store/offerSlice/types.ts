@@ -1,27 +1,28 @@
 import { isString, isNumber } from './../types';
 
-export type OfferSteps = 
-     | "imei" 
-     | "isYourPhone" 
-     | "questions" 
-     | "summary" 
-     | "cost-confirm" 
-     | "qr-code" 
-     | "photo-front" 
-     | "photo-back" 
-     | "pending" 
-     | "success"
-     | "preliminary"
+export type OfferSteps =
+    | "start"
+    | "imei"
+    | "isYourPhone"
+    | "questions"
+    | "summary"
+    | "cost-confirm"
+    | "qr-code"
+    | "photo-front"
+    | "photo-back"
+    | "pending"
+    | "success"
+    | "preliminary"
 
 export type AnswerType = "from_list" | "free_input"
 
 export type Answer = {
-    answerName: string 
+    answerName: string
 }
 
 export type Answers = {
     combinationId?: string
-    [questionId: number] : string
+    [questionId: number]: string
 }
 
 export type Question = {
@@ -31,7 +32,7 @@ export type Question = {
     questionShortName: isString
     questionGroup: string
     answerType: AnswerType
-    answers?: {[id: number] : Answer}
+    answers?: { [id: number]: Answer }
 }
 
 export type QuestionsData = {
@@ -39,10 +40,11 @@ export type QuestionsData = {
 }
 
 export type QuestionTree = {
+    answerId?: string
     combinationId?: string
     questions: Array<{
         questionId: string
-        answers: any[]
+        answers: QuestionTree[]
     }>
 }
 
@@ -63,30 +65,30 @@ export type GivenAnswer = {
 }
 
 export type RequestAnswers = {
-    [questionId: string] : string
+    [questionId: string]: string
 }
 
 export type GivenAnswers = {
-    currentCombinationId?: string
+    combinationId?: string
     answers: GivenAnswer[]
+}
+
+export type ServerError = {
+    message: string
+    code: number
 }
 
 export type OfferState = {
     step: OfferSteps
     loading: boolean,
     result: "success" | "error" | null
-    errors: string[]
-    answers: Answers | null
+    errors: ServerError[]
     questionsData: QuestionsData | null
     questionsTree: QuestionTree | null
     hint: string,
-    currentQuestion: isNumber
-    currentQuestionGroup: isNumber
     photoFront: isString
     photoBack: isString
-    lastGivenQuestion?: number
-    questionsGiven: string[]
-    answersGiven: string[]
     givenAnswers: GivenAnswers
+    currentGivenAnswers: GivenAnswers
 }
 

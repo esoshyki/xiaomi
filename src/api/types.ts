@@ -1,6 +1,8 @@
+import { ServerError } from "../store/offerSlice/types";
+
 export type ResponseData<T> = {
     data: T | null
-    errors: string[]
+    errors: ServerError[]
     status: "success" | "error",
     statusCode?: number
 }

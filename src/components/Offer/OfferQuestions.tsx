@@ -1,25 +1,27 @@
-import { useEffect, useMemo, useState } from "react";
-import { useAuth } from "../../hooks/useAuth";
+import { useMemo } from "react";
 import { useOfferData } from "./hooks/useOfferData";
 import Container from "../ui/Container";
 import OfferQuestion from "./Question/OfferQuestion";
+import { Typography } from "../ui";
 
 const OfferQuestions = () => {
-    const { getQuestion, errors, getQuestions, step, questionsTree, questionsData, givenAnswers } = useOfferData();
+    const { getQuestion, errors, getQuestions, step, currentGivenAnswers } = useOfferData();
 
     const question = useMemo(() => {
         if (step === "questions") {
             return getQuestion();
         }
-    }, [step, questionsTree, questionsData, givenAnswers.answers]);
+    }, [currentGivenAnswers, step]);
 
-    useEffect(() => {
-        getQuestions();
-    }, []);
+    console.log(errors);
 
     return (
         <Container.Flex fullWidth fullHeight>
             {!!question && !errors.length && <OfferQuestion questionData={question} />}
+            {!!errors.length && (
+                <Typography.Error>
+                    {errors.map(err => err.message).join(". ")}
+                </Typography.Error>)}
         </Container.Flex>
     );
 };

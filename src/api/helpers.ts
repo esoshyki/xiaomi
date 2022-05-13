@@ -12,7 +12,10 @@ export const collectFormData = (data: object, user: User) : FormData => {
 export const getErrorResponse = (message?: string) : ResponseData<any> => {
     return {
         data: null,
-        errors: [message ?? "Please, log in"],
+        errors: [{
+            message: "Error",
+            code: 500
+        }],
         status: "error",
         statusCode: message ? 500 : 401
     }

@@ -37,14 +37,18 @@ export const useOfferData = () => {
     }, []);
 
     const getQuestion = () => {
-        const { questionsTree, givenAnswers, questionsData } = offer;
-        const { answers } = givenAnswers;
+        const { questionsTree, currentGivenAnswers, questionsData } = offer;
+        const { answers } = currentGivenAnswers;
 
         if (!questionsTree || !questionsData) {
             return null;
         }
 
         let tree: QuestionTree = questionsTree;
+
+        if (!answers.length) {
+            return questionsData[questionsTree.questions[0].questionId] 
+        }
 
         answers.forEach((answer) => {
             const { questionId, answerId } = answer;
@@ -72,7 +76,7 @@ export const useOfferData = () => {
             return null;
         }
 
-        return questionsData[+question.questionId];
+        return questionsData[question.questionId];
     };
 
     const _giveAnswer = (answer: GivenAnswer ) => {

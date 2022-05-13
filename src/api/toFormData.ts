@@ -2,8 +2,6 @@ export const toFormData = (obj: Record<any, any>, form?: FormData, nameSpace?: s
     const fd = form || new FormData()
     let formKey
 
-    console.log(obj);
-
     for (let property in obj) {
         if (obj.hasOwnProperty(property)) {
             if (nameSpace) {

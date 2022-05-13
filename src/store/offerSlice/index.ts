@@ -18,6 +18,9 @@ const initialState: OfferState = {
     givenAnswers: {
         answers: []
     },
+    currentGivenAnswers: {
+        answers: []
+    },
     deviceInfo: null
 }
 
@@ -35,15 +38,23 @@ const offerSlice = createSlice({
             } else {
                 state.givenAnswers.answers.push(payload)
             }
+            const currentAnswerIndex = state.currentGivenAnswers.answers.findIndex(el => el.questionId === payload.questionId);
+            if (answerIndex >= 0) {
+                state.currentGivenAnswers.answers[currentAnswerIndex] = payload
+            } else {
+                state.currentGivenAnswers.answers.push(payload)
+            }
         },
         setQuestionsTree(state: OfferState, { payload } : PayloadAction<N<QuestionTree>>) {
             state.questionsTree = payload
         },
         setCombinationsId(state: OfferState, { payload } : PayloadAction<string | undefined>) {
             state.givenAnswers.combinationId = payload;
+            state.currentGivenAnswers.combinationId = payload;
         },
         setOfferId(state: OfferState, { payload } : PayloadAction<string | undefined>) {
             state.givenAnswers.offerId = payload;
+            state.currentGivenAnswers.offerId = payload;
         },
         setStep(state: OfferState, { payload } : PayloadAction<OfferSteps>) {
             state.result = null;
@@ -78,6 +89,7 @@ const offerSlice = createSlice({
             state.errors = [];
             state.questionsData = payload.questionsData;
             state.questionsTree = payload.questionsTree;
+            state.currentGivenAnswers = { answers: [] }
         },
         [GetQuestions.FULFILL](state) {
             state.loading = false

@@ -20,11 +20,6 @@ export type Answer = {
     answerName: string
 }
 
-export type Answers = {
-    combinationId?: string
-    [questionId: number]: string
-}
-
 export type Question = {
     questionId: string
     questionName: string
@@ -32,11 +27,11 @@ export type Question = {
     questionShortName: isString
     questionGroup: string
     answerType: AnswerType
-    answers?: { [id: number]: Answer }
+    answers?: { [id: string]: Answer }
 }
 
 export type QuestionsData = {
-    [id: number]: Question
+    [id: string]: Question
 }
 
 export type QuestionTree = {
@@ -98,6 +93,7 @@ export type OfferState = {
     photoFront: isString
     photoBack: isString
     givenAnswers: GivenAnswers
+    currentGivenAnswers: GivenAnswers
     deviceInfo: N<DeviceInfo>
 }
 

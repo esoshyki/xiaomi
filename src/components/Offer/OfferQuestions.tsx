@@ -13,12 +13,11 @@ const OfferQuestions = () => {
     const question = useMemo(getQuestion, [givenAnswers, questionsTree]);
 
     useEffect(() => {
-        console.log(question)
         if (!question) {
             getQuestions()
         }
-    }, [question])
-    
+    }, [question]);
+
     return (
         <Container.Flex fullWidth fullHeight>
             {!!question && !errors.length && <OfferQuestion questionData={question} />}

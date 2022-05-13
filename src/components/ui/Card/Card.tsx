@@ -1,6 +1,6 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { getCommonProps, Props } from "../../types";
-import styled from "styled-components/macro";
+import styled, { keyframes } from "styled-components/macro";
 import { getAnimations } from "../../../theme/animations";
 
 type CardProps = Props<{
@@ -15,12 +15,12 @@ const Wrapper = styled.div<CardProps>`
     border-radius: 20px;
     width: ${(props) => (props.fullWidth ? "100%" : "auto")};
     height: ${(props) => (props.fullHeight ? "100%" : "auto")};
-	max-width: 344px;
-	box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.04);
-    transition: all 300ms linear;
+    max-width: 344px;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.04);
+    transition: all 200ms linear;
     overflow-y: ${(props) => (props.animateHeight ? "hidden" : "auto")};
     overflow-x: ${(props) => (props.animateWidth ? "hidden" : "auto")};
-    ${props => getCommonProps(props)};
+    ${(props) => getCommonProps(props)};
     padding: 0;
     &:before {
         position: absolute;
@@ -29,49 +29,96 @@ const Wrapper = styled.div<CardProps>`
         top: 0;
         bottom: 0;
         z-index: -1;
-		border-radius: inherit;
-		background-color: ${(props) => props.theme.colors.background.opacity};
-		backdrop-filter: blur(8px);
-        content: '';
+        border-radius: inherit;
+        background-color: ${(props) => props.theme.colors.background.opacity};
+        backdrop-filter: blur(8px);
+        content: "";
     }
-    
+
     & > * {
         opacity: ${(props) => (props.isHidden ? "0" : "1")};
         height: ${(props) => (props.isHidden ? "0" : "auto")};
     }
-    
+
     @media (min-width: 660px) and (max-width: 768px) {
-		max-width: calc(50% - 18px);
-    };
-    ${props => {
+        max-width: calc(50% - 18px);
+    }
+    ${(props) => {
         if (props.isHidden) {
             if (props.animateHeight) {
-                return ({
-                    height: 0
-                })
+                return {
+                    height: 0,
+                };
             } else if (props.animateWidth) {
-				return ({
-                    width: 0
-				})
-			}
+                return {
+                    width: 0,
+                };
+            }
         }
     }}
 `;
 
-const Inner = styled.div<{padding: any}>`
-    padding: ${(props) => (props.padding) ? Number.isInteger(props.padding) ? `${props.padding}px` : props.padding : ""};
+const hide = keyframes`
+    0% {
+        filter: opacity(1)
+    }
+    50% {
+        filter: opacity(0)
+    }
+    100% {
+        filter: opacity(1)
+    }
+`;
+
+const ContentWrapper = styled.div`
+    animation: ${hide} 100ms linear 0s;
+    transition: opacity 100ms ease-in;
+`;
+
+const Inner = styled.div<{ padding: any }>`
+    padding: ${(props) =>
+        props.padding
+            ? Number.isInteger(props.padding)
+                ? `${props.padding}px`
+                : props.padding
+            : ""};
     border-radius: inherit;
     transition: opacity 200ms;
 `;
 
-
 const Card = forwardRef<HTMLDivElement, CardProps>((props: CardProps, ref) => {
     const { children, onAnimationEnd, padding } = props;
+
+    const [height, setHeight] = useState<number>();
+    const [isTransition, setIsTransition] = useState(true);
+
+    useEffect(() => {
+        if (contentRef.current) {
+            setHeight(contentRef.current.offsetHeight);
+        }
+    });
+
+    const onTransitionEnd = () => {
+        setIsTransition(false)
+    };
+
+    const contentRef = useRef<HTMLDivElement>(null);
     return (
-        <Wrapper onAnimationEnd={onAnimationEnd} ref={ref} {...props}>
-            {!!children &&
-                <Inner padding={padding}>{children}</Inner>
-            }
+        <Wrapper
+            onAnimationEnd={onAnimationEnd}
+            ref={ref}
+            onTransitionEnd={onTransitionEnd}
+            {...props}
+            style={{
+                height: height ? `${height}px` : "auto",
+                overflow: "hidden",
+            }}
+        >
+            <ContentWrapper ref={contentRef} style={{
+                opacity: isTransition ? 0 : 1
+            }}>
+                {!!children && <Inner padding={padding}>{children}</Inner>}
+            </ContentWrapper>
         </Wrapper>
     );
 });

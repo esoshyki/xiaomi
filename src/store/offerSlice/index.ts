@@ -3,7 +3,6 @@ import { createSelector, PayloadAction } from '@reduxjs/toolkit';
 import { DeviceInfo, GivenAnswer, OfferState, OfferSteps, QuestionsResponse, ServerError } from './types';
 import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
-import { N } from '../types';
 
 const initialState: OfferState = {
     step: "start",

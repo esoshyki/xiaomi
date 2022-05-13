@@ -1,6 +1,6 @@
 import styled from "styled-components/macro";
 import { getFlexAligns, getFlexJustify } from "../../../helpers/getFlexProps";
-import { Aligns, collectGap, collectWrapperMargin, getCommonProps, Justifies, Props } from "../../types";
+import { Aligns, getCommonProps, Justifies, Props } from "../../types";
 import { getAnimations } from "../../../theme/animations";
 
 export type FlexProps = Props<{

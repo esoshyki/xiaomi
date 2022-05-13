@@ -42,10 +42,6 @@ const Offer = () => {
 
     const getContent = () => {
         switch (step) {
-            case "imei":
-                return <OfferStep.Imei hint={hint} setHint={setHint} />;
-            case "isYourPhone":
-                return <OfferStep.IsYourPhone />;
             case "questions":
                 return <OfferStep.Questions />;
             case "summary":

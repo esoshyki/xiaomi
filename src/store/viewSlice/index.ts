@@ -2,6 +2,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import { ViewState } from './types';
+
 const initialState: ViewState = {
     showMenu: false,
     animationOpen: false,
@@ -12,19 +13,19 @@ const viewSlice = createSlice({
     name: "view",
     initialState,
     reducers: {
-        showMenu(state) {
+        showMenu(state: ViewState) {
             state.showMenu = true
         },
-        hideMenu(state) {
+        hideMenu(state: ViewState) {
             state.showMenu = false
         },
-        animationOpen(state) {
+        animationOpen(state: ViewState) {
             state.animationOpen = true;
         },
-        animationClose(state) {
+        animationClose(state: ViewState) {
             state.animationClose = true;
         },
-        animationClear(state) {
+        animationClear(state: ViewState) {
             state.animationClose = false;
             state.animationOpen = false;
         }

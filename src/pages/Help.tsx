@@ -1,5 +1,4 @@
 import React from "react"
-import Offer from "../components/Offer"
 import { withLayout } from "../components/Layout/withLayout"
 
 const Help = () => {

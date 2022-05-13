@@ -1,6 +1,6 @@
 import { select } from "../../../store/selector";
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import {
     CheckImei,
     GetQuestions,
@@ -10,6 +10,7 @@ import {
     setPhotoFront,
     setPhotoBack,
     setCombinationsId,
+    getOfferData,
 } from "../../../store/offerSlice";
 import {
     GivenAnswer,
@@ -21,7 +22,10 @@ import {
 // 350320523229662
 
 export const useOfferData = () => {
-    const offer = useSelector(select.offer);
+
+    const selectOfferData = useMemo(() => getOfferData, [])
+    const offer = useSelector(selectOfferData)
+    
     const dispatch = useDispatch();
 
     const changeStep = (step: OfferSteps) => {

@@ -2,7 +2,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
 import { RootState } from '..';
-import { User, UserState, ErrorType, LoginData } from "./types";
+import { User, UserState, ErrorType } from "./types";
 
 const initialState: UserState = {
     user: null,
@@ -26,13 +26,13 @@ const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        toggleLogin(state, { payload } : PayloadAction<boolean>) {
+        toggleLogin(state: UserState, { payload } : PayloadAction<boolean>) {
             state.login.show = payload
         },
-        setUser(state, { payload } : PayloadAction<User | null>) {
+        setUser(state: UserState, { payload } : PayloadAction<User | null>) {
             state.user = payload
         },
-        resetCheckout(state) {
+        resetCheckout(state: UserState,) {
             state.checkAuth.result = undefined;
             state.checkAuth.pending = false;
         } 

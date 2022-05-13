@@ -18,7 +18,7 @@ import {
     QuestionTree,
 } from "../../../store/offerSlice/types";
 
-// 123451234512345
+// 350320523229662
 
 export const useOfferData = () => {
     const offer = useSelector(select.offer);
@@ -28,12 +28,11 @@ export const useOfferData = () => {
         dispatch(setStep(step));
     };
 
-    const getQuestions = () => {
+    const getQuestions = useCallback(() => {
         dispatch(GetQuestions.request());
-    };
+    }, []);
 
     const getNextQuestion = () : Question | null => {
-        console.log("get next question");
         const { questionsTree, currentGivenAnswers, questionsData } = offer;
         const givenAnswers = currentGivenAnswers.answers.map(el => el.questionId);
         const nextQuestion = questionsTree?.questions.find(el => !givenAnswers.includes(el.questionId));
@@ -66,8 +65,6 @@ export const useOfferData = () => {
         }
 
         const lastGivenAnswer = answers[answers.length - 1];
-
-        console.log(lastGivenAnswer);
 
         if (!lastGivenAnswer) {
             currentQuestion =
@@ -105,8 +102,6 @@ export const useOfferData = () => {
         const newTree = question?.answers.find(
             (el) => el.answerId === lastAnswerId
         );
-
-        console.log(newTree);
 
         return getQuestion(newTree);
     };

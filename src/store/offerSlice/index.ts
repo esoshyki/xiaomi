@@ -1,8 +1,9 @@
 import { RootState } from '..';
 import { createSelector, PayloadAction } from '@reduxjs/toolkit';
-import { GivenAnswer, OfferState, OfferSteps, QuestionsResponse, ServerError } from './types';
+import { DeviceInfo, GivenAnswer, OfferState, OfferSteps, QuestionsResponse, ServerError } from './types';
 import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
+import { N } from '../types';
 
 const initialState: OfferState = {
     step: "start",
@@ -19,7 +20,8 @@ const initialState: OfferState = {
     },
     currentGivenAnswers: {
         answers: []
-    }
+    },
+    deviceInfo: null
 }
 
 export const CheckImei = createRoutine("offer/Check-Imei");
@@ -52,6 +54,9 @@ const offerSlice = createSlice({
             state.errors = [];
             state.loading = false;
             state.step = payload;
+        },
+        setDeviceInfo(state: OfferState, { payload } : PayloadAction<DeviceInfo>) {
+            state.deviceInfo = payload
         },
         restoreOffer: () => ({...initialState}),
         setPhotoFront(state: OfferState, { payload } : PayloadAction<string | null>) {
@@ -101,7 +106,8 @@ export const {
     giveAnswer,
     restoreOffer,
     setPhotoFront,
-    setPhotoBack
+    setPhotoBack,
+    setDeviceInfo
 } = offerSlice.actions
 
 export default offerSlice.reducer;

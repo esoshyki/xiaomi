@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Question } from "../../../store/offerSlice/types";
 import Container from "../../ui/Container";
 import Typography from "../../ui/Typography";
@@ -18,8 +19,6 @@ const OfferQuestion = (props: OfferQuestionProps) => {
     const { questionData } = props;
     const { answerType, questionName } = questionData;
 
-    console.log(errors);
-
     return (
         <Container.Flex fullWidth alignItems="start" verticalGap={16}>
             <Typography.Main
@@ -35,11 +34,8 @@ const OfferQuestion = (props: OfferQuestionProps) => {
                 <FreeInput {...props} combinationId={combinationId} />
             )}
 
-            {!!errors.length && <Typography.Error>
-                {errors.join(". ")}
-                </Typography.Error>}
         </Container.Flex>
     );
 };
 
-export default OfferQuestion;
+export default memo(OfferQuestion);

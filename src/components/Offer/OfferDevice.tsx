@@ -1,8 +1,11 @@
-import { Fragment } from "react";
+import { Fragment, memo } from "react";
 import { useOfferData } from "./hooks/useOfferData";
 import { Container, Image, Typography } from "../ui";
 import styled from "styled-components/macro";
 import { animateTime } from "../../hooks/useMenu";
+import { DeviceInfo } from "../../store/offerSlice/types";
+import { N } from "../../store/types";
+import { getFullImageHref } from "./helpers/getFullImageHref";
 
 const ImgWrapper = styled.div`
     display: flex;
@@ -15,7 +18,9 @@ const ImgWrapper = styled.div`
     background-color: white;
 `;
 
-const OfferDevice = ({ phone }: { phone: any }) => {
+const OfferDevice = ({ deviceInfo }: { deviceInfo: DeviceInfo }) => {
+
+    const { deviceID, deviceImage, deviceName } = deviceInfo;
 
     const GivenAnswers = () => {
         return (
@@ -33,13 +38,13 @@ const OfferDevice = ({ phone }: { phone: any }) => {
             justify="start"
         >
             <ImgWrapper>
-                <Image src={phone.IMAGE} alt={phone.NAME} height={75} styles={{
+                <Image src={deviceImage} alt={deviceName} height={75} styles={{
                     maxWidth: "75px",
                     maxHeight: "75px"
                 }}/>
             </ImgWrapper>
             <Container.Flex verticalGap={2} alignItems="stretch">
-                <Typography.Title textAlign="start" styles={{ order: 0, margin: "0 0 4px" }}>{phone.NAME}</Typography.Title>
+                <Typography.Title textAlign="start" styles={{ order: 0, margin: "0 0 4px" }}>{deviceName}</Typography.Title>
                 <GivenAnswers />
                 <Container.Flex
                     direction="row"
@@ -57,4 +62,4 @@ const OfferDevice = ({ phone }: { phone: any }) => {
     );
 };
 
-export default OfferDevice;
+export default memo(OfferDevice);

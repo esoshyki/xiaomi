@@ -13,8 +13,6 @@ const OfferQuestions = () => {
         }
     }, [currentGivenAnswers, step]);
 
-    console.log(errors);
-
     return (
         <Container.Flex fullWidth fullHeight>
             {!!question && !errors.length && <OfferQuestion questionData={question} />}

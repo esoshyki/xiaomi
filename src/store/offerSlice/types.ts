@@ -1,4 +1,4 @@
-import { isString, isNumber } from './../types';
+import { isString, isNumber, N } from './../types';
 
 export type OfferSteps =
     | "start"
@@ -52,6 +52,7 @@ export type QuestionsResponse = {
     questionsData: QuestionsData
     questionsTree: QuestionTree
     complete?: true
+    deviceInfo?: DeviceInfo | []
 }
 
 export type GivenAnswer = {
@@ -78,6 +79,12 @@ export type ServerError = {
     code: number
 }
 
+export type DeviceInfo = {
+    deviceID: string
+    deviceImage: string
+    deviceName: string
+}
+
 export type OfferState = {
     step: OfferSteps
     loading: boolean,
@@ -90,5 +97,6 @@ export type OfferState = {
     photoBack: isString
     givenAnswers: GivenAnswers
     currentGivenAnswers: GivenAnswers
+    deviceInfo: N<DeviceInfo>
 }
 

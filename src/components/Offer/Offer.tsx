@@ -15,6 +15,7 @@ const Offer = () => {
         questionsData,
         changeStep,
         loading,
+        deviceInfo
     } = useOfferData();
 
     const [hint, setHint] = useState(true);
@@ -120,6 +121,7 @@ const Offer = () => {
             >
                 <Progress />
                 {/* {phone?.[0] && <OfferDevice phone={phone[0]} />} */}
+                {deviceInfo && <OfferDevice deviceInfo={deviceInfo}/>}
                 {getContent()}
             </Card>
 

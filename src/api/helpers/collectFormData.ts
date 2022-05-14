@@ -1,5 +1,5 @@
-import { User } from './../store/userSlice/types';
-import { ResponseData } from './types';
+import { User } from '../../store/userSlice/types';
+import { ResponseData } from '../types';
 import { toFormData } from './toFormData';
 
 

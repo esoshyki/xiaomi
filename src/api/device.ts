@@ -1,8 +1,8 @@
-import { QuestionsResponse, RequestAnswers } from './../store/offerSlice/types';
+import { QuestionsResponse, RequestAnswers } from '../store/offerSlice/types';
 import { ResponseData } from './types'
 import { api } from './instance';
 import { AxiosResponse } from 'axios';
-import { collectFormData, getErrorResponse } from './helpers';
+import { collectFormData, getErrorResponse } from './helpers/collectFormData';
 import { User } from "../store/userSlice/types"
 import { N } from '../store/types';
 

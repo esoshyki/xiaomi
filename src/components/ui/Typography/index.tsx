@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import * as CSS from 'csstype'
 import { Title, TitleSecondary, Small, RublesLarge, RublesSmall, Medium, Main, Link, Button, Error, Tertiary } from './components'
 

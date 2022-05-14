@@ -1,8 +1,5 @@
-import { ReactNode } from 'react';
 import { css } from 'styled-components';
 import { Props } from '../../types';
-
-type Variant =  "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "span" | "p" | "mark" | "error" | "button"
 
 export type TextProps = Props<{
   textAlign?: "center" | "end" | "start"

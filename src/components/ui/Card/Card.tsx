@@ -1,7 +1,6 @@
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { getCommonProps, Props } from "../../types";
 import styled, { keyframes } from "styled-components/macro";
-import { getAnimations } from "../../../theme/animations";
 
 type CardProps = Props<{
     noPadding?: boolean;

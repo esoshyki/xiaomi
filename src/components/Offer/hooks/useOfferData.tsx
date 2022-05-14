@@ -15,8 +15,10 @@ import {
     GivenAnswer,
     OfferSteps,
     QuestionTree,
+    Question
 } from "../../../store/offerSlice/types";
 import { getTree } from "../helpers/getTree";
+import { getFromTree } from "../helpers/getFromTree";
 
 // 350320523229662
 
@@ -54,57 +56,30 @@ export const useOfferData = () => {
             return null;
         }
 
-        let tree: QuestionTree = questionsTree;
-
         if (!answers.length) {
             const id = questionsTree.questions[0].questionId;
             return { ...questionsData[id], questionKey: id };
         }
 
-        answers.forEach((answer) => {
-            const { questionId, answerId } = answer;
+        const treeData = getFromTree(questionsTree, answers);
 
-            if (!answerId) {
-                return;
+        if (!treeData?.questionId) {
+            return null;
+        } else {
+            const { questionId, combinationId, offerId } = treeData;
+            if (combinationId) {
+                dispatch(setCombinationsId(combinationId));
             }
 
-            tree = getTree(tree, questionId, answerId) || tree;
-        });
+            if (offerId) {
+                dispatch(setOfferId(offerId));
+            }
 
-        if (tree.combinationId) {
-            dispatch(setCombinationsId(tree.combinationId));
+            return {
+                ...questionsData[questionId],
+                questionKey: questionId,
+            }
         }
-
-        if (tree.offerId) {
-            dispatch(setOfferId(tree.offerId));
-        }
-
-        const question = tree.questions.find(
-            (q) =>
-                !(
-                    answers
-                        .map((el) => el.questionKey)
-                        .includes(q.questionId) ||
-                    answers.map((el) => el.questionId).includes(q.questionId)
-                )
-        );
-
-        if (!question) {
-            return null;
-        }
-
-        const key = Object.keys(questionsData).find(
-            (key) => questionsData[key].questionId === question.questionId
-        );
-
-        if (!key) {
-            return null;
-        }
-
-        return {
-            ...questionsData[key],
-            questionKey: key,
-        };
     };
 
     const _giveAnswer = (answer: GivenAnswer) => {

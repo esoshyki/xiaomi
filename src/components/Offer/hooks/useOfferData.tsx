@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useState, useMemo } from "react";
 import {
     GetQuestions,
     giveAnswer,
@@ -22,6 +22,17 @@ import { getTree } from "../helpers/getTree";
 
 export const useOfferData = () => {
     const offer = useSelector(getOfferData);
+
+    const progress = useMemo(() => {
+        if (offer.questionsData) {
+            return offer.questionsReceived
+                ? (offer.givenAnswers.answers.length * 0.5) /
+                      offer.questionsReceived
+                : 0;
+        } else {
+            return 0;
+        }
+    }, [offer]);
 
     const dispatch = useDispatch();
 
@@ -46,8 +57,8 @@ export const useOfferData = () => {
         let tree: QuestionTree = questionsTree;
 
         if (!answers.length) {
-            const id = questionsTree.questions[0].questionId
-            return {...questionsData[id], questionKey: id }
+            const id = questionsTree.questions[0].questionId;
+            return { ...questionsData[id], questionKey: id };
         }
 
         answers.forEach((answer) => {
@@ -61,34 +72,42 @@ export const useOfferData = () => {
         });
 
         if (tree.combinationId) {
-            dispatch(setCombinationsId(tree.combinationId))
+            dispatch(setCombinationsId(tree.combinationId));
         }
 
         if (tree.offerId) {
-            dispatch(setOfferId(tree.offerId))
+            dispatch(setOfferId(tree.offerId));
         }
 
         const question = tree.questions.find(
-            (q) => !(answers.map((el) => el.questionKey).includes(q.questionId) || answers.map((el) => el.questionId).includes(q.questionId))
+            (q) =>
+                !(
+                    answers
+                        .map((el) => el.questionKey)
+                        .includes(q.questionId) ||
+                    answers.map((el) => el.questionId).includes(q.questionId)
+                )
         );
 
         if (!question) {
             return null;
         }
 
-        const key = Object.keys(questionsData).find(key => questionsData[key].questionId === question.questionId);
+        const key = Object.keys(questionsData).find(
+            (key) => questionsData[key].questionId === question.questionId
+        );
 
         if (!key) {
-            return null
+            return null;
         }
 
         return {
             ...questionsData[key],
-            questionKey: key
-        }
+            questionKey: key,
+        };
     };
 
-    const _giveAnswer = (answer: GivenAnswer ) => {
+    const _giveAnswer = (answer: GivenAnswer) => {
         dispatch(giveAnswer(answer));
     };
 
@@ -101,8 +120,6 @@ export const useOfferData = () => {
             type === "front" ? setPhotoFront(imageURL) : setPhotoBack(imageURL)
         );
     };
-
-    const progress = 0;
 
     return {
         ...offer,

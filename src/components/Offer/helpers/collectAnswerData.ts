@@ -11,10 +11,13 @@ export const collectAnswerData = (
         questionName,
         questionShortName,
         questionDescription,
+        questionDescriptionUrl,
+        questionDescriptionUrlName,
+        questionInputButtonName,
+        questionInputPlaceholder,
         questionKey
     } = questionData;
 
-    console.log(questionKey);
     
     const givenAnswer: GivenAnswer = {
         questionKey,
@@ -22,7 +25,6 @@ export const collectAnswerData = (
         questionGroup,
         questionName,
         questionShortName,
-        questionDescription,
         answerId,
         answerName,
     };

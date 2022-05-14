@@ -24,7 +24,11 @@ export type Question = {
     questionId: string
     questionKey: string
     questionName: string
-    questionDescription: string
+    questionDescription?: isString
+    questionDescriptionUrlName?: isString
+    questionDescriptionUrl?: isString
+    questionInputPlaceholder?: isString
+    questionInputButtonName?: isString
     questionShortName: isString
     questionGroup: string
     answerType: AnswerType
@@ -56,7 +60,11 @@ export type GivenAnswer = {
     questionId: string
     questionKey: string
     questionName: string
-    questionDescription: string
+    questionDescription?: string
+    questionDescriptionUrlName?: string
+    questionDescriptionUrl?: string
+    questionInputPlaceholder?: string
+    questionInputButtonName?: string
     questionShortName: isString
     answerId?: string
     answerName: string
@@ -97,5 +105,6 @@ export type OfferState = {
     givenAnswers: GivenAnswers
     currentGivenAnswers: GivenAnswers
     deviceInfo: N<DeviceInfo>
+    questionsReceived: number
 }
 

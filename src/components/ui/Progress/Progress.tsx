@@ -36,10 +36,10 @@ const ProgressContent = styled.div<{ progress: number}>`
     top: 0;
 `
 
-const Progress = () => {
+const Progress = ({ progress } : { progress: number }) => {
 
-    const { progress } = useOfferData();
     
+
     return (
         <>
             <Container.Flex justify='between' direction='row' fullWidth margin={"0 0 4px"}>

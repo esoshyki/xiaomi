@@ -21,7 +21,8 @@ const initialState: OfferState = {
     currentGivenAnswers: {
         answers: []
     },
-    deviceInfo: null
+    deviceInfo: null,
+    questionsReceived: 0
 }
 
 export const CheckImei = createRoutine("offer/Check-Imei");
@@ -90,6 +91,7 @@ const offerSlice = createSlice({
             state.questionsData = payload.questionsData;
             state.questionsTree = payload.questionsTree;
             state.currentGivenAnswers = { answers: [] }
+            state.questionsReceived += Object.keys(payload.questionsData || {}).length
         },
         [GetQuestions.FULFILL](state) {
             state.loading = false

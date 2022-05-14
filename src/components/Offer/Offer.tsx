@@ -14,7 +14,8 @@ const Offer = () => {
         step,
         getQuestions,
         deviceInfo,
-        givenAnswers
+        givenAnswers,
+        progress
     } = useOfferData();
 
     const [hint, setHint] = useState(true);
@@ -91,7 +92,7 @@ const Offer = () => {
                 }}
                 onClick={() => setHint(false)}
             >
-                <Progress />
+                <Progress progress={progress}/>
                 {/* {phone?.[0] && <OfferDevice phone={phone[0]} />} */}
                 {deviceInfo && <OfferDevice deviceInfo={deviceInfo} givenAnswers={givenAnswers.answers}/>}
                 {step === "questions" && <OfferQuestions />}

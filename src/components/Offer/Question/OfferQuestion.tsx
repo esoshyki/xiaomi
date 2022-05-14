@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Question } from "../../../store/offerSlice/types";
+import { Info } from '../../ui';
 import Container from "../../ui/Container";
 import Typography from "../../ui/Typography";
 import { useOfferData } from "../hooks/useOfferData";
@@ -17,7 +18,7 @@ const OfferQuestion = (props: OfferQuestionProps) => {
     const { combinationId } = givenAnswers;
 
     const { questionData } = props;
-    const { answerType, questionName } = questionData;
+    const { answerType, questionName, questionDescription } = questionData;
 
     return (
         <Container.Flex fullWidth alignItems="start" verticalGap={16}>
@@ -33,6 +34,8 @@ const OfferQuestion = (props: OfferQuestionProps) => {
             {answerType === "free_input" && (
                 <FreeInput {...props} combinationId={combinationId} />
             )}
+
+            {!!questionDescription && <Info>{questionDescription}</Info>}
 
         </Container.Flex>
     );

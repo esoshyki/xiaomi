@@ -14,6 +14,7 @@ const Offer = () => {
         step,
         getQuestions,
         deviceInfo,
+        givenAnswers
     } = useOfferData();
 
     const [hint, setHint] = useState(true);
@@ -92,7 +93,7 @@ const Offer = () => {
             >
                 <Progress />
                 {/* {phone?.[0] && <OfferDevice phone={phone[0]} />} */}
-                {deviceInfo && <OfferDevice deviceInfo={deviceInfo} />}
+                {deviceInfo && <OfferDevice deviceInfo={deviceInfo} givenAnswers={givenAnswers.answers}/>}
                 {step === "questions" && <OfferQuestions />}
                 {step === "success" && <Typography.Title>Успех</Typography.Title>}
             </Card>

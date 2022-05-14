@@ -1,11 +1,8 @@
-import { Fragment, memo } from "react";
-import { useOfferData } from "./hooks/useOfferData";
+import { Fragment, memo, useMemo } from "react";
 import { Container, Image, Typography } from "../ui";
 import styled from "styled-components/macro";
-import { animateTime } from "../../hooks/useMenu";
-import { DeviceInfo } from "../../store/offerSlice/types";
-import { N } from "../../store/types";
-import { getFullImageHref } from "./helpers/getFullImageHref";
+import { DeviceInfo, GivenAnswer } from "../../store/offerSlice/types";
+import { getDeviceData } from "./helpers/getDeviceData";
 
 const ImgWrapper = styled.div`
     display: flex;
@@ -13,21 +10,15 @@ const ImgWrapper = styled.div`
     justify-content: center;
 	width: 87px;
 	height: 87px;
-
 	border-radius: 12px;
     background-color: white;
 `;
 
-const OfferDevice = ({ deviceInfo }: { deviceInfo: DeviceInfo }) => {
+const OfferDevice = ({ deviceInfo, givenAnswers }: { deviceInfo: DeviceInfo, givenAnswers: GivenAnswer[] }) => {
 
-    const { deviceID, deviceImage, deviceName } = deviceInfo;
+    const { deviceImage, deviceName } = deviceInfo;
 
-    const GivenAnswers = () => {
-        return (
-            <Fragment>
-            </Fragment>
-        );
-    };
+    const categories = useMemo(() => getDeviceData(givenAnswers), [givenAnswers])
 
     return (
         <Container.Flex
@@ -45,18 +36,12 @@ const OfferDevice = ({ deviceInfo }: { deviceInfo: DeviceInfo }) => {
             </ImgWrapper>
             <Container.Flex verticalGap={2} alignItems="stretch">
                 <Typography.Title textAlign="start" styles={{ order: 0, margin: "0 0 4px" }}>{deviceName}</Typography.Title>
-                <GivenAnswers />
-                <Container.Flex
-                    direction="row"
-                    fullWidth
-                    horizontalGap={10}
-                    styles={{order: 2}}
-                >
-                    <Typography.Tertiary>
-                        IMEI
-                    </Typography.Tertiary>
-                    {/* <Typography.Small>{IMEI}</Typography.Small> */}
-                </Container.Flex>
+                {Object.entries(categories).map(([groupName, value], key) => (
+                    <Container.Flex direction="row" key={key}>
+                        <Typography.Tertiary margin={"0 4px 0 0"}>{groupName}</Typography.Tertiary>
+                        <Typography.Small>{value}</Typography.Small>
+                    </Container.Flex>
+                ))}
             </Container.Flex>
         </Container.Flex>
     );

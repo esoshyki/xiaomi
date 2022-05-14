@@ -22,6 +22,7 @@ export type Answer = {
 
 export type Question = {
     questionId: string
+    questionKey: string
     questionName: string
     questionDescription: string
     questionShortName: isString
@@ -53,6 +54,7 @@ export type QuestionsResponse = {
 
 export type GivenAnswer = {
     questionId: string
+    questionKey: string
     questionName: string
     questionDescription: string
     questionShortName: isString

@@ -16,7 +16,6 @@ import {
     OfferSteps,
     QuestionTree,
 } from "../../../store/offerSlice/types";
-import { N } from "../../../store/types";
 import { getTree } from "../helpers/getTree";
 
 // 350320523229662
@@ -47,7 +46,8 @@ export const useOfferData = () => {
         let tree: QuestionTree = questionsTree;
 
         if (!answers.length) {
-            return questionsData[questionsTree.questions[0].questionId] 
+            const id = questionsTree.questions[0].questionId
+            return {...questionsData[id], questionKey: id }
         }
 
         answers.forEach((answer) => {
@@ -69,14 +69,23 @@ export const useOfferData = () => {
         }
 
         const question = tree.questions.find(
-            (q) => !answers.map((el) => el.questionId).includes(q.questionId)
+            (q) => !(answers.map((el) => el.questionKey).includes(q.questionId) || answers.map((el) => el.questionId).includes(q.questionId))
         );
 
         if (!question) {
             return null;
         }
 
-        return questionsData[question.questionId];
+        const key = Object.keys(questionsData).find(key => questionsData[key].questionId === question.questionId);
+
+        if (!key) {
+            return null
+        }
+
+        return {
+            ...questionsData[key],
+            questionKey: key
+        }
     };
 
     const _giveAnswer = (answer: GivenAnswer ) => {

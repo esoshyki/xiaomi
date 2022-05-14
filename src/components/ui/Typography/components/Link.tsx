@@ -2,8 +2,15 @@ import styled from "styled-components/macro";
 import { getTextProps, TextProps } from "../types";
 import { getTextAlign } from "./helpers";
 import { getCommonProps } from "../../../types";
+import { IndicatorStyles } from "..";
+import Icon from "../../Icon";
 
-export const Link = styled.a<TextProps>`
+type LinkProps = TextProps & {
+    href: string
+    target?: string
+}
+
+export const LinkWrapper = styled.a<LinkProps>`
     ${(props) => getTextAlign(props)};
     ${(props) => ({
         ...props.theme.typography.link,
@@ -20,3 +27,11 @@ export const Link = styled.a<TextProps>`
         color: ${(props) => props.theme.colors.link.pressed};
     }
 `;
+
+export default function Link (props: LinkProps) {
+
+    return <LinkWrapper {...props}>
+        {props.children}
+        {props.withIndicator && <Icon name="color-indicator" styles={IndicatorStyles}/>}
+    </LinkWrapper>
+}

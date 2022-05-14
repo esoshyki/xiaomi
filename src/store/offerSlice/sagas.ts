@@ -1,5 +1,5 @@
 import { takeLeading, call, put, select, takeEvery } from "redux-saga/effects";
-import { GetQuestions, setCombinationsId, setDeviceInfo, setStep } from ".";
+import { GetQuestions, setDeviceInfo, setStep } from ".";
 import { phoneAPI } from "../../api/phone";
 import { OfferSteps, QuestionsResponse, RequestAnswers } from "./types";
 import { ResponseData } from "../../api/types";
@@ -18,6 +18,9 @@ function* getQuestionsWorker ({ payload } : PayloadAction<string>) {
         yield put(GetQuestions.success(response.data))
         if (response.data?.deviceInfo && !Array.isArray(response.data.deviceInfo)) {
             yield put(setDeviceInfo(response.data.deviceInfo))
+        }
+        if (response.data?.complete) {
+            yield put(setStep("success"))
         }
     };
     if (response.status === "error") {

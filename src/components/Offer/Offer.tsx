@@ -94,6 +94,7 @@ const Offer = () => {
                 {/* {phone?.[0] && <OfferDevice phone={phone[0]} />} */}
                 {deviceInfo && <OfferDevice deviceInfo={deviceInfo} />}
                 {step === "questions" && <OfferQuestions />}
+                {step === "success" && <Typography.Title>Успех</Typography.Title>}
             </Card>
 
             {step === "pending" && <AddNewDevice />}

@@ -1,15 +1,22 @@
 import { RootState } from '..';
 import { createSelector, PayloadAction } from '@reduxjs/toolkit';
-import { DeviceInfo, GivenAnswer, OfferState, OfferSteps, QuestionsResponse, QuestionTree, ServerError } from './types';
+import { CreateOrderResponse, DeviceInfo, GivenAnswer, OfferState, OfferSteps, QuestionsResponse, QuestionTree, ServerError, SetTreeDataProps } from './types';
 import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
 import { N } from '../types'
 
 const initialState: OfferState = {
     step: "start",
-    result: null,
-    loading: false,
-    errors: [],
+    getQuestions: {
+        result: null,
+        loading: false,
+        errors: []
+    },
+    createOrder: {
+        result: null,
+        loading: false,
+        errors: []
+    },
     questionsData: null,
     questionsTree: null,
     hint: "",
@@ -25,7 +32,7 @@ const initialState: OfferState = {
     questionsReceived: 0
 }
 
-export const CheckImei = createRoutine("offer/Check-Imei");
+export const CreateOrder = createRoutine("offer/Create-Order");
 export const GetQuestions = createRoutine("offer/Get-Questions");
 
 const offerSlice = createSlice({
@@ -46,6 +53,12 @@ const offerSlice = createSlice({
                 state.currentGivenAnswers.answers.push(payload)
             }
         },
+        setTreeProps(state: OfferState, { payload } : PayloadAction<SetTreeDataProps>) {
+            const { combinationId, offerId, additionalAction } = payload;
+            if (combinationId) state.givenAnswers.combinationId = combinationId;
+            if (offerId) state.givenAnswers.offerId = offerId;
+            if (additionalAction) state.givenAnswers.additionAction = additionalAction;
+        },
         setQuestionsTree(state: OfferState, { payload } : PayloadAction<N<QuestionTree>>) {
             state.questionsTree = payload
         },
@@ -58,9 +71,6 @@ const offerSlice = createSlice({
             state.currentGivenAnswers.offerId = payload;
         },
         setStep(state: OfferState, { payload } : PayloadAction<OfferSteps>) {
-            state.result = null;
-            state.errors = [];
-            state.loading = false;
             state.step = payload;
         },
         setDeviceInfo(state: OfferState, { payload } : PayloadAction<DeviceInfo>) {
@@ -78,26 +88,37 @@ const offerSlice = createSlice({
     }, 
     extraReducers: {
         [GetQuestions.REQUEST](state) {
-            state.result = null;
-            state.loading = true;
+            state.getQuestions.result = null;
+            state.getQuestions.loading = true;
         },
         [GetQuestions.FAILURE](state, { payload } : PayloadAction<ServerError[]>) {
-            state.result = "error";
-            state.errors = payload
+            state.getQuestions.result = "error";
+            state.getQuestions.errors = payload
         },
         [GetQuestions.SUCCESS](state, { payload } : PayloadAction<QuestionsResponse>) {
-            state.result = "success"
-            state.errors = [];
+            state.getQuestions.result = "success"
+            state.getQuestions.errors = [];
             state.questionsData = payload.questionsData;
             state.questionsTree = payload.questionsTree;
             state.currentGivenAnswers = { answers: [] }
             state.questionsReceived += Object.keys(payload.questionsData || {}).length
         },
         [GetQuestions.FULFILL](state) {
-            state.loading = false
+            state.getQuestions.loading = false
             if (state.step === "start") {
                 state.step = "questions"
             }
+        },
+        [CreateOrder.REQUEST](state) {
+            state.createOrder.result = null;
+            state.getQuestions.loading = true;
+        },
+        [CreateOrder.FAILURE](state, { payload } : PayloadAction<ServerError[]>) {
+            state.createOrder.result = "error";
+            state.createOrder.errors = payload;
+        },
+        [CreateOrder.SUCCESS](state, { payload } : PayloadAction<CreateOrderResponse>) {
+            state.createOrderData = payload;
         }
     }
 });
@@ -116,7 +137,8 @@ export const {
     restoreOffer,
     setPhotoFront,
     setPhotoBack,
-    setDeviceInfo
+    setDeviceInfo,
+    setTreeProps
 } = offerSlice.actions
 
 export default offerSlice.reducer;

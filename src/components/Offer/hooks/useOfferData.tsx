@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useState, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import {
     GetQuestions,
     giveAnswer,
@@ -7,17 +7,10 @@ import {
     restoreOffer,
     setPhotoFront,
     setPhotoBack,
-    setCombinationsId,
     getOfferData,
-    setOfferId,
+    setTreeProps,
 } from "../../../store/offerSlice";
-import {
-    GivenAnswer,
-    OfferSteps,
-    QuestionTree,
-    Question
-} from "../../../store/offerSlice/types";
-import { getTree } from "../helpers/getTree";
+import { GivenAnswer, OfferSteps, SetTreeDataProps } from "../../../store/offerSlice/types";
 import { getFromTree } from "../helpers/getFromTree";
 
 // 350320523229662
@@ -42,43 +35,38 @@ export const useOfferData = () => {
         dispatch(setStep(step));
     };
 
-    const getQuestions = useCallback(() => {
-        if (!offer.loading) {
+    const fetchQuestions = useCallback(() => {
+        if (!offer.getQuestions.loading) {
             dispatch(GetQuestions.request());
         }
     }, []);
 
+    const _setTreeProps = (props: SetTreeDataProps) => {
+        dispatch(setTreeProps(props));
+    };
+
     const getQuestion = () => {
-        const { questionsTree, currentGivenAnswers, questionsData } = offer;
-        const { answers } = currentGivenAnswers;
+        const { questionsTree, givenAnswers, questionsData } = offer;
+        const { answers } = givenAnswers;
 
-        if (!questionsTree || !questionsData) {
-            return null;
-        }
+        if (!questionsTree || !questionsData) return null;
 
-        if (!answers.length) {
-            const id = questionsTree.questions[0].questionId;
-            return { ...questionsData[id], questionKey: id };
-        }
+        const question = getFromTree(questionsTree, answers, _setTreeProps);
 
-        const treeData = getFromTree(questionsTree, answers);
+        if (!question) return null;
+        const { questionId } = question
 
-        if (!treeData?.questionId) {
-            return null;
-        } else {
-            const { questionId, combinationId, offerId } = treeData;
-            if (combinationId) {
-                dispatch(setCombinationsId(combinationId));
-            }
+        const found = Object.entries(questionsData).find(([key, val]) => {
+            return key === questionId || val.questionId === questionId;
+        });
 
-            if (offerId) {
-                dispatch(setOfferId(offerId));
-            }
+        if (!found) return null;
 
-            return {
-                ...questionsData[questionId],
-                questionKey: questionId,
-            }
+        const [questionKey, _question] = found;
+
+        return {
+            ..._question,
+            questionKey
         }
     };
 
@@ -101,9 +89,9 @@ export const useOfferData = () => {
         changeStep,
         giveAnswer: _giveAnswer,
         restoreOffer: _restoreOffer,
-        getQuestions,
+        fetchQuestions,
         progress,
         setPhoto,
-        getQuestion,
+        getNextQuestion: getQuestion,
     };
 };

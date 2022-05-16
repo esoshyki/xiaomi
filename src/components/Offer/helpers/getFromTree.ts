@@ -1,59 +1,73 @@
-import { getTree } from './getTree';
-import { GivenAnswer, QuestionTree } from './../../../store/offerSlice/types';
+import { GivenAnswer, QuestionTree, TreeQuestion, SetTreeDataProps } from './../../../store/offerSlice/types';
 
-type ReturnProps = {
-    questionId: string | null,
-    combinationId?: string,
-    offerId?: string
+const getTreeQuestion = (
+    question: TreeQuestion, 
+    givenAnswers: string[], 
+    questionsAnswered: string[],
+    setTreeData: (props: SetTreeDataProps
+        ) => void) : TreeQuestion | null => {
+
+    if (!questionsAnswered.includes(question.questionId)) {
+        return question
+    }
+
+    if (!question.answers) {
+        return null
+    }
+
+    const nextTree = question.answers.find(ans => givenAnswers.includes(ans.answerId || ""));
+
+    if (!nextTree) return null;
+
+    const { combinationId, offerId, additionalAction } = nextTree;
+
+    setTreeData({ combinationId, offerId, additionalAction })
+
+    const nextQuestion = nextTree.questions.find(q => questionsAnswered.includes(q.questionId));
+
+    if (!nextQuestion) {
+        console.log(`nextQuestion`, nextTree.questions.find(q => !questionsAnswered.includes(q.questionId)))
+        return nextTree.questions.find(q => !questionsAnswered.includes(q.questionId)) || null
+    }
+
+    return getTreeQuestion(nextQuestion, givenAnswers, questionsAnswered, setTreeData)
 }
-export const getFromTree = (tree: QuestionTree, answers: GivenAnswer[]): ReturnProps | null => {
-    let _tree: QuestionTree = tree;
-    let combinationId, offerId
 
-    answers.forEach((answer) => {
-        const { questionId, answerId, questionKey } = answer;
+export const getFromTree = (tree: QuestionTree, answers: GivenAnswer[], setTreeProps: (props: SetTreeDataProps) => void) : TreeQuestion | null => {
+    const givenAnswers = answers.reduce((acc, next) => { if (next.answerId) acc.push(next.answerId); return acc }, [] as string[]);
+    const questionsAnswered = answers.reduce((acc, next) => {
+        if (next.questionId) acc.push(next.questionId);
+        if (next.questionKey) acc.push(next.questionKey);
+        return acc;
+    }, [] as string[]);
 
-        if (!answerId) {
-            return;
+    const { combinationId, offerId, additionalAction } = tree;
+
+    setTreeProps({ combinationId, offerId, additionalAction })
+
+    const question = tree.questions.find(el => !questionsAnswered.includes(el.questionId));
+
+    if (question) {
+        return question
+    }
+
+    let nextQuestion: TreeQuestion | null = null;
+
+    tree.questions.forEach(question => {
+        if (questionsAnswered.includes(question.questionId)) {
+            const _nextQuestion =  getTreeQuestion(question, givenAnswers, questionsAnswered, setTreeProps);
+            if (_nextQuestion) nextQuestion = nextQuestion
         }
 
+        const nextTree = question.answers.find(ans => givenAnswers.includes(ans.answerId || ""));
 
-        console.log(tree);
-        console.log(answers);
+        if (nextTree) {
+            nextQuestion = getFromTree(nextTree, answers, setTreeProps)
+        } else {
+            nextQuestion = null
+        }
+    })
 
-        if (_tree.combinationId) combinationId = _tree.combinationId
-        if (_tree.offerId) offerId = _tree.offerId
-
-        _tree = getTree(_tree, questionId, questionKey, answerId) || _tree;
-
-        console.log(_tree);
-
-    });
-
-    console.log(combinationId)
-    console.log(offerId)
-
-    const questionId = _tree.questions.find(
-        (q) =>
-            !(
-                answers
-                    .map((el) => el.questionKey)
-                    .includes(q.questionId) ||
-                answers.map((el) => el.questionId).includes(q.questionId)
-            )
-    )?.questionId;
-
-    if (_tree.combinationId) combinationId = _tree.combinationId
-    if (_tree.offerId) offerId = _tree.offerId
-
-    console.log(combinationId)
-    console.log(offerId)
-
-
-    return {
-        questionId: questionId ?? null,
-        combinationId,
-        offerId
-    }
+    return nextQuestion
 
 }

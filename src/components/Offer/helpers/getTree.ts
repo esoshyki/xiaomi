@@ -2,8 +2,21 @@ import { QuestionTree } from "../../../store/offerSlice/types";
 import { N } from "../../../store/types";
 
 export const getTree = (tree: QuestionTree, questionId: string, questionKey: string, answerId: string): N<QuestionTree> => {
-    console.log(tree, questionId, questionKey, answerId)
-    const newTree = tree.questions.find(q => q.questionId === questionId || q.questionId === questionKey)?.answers.find(a => a.answerId === answerId);
-    console.log(newTree);
-    return newTree || null
+
+    const branchIdx = tree.questions.findIndex(q => q.questionId === questionId || q.questionId === questionKey);
+
+    if (branchIdx >= 0) {
+        const newTree = tree.questions[branchIdx].answers.find(a => a.answerId === answerId);
+        if (newTree) return newTree;
+    } else {
+        const nextQuestion = tree.questions[branchIdx + 1];
+        if (!nextQuestion) {
+            return null
+        } else {
+            const _newTree = nextQuestion.answers?.find(a => a.answerId === answerId);
+            return _newTree || null
+        }
+    }
+
+    return null
 }

@@ -12,7 +12,7 @@ import { OfferQuestions } from ".";
 const Offer = () => {
     const {
         step,
-        getQuestions,
+        fetchQuestions,
         deviceInfo,
         givenAnswers,
         progress
@@ -36,7 +36,7 @@ const Offer = () => {
 
     useEffect(() => {
         if (step === "start") {
-            getQuestions()
+            fetchQuestions()
         }
     }, [])
 
@@ -96,7 +96,7 @@ const Offer = () => {
                 {/* {phone?.[0] && <OfferDevice phone={phone[0]} />} */}
                 {deviceInfo && <OfferDevice deviceInfo={deviceInfo} givenAnswers={givenAnswers.answers}/>}
                 {step === "questions" && <OfferQuestions />}
-                {step === "success" && <Typography.Title>Успех</Typography.Title>}
+                {step === "create-order" && <Typography.Title>Успех</Typography.Title>}
             </Card>
 
             {step === "pending" && <AddNewDevice />}

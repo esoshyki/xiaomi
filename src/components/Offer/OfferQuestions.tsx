@@ -8,13 +8,15 @@ import { Question, ServerError } from "../../store/offerSlice/types";
 
 const OfferQuestions = () => {
 
-    const { errors, getQuestion, givenAnswers, getQuestions, questionsTree } = useOfferData();
+    const { getNextQuestion, getQuestions, givenAnswers, questionsTree, fetchQuestions } = useOfferData();
+    const { errors } = getQuestions;
 
-    const question = useMemo(getQuestion, [givenAnswers, questionsTree]);
+    const question = useMemo(getNextQuestion, [givenAnswers, questionsTree]);
 
     useEffect(() => {
+        console.log("here");
         if (!question) {
-            getQuestions()
+            fetchQuestions()
         }
     }, [question]);
 

@@ -1,3 +1,4 @@
+import { CreateOrder } from './index';
 import { takeLeading, call, put, select, takeEvery } from "redux-saga/effects";
 import { GetQuestions, setDeviceInfo, setStep } from ".";
 import { phoneAPI } from "../../api/device";
@@ -20,7 +21,15 @@ function* getQuestionsWorker() {
             yield put(setDeviceInfo(response.data.deviceInfo))
         }
         if (response.data?.complete) {
-            yield put(setStep("success"))
+            yield put(setStep("create-order"));
+            const additionAction = state.offer.givenAnswers.additionAction;
+
+            if (additionAction) {
+                switch (additionAction) {
+                    case "createOrder":
+                        yield put(CreateOrder.request())
+                }
+            }
         }
     };
     if (response.status === "error") {
@@ -29,12 +38,12 @@ function* getQuestionsWorker() {
     yield put(GetQuestions.fulfill())
 }
 
-function* setStepWorker({ payload }: PayloadAction<OfferSteps>) {
+function* createOrderWorker() {
 
 };
 
 
 export default function* offerSagas() {
     yield takeLeading(GetQuestions.REQUEST, getQuestionsWorker);
-    yield takeEvery(setStep, setStepWorker)
+    yield takeLeading(CreateOrder.REQUEST, createOrderWorker)
 }

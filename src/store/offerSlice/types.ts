@@ -11,7 +11,7 @@ export type OfferSteps =
     | "photo-front"
     | "photo-back"
     | "pending"
-    | "success"
+    | "create-order"
     | "preliminary"
 
 export type AnswerType = "from_list" | "free_input"
@@ -19,6 +19,34 @@ export type AnswerType = "from_list" | "free_input"
 export type Answer = {
     answerName: string
 }
+
+export type AdditionActions = "createOrder";
+
+
+//API 
+
+export type ApiResult = "success" | "error" | null
+
+export type ApiProps = {
+    loading: boolean
+    result: ApiResult
+    errors: ServerError[]
+}
+
+export type RequestAnswers = {
+    [questionId: string]: string
+} & { deviceInfo? : DeviceInfo }
+
+export type QuestionsResponse = {
+    questionsData: QuestionsData
+    questionsTree: QuestionTree
+    complete?: true
+    deviceInfo?: DeviceInfo | []
+}
+
+export type CreateOrderResponse = any;
+
+// QUESTIONS
 
 export type Question = {
     questionId: string
@@ -43,17 +71,18 @@ export type QuestionTree = {
     answerId?: string
     combinationId?: string
     offerId?: string
+    additionalAction?: AdditionActions
     questions: Array<{
         questionId: string
         answers: QuestionTree[]
     }>
 }
 
-export type QuestionsResponse = {
-    questionsData: QuestionsData
-    questionsTree: QuestionTree
-    complete?: true
-    deviceInfo?: DeviceInfo | []
+
+
+export type TreeQuestion = {
+    questionId: string
+    answers: QuestionTree[]
 }
 
 export type GivenAnswer = {
@@ -71,13 +100,10 @@ export type GivenAnswer = {
     questionGroup: isString
 }
 
-export type RequestAnswers = {
-    [questionId: string]: string
-} & { deviceInfo? : DeviceInfo }
-
 export type GivenAnswers = {
     combinationId?: string
     offerId?: string
+    additionAction?: AdditionActions
     answers: GivenAnswer[]
 }
 
@@ -92,11 +118,17 @@ export type DeviceInfo = {
     deviceName: string
 }
 
+export type SetTreeDataProps = {
+    combinationId?: string
+    offerId?: string
+    additionalAction?: AdditionActions
+}
+
 export type OfferState = {
     step: OfferSteps
-    loading: boolean,
-    result: "success" | "error" | null
-    errors: ServerError[]
+    getQuestions: ApiProps
+    createOrder: ApiProps
+    createOrderData?: CreateOrderResponse
     questionsData: QuestionsData | null
     questionsTree: QuestionTree | null
     hint: string,

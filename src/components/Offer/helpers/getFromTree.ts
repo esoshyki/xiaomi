@@ -1,11 +1,11 @@
 import { GivenAnswer, QuestionTree, TreeQuestion, SetTreeDataProps } from './../../../store/offerSlice/types';
 
 const getTreeQuestion = (
-    question: TreeQuestion, 
-    givenAnswers: string[], 
+    question: TreeQuestion,
+    givenAnswers: string[],
     questionsAnswered: string[],
     setTreeData: (props: SetTreeDataProps
-        ) => void) : TreeQuestion | null => {
+    ) => void): TreeQuestion | null => {
 
     if (!questionsAnswered.includes(question.questionId)) {
         return question
@@ -33,8 +33,17 @@ const getTreeQuestion = (
     return getTreeQuestion(nextQuestion, givenAnswers, questionsAnswered, setTreeData)
 }
 
-export const getFromTree = (tree: QuestionTree, answers: GivenAnswer[], setTreeProps: (props: SetTreeDataProps) => void) : TreeQuestion | null => {
-    const givenAnswers = answers.reduce((acc, next) => { if (next.answerId) acc.push(next.answerId); return acc }, [] as string[]);
+export const getFromTree = (tree: QuestionTree, answers: GivenAnswer[], setTreeProps: (props: SetTreeDataProps) => void): TreeQuestion | null => {
+    const givenAnswers = answers.reduce((acc, next) => {
+        if (next.answerId) {
+            acc.push(next.answerId)
+        }
+        ;
+        if (next.answerName) {
+            acc.push(next.answerName)
+        }
+        return acc
+    }, [] as string[]);
     const questionsAnswered = answers.reduce((acc, next) => {
         if (next.questionId) acc.push(next.questionId);
         if (next.questionKey) acc.push(next.questionKey);
@@ -47,7 +56,10 @@ export const getFromTree = (tree: QuestionTree, answers: GivenAnswer[], setTreeP
 
     const question = tree.questions.find(el => !questionsAnswered.includes(el.questionId));
 
+    console.log(`questionsAnswered`, questionsAnswered);
+
     if (question) {
+        console.log(`newQuestion`, question);
         return question
     }
 
@@ -55,16 +67,15 @@ export const getFromTree = (tree: QuestionTree, answers: GivenAnswer[], setTreeP
 
     tree.questions.forEach(question => {
         if (questionsAnswered.includes(question.questionId)) {
-            const _nextQuestion =  getTreeQuestion(question, givenAnswers, questionsAnswered, setTreeProps);
+            const _nextQuestion = getTreeQuestion(question, givenAnswers, questionsAnswered, setTreeProps);
             if (_nextQuestion) nextQuestion = nextQuestion
         }
 
         const nextTree = question.answers.find(ans => givenAnswers.includes(ans.answerId || ""));
 
         if (nextTree) {
-            nextQuestion = getFromTree(nextTree, answers, setTreeProps)
-        } else {
-            nextQuestion = null
+            const found = getFromTree(nextTree, answers, setTreeProps)
+            if (found) nextQuestion = found;
         }
     })
 

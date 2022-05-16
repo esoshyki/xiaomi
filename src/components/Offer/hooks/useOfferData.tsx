@@ -10,7 +10,11 @@ import {
     getOfferData,
     setTreeProps,
 } from "../../../store/offerSlice";
-import { GivenAnswer, OfferSteps, SetTreeDataProps } from "../../../store/offerSlice/types";
+import {
+    GivenAnswer,
+    OfferSteps,
+    SetTreeDataProps,
+} from "../../../store/offerSlice/types";
 import { getFromTree } from "../helpers/getFromTree";
 
 // 350320523229662
@@ -42,7 +46,15 @@ export const useOfferData = () => {
     }, []);
 
     const _setTreeProps = (props: SetTreeDataProps) => {
-        dispatch(setTreeProps(props));
+        const { combinationId, offerId, additionalAction } = props;
+        const { givenAnswers } = offer;
+        if (
+            combinationId !== givenAnswers.combinationId ||
+            offerId !== givenAnswers.offerId ||
+            additionalAction !== givenAnswers.additionAction
+        ) {
+            dispatch(setTreeProps(props));
+        }
     };
 
     const getQuestion = () => {
@@ -54,11 +66,15 @@ export const useOfferData = () => {
         const question = getFromTree(questionsTree, answers, _setTreeProps);
 
         if (!question) return null;
-        const { questionId } = question
+        const { questionId } = question;
+
+        console.log(`questionId`, questionId);
 
         const found = Object.entries(questionsData).find(([key, val]) => {
             return key === questionId || val.questionId === questionId;
         });
+
+        console.log(`found`, found);
 
         if (!found) return null;
 
@@ -66,8 +82,8 @@ export const useOfferData = () => {
 
         return {
             ..._question,
-            questionKey
-        }
+            questionKey,
+        };
     };
 
     const _giveAnswer = (answer: GivenAnswer) => {

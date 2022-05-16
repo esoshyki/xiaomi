@@ -26,7 +26,6 @@ const getTreeQuestion = (
     const nextQuestion = nextTree.questions.find(q => questionsAnswered.includes(q.questionId));
 
     if (!nextQuestion) {
-        console.log(`nextQuestion`, nextTree.questions.find(q => !questionsAnswered.includes(q.questionId)))
         return nextTree.questions.find(q => !questionsAnswered.includes(q.questionId)) || null
     }
 
@@ -56,10 +55,7 @@ export const getFromTree = (tree: QuestionTree, answers: GivenAnswer[], setTreeP
 
     const question = tree.questions.find(el => !questionsAnswered.includes(el.questionId));
 
-    console.log(`questionsAnswered`, questionsAnswered);
-
     if (question) {
-        console.log(`newQuestion`, question);
         return question
     }
 

@@ -14,7 +14,6 @@ const OfferQuestions = () => {
     const question = useMemo(getNextQuestion, [givenAnswers, questionsTree]);
 
     useEffect(() => {
-        console.log("here");
         if (!question) {
             fetchQuestions()
         }

@@ -104,7 +104,7 @@ export type GivenAnswer = {
 export type GivenAnswers = {
     combinationId?: string
     offerId?: string
-    additionAction?: AdditionActions
+    additionalAction?: AdditionActions
     answers: GivenAnswer[]
 }
 

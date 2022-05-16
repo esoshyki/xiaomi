@@ -1,8 +1,9 @@
-import { CreateOrder } from './index';
-import { takeLeading, call, put, select } from "redux-saga/effects";
+import { PayloadAction } from '@reduxjs/toolkit';
+import { CreateOrder, makeAdditionAction } from './index';
+import { takeLeading, call, put, select, takeEvery } from "redux-saga/effects";
 import { GetQuestions, setDeviceInfo, setStep } from ".";
 import { deviceApi, orderApi} from "../../api";
-import { CreateOrderResponse, QuestionsResponse, RequestAnswers } from "./types";
+import { AdditionActions, CreateOrderResponse, QuestionsResponse, RequestAnswers } from "./types";
 import { ResponseData } from "../../api/types";
 import { RootState } from "..";
 import { formatRequestAnswer } from "../../components/Offer/helpers/formatRequestAnswer";
@@ -19,15 +20,6 @@ function* getQuestionsWorker() {
         yield put(GetQuestions.success(response.data))
         if (response.data?.deviceInfo && !Array.isArray(response.data.deviceInfo)) {
             yield put(setDeviceInfo(response.data.deviceInfo))
-        }
-        if (response.data?.complete) {
-            const additionAction = state.offer.givenAnswers.additionAction;
-            if (additionAction) {
-                switch (additionAction) {
-                    case "createOrder":
-                        yield put(CreateOrder.request())
-                }
-            }
         }
     };
     if (response.status === "error") {
@@ -50,8 +42,15 @@ function* createOrderWorker() {
     yield put(CreateOrder.fulfill())
 };
 
+function* makeAdditionActionWorker({ payload } : PayloadAction<AdditionActions>) {
+    switch (payload) {
+        case "createOrder":
+            yield put(CreateOrder.request())
+    }
+}
 
 export default function* offerSagas() {
     yield takeLeading(GetQuestions.REQUEST, getQuestionsWorker);
-    yield takeLeading(CreateOrder.REQUEST, createOrderWorker)
+    yield takeLeading(CreateOrder.REQUEST, createOrderWorker);
+    yield takeEvery(makeAdditionAction, makeAdditionActionWorker)
 }

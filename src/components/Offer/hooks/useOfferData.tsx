@@ -9,6 +9,7 @@ import {
     setPhotoBack,
     getOfferData,
     setTreeProps,
+    makeAdditionAction,
 } from "../../../store/offerSlice";
 import {
     GivenAnswer,
@@ -39,23 +40,33 @@ export const useOfferData = () => {
         dispatch(setStep(step));
     };
 
-    const fetchQuestions = useCallback(() => {
+    const fetchQuestions = () => {
+        if (offer.givenAnswers.additionalAction) {
+            console.log("here", offer.givenAnswers.additionalAction);
+            dispatch(makeAdditionAction(offer.givenAnswers.additionalAction));
+            return;
+        }
         if (!offer.getQuestions.loading) {
             dispatch(GetQuestions.request());
         }
-    }, []);
-
+    }
+    
     const _setTreeProps = (props: SetTreeDataProps) => {
         const { combinationId, offerId, additionalAction } = props;
         const { givenAnswers } = offer;
-        if (!combinationId && !offerId && !additionalAction) return;
-        if (
-            combinationId !== givenAnswers.combinationId ||
-            offerId !== givenAnswers.offerId ||
-            additionalAction !== givenAnswers.additionAction
-        ) {
-            dispatch(setTreeProps(props));
-        }
+        if (!(Object.values(props).filter(el => !!el).length)) return;
+        if (combinationId && (combinationId !== givenAnswers.combinationId)) {
+            console.log(combinationId);
+            dispatch(setTreeProps({ combinationId }));
+        };
+        if (offerId && (offerId !== givenAnswers.offerId)) {
+            console.log(offerId);
+            dispatch(setTreeProps({ offerId }));
+        };
+        if (additionalAction && (additionalAction !== givenAnswers.additionalAction)) {
+            console.log(additionalAction);
+            dispatch(setTreeProps({ additionalAction }))
+        };
     };
 
     const getQuestion = () => {
@@ -69,13 +80,9 @@ export const useOfferData = () => {
         if (!question) return null;
         const { questionId } = question;
 
-        console.log(`questionId`, questionId);
-
         const found = Object.entries(questionsData).find(([key, val]) => {
             return key === questionId || val.questionId === questionId;
         });
-
-        console.log(`found`, found);
 
         if (!found) return null;
 

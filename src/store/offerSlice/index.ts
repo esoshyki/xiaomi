@@ -1,5 +1,5 @@
 import { RootState } from '..';
-import { createSelector, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSelector, PayloadAction } from '@reduxjs/toolkit';
 import { AdditionActions, CreateOrderResponse, DeviceInfo, GivenAnswer, OfferState, OfferSteps, QuestionsResponse, QuestionTree, ServerError, SetTreeDataProps } from './types';
 import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
@@ -57,10 +57,10 @@ const offerSlice = createSlice({
             const { combinationId, offerId, additionalAction } = payload;
             if (combinationId) state.givenAnswers.combinationId = combinationId;
             if (offerId) state.givenAnswers.offerId = offerId;
-            if (additionalAction) state.givenAnswers.additionAction = additionalAction;
+            if (additionalAction) state.givenAnswers.additionalAction = additionalAction;
         },
         setAdditionalAction(state: OfferState, { payload } : PayloadAction<AdditionActions | undefined>) {
-            state.givenAnswers.additionAction = payload;
+            state.givenAnswers.additionalAction = payload;
         },
         setQuestionsTree(state: OfferState, { payload } : PayloadAction<N<QuestionTree>>) {
             state.questionsTree = payload
@@ -87,7 +87,7 @@ const offerSlice = createSlice({
         setPhotoBack(state: OfferState, { payload } : PayloadAction<string | null>) {
             state.photoBack = payload;
             state.step = "pending"
-        }
+        },
     }, 
     extraReducers: {
         [GetQuestions.REQUEST](state) {
@@ -126,6 +126,8 @@ const offerSlice = createSlice({
     }
 });
 
+export const makeAdditionAction = createAction<AdditionActions>("offer/make_addition_action");
+
 export const getOfferData = createSelector(
     (state: RootState) => state.offer,
     offer => offer
@@ -141,7 +143,7 @@ export const {
     setPhotoFront,
     setPhotoBack,
     setDeviceInfo,
-    setTreeProps
+    setTreeProps,
 } = offerSlice.actions
 
 export default offerSlice.reducer;

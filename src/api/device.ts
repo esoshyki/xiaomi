@@ -6,16 +6,6 @@ import { collectFormData, getErrorResponse } from './helpers/collectFormData';
 import { User } from "../store/userSlice/types"
 import { N } from '../store/types';
 
-const getModelByImei = async (imei: string, user: N<User>): Promise<ResponseData<any>> => {
-    if (!user) return getErrorResponse();
-    try {
-        const response: AxiosResponse<ResponseData<any>> = await api.post("/phonedata/getmodelbyimei/", collectFormData({ imei }, user))
-        return response.data
-    } catch (error: any) {
-        return getErrorResponse(error.message)
-    }
-};
-
 const getQuestions = async (user: N<User>, answers: RequestAnswers): Promise<ResponseData<QuestionsResponse>> => {
     if (!user) return getErrorResponse();
 
@@ -30,18 +20,6 @@ const getQuestions = async (user: N<User>, answers: RequestAnswers): Promise<Res
     }
 }
 
-const getPhoneVariants = async (phoneId: string, user: N<User>): Promise<ResponseData<any>> => {
-    if (!user) return getErrorResponse();
-    try {
-        const response: AxiosResponse<ResponseData<any>> = await api.post("/phonedata/getvariants/", collectFormData({ id: phoneId }, user));
-        return response.data
-    } catch (error: any) {
-        return getErrorResponse(error.message)
-    }
-}
-
-export const phoneAPI = {
-    getModelByImei,
+export const deviceApi = {
     getQuestions,
-    getPhoneVariants
 }

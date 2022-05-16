@@ -20,7 +20,7 @@ const FreeInput = (props: OfferQuestionProps ) => {
     }
 
     return (
-        <Container.Flex fullWidth direction="row" justify="between" wrapped gap={16} alignItems="center">
+        <Container.Flex fullWidth gap={16} alignItems="center">
             <Input value={value} onChange={e => setValue(e.target.value)} fullWidth />
 
             <Button fullWidth onClick={onClick}>

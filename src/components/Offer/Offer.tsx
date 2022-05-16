@@ -91,6 +91,7 @@ const Offer = () => {
                     flexShrink: 0,
                 }}
                 onClick={() => setHint(false)}
+                isQuestion={true}
             >
                 <Progress progress={progress}/>
                 {/* {phone?.[0] && <OfferDevice phone={phone[0]} />} */}

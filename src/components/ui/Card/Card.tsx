@@ -7,6 +7,7 @@ type CardProps = Props<{
     noShadow?: true;
     animateHeight?: boolean;
     animateWidth?: boolean;
+    isQuestion?: boolean;
 }>;
 
 const Wrapper = styled.div<CardProps>`
@@ -21,18 +22,8 @@ const Wrapper = styled.div<CardProps>`
     overflow-x: ${(props) => (props.animateWidth ? "hidden" : "auto")};
     ${(props) => getCommonProps(props)};
     padding: 0;
-    &:before {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        z-index: -1;
-        border-radius: inherit;
-        background-color: ${(props) => props.theme.colors.background.opacity};
-        backdrop-filter: blur(8px);
-        content: "";
-    }
+	background-color: ${(props) => props.theme.colors.background.opacity};
+	backdrop-filter: blur(8px);
 
     & > * {
         opacity: ${(props) => (props.isHidden ? "0" : "1")};
@@ -92,7 +83,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>((props: CardProps, ref) => {
     const [isTransition, setIsTransition] = useState(true);
 
     useEffect(() => {
-        if (contentRef.current) {
+        if (contentRef.current && props.isQuestion) {
             setHeight(contentRef.current.offsetHeight);
         }
     });
@@ -114,7 +105,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>((props: CardProps, ref) => {
             }}
         >
             <ContentWrapper ref={contentRef} style={{
-                opacity: isTransition ? 0 : 1
+                opacity: (isTransition && props.isQuestion) ? 0 : 1
             }}>
                 {!!children && <Inner padding={padding}>{children}</Inner>}
             </ContentWrapper>

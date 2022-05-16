@@ -11,7 +11,7 @@ const FreeInput = (props: OfferQuestionProps ) => {
 
     const { giveAnswer } = useOfferData();
 
-    const [value, setValue] = useState("");
+    const [value, setValue] = useState("350320523229662");
 
     const { questionData } = props;
 

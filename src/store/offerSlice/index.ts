@@ -1,6 +1,6 @@
 import { RootState } from '..';
 import { createSelector, PayloadAction } from '@reduxjs/toolkit';
-import { CreateOrderResponse, DeviceInfo, GivenAnswer, OfferState, OfferSteps, QuestionsResponse, QuestionTree, ServerError, SetTreeDataProps } from './types';
+import { AdditionActions, CreateOrderResponse, DeviceInfo, GivenAnswer, OfferState, OfferSteps, QuestionsResponse, QuestionTree, ServerError, SetTreeDataProps } from './types';
 import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
 import { N } from '../types'
@@ -58,6 +58,9 @@ const offerSlice = createSlice({
             if (combinationId) state.givenAnswers.combinationId = combinationId;
             if (offerId) state.givenAnswers.offerId = offerId;
             if (additionalAction) state.givenAnswers.additionAction = additionalAction;
+        },
+        setAdditionalAction(state: OfferState, { payload } : PayloadAction<AdditionActions | undefined>) {
+            state.givenAnswers.additionAction = payload;
         },
         setQuestionsTree(state: OfferState, { payload } : PayloadAction<N<QuestionTree>>) {
             state.questionsTree = payload

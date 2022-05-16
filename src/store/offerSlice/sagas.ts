@@ -21,9 +21,7 @@ function* getQuestionsWorker() {
             yield put(setDeviceInfo(response.data.deviceInfo))
         }
         if (response.data?.complete) {
-            yield put(setStep("create-order"));
             const additionAction = state.offer.givenAnswers.additionAction;
-
             if (additionAction) {
                 switch (additionAction) {
                     case "createOrder":

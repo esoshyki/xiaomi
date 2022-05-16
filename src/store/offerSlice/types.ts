@@ -14,13 +14,13 @@ export type OfferSteps =
     | "create-order"
     | "preliminary"
 
-export type AnswerType = "from_list" | "free_input" | "show_qr_link"
+export type AnswerType = "from_list" | "free_input" | "show_qr_link" | "upload_image"
 
 export type Answer = {
     answerName: string
 }
 
-export type AdditionActions = "createOrder";
+export type AdditionActions = "createOrder" | "addPhoto";
 
 
 //API 
@@ -59,6 +59,7 @@ export type Question = {
     questionInputButtonName?: isString
     questionShortName: isString
     questionGroup: string
+    questionHeader?: string
     answerType: AnswerType
     answers?: { [id: string]: Answer }
 }

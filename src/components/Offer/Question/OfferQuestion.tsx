@@ -7,6 +7,7 @@ import { useOfferData } from "../hooks/useOfferData";
 import FreeInput from "./FreeInput";
 import FromList from "./FromList";
 import QrCode from './QrCode';
+import UploadImage from './UploadImage';
 
 export interface OfferQuestionProps {
     questionData: Question
@@ -23,6 +24,11 @@ const OfferQuestion = (props: OfferQuestionProps) => {
 
     return (
         <Container.Flex fullWidth alignItems="start" verticalGap={16}>
+            {questionData.questionHeader && (
+                <Typography.Title>
+                    {questionData.questionHeader}
+                </Typography.Title>
+            )}
             <Typography.Main
                 textAlign="start"
                 styles={{ marginBottom: "6px", marginTop: "0" }}
@@ -41,6 +47,10 @@ const OfferQuestion = (props: OfferQuestionProps) => {
             )}
 
             {!!questionDescription && <Info>{questionDescription}</Info>}
+
+            {answerType === "upload_image" && (
+                <UploadImage {...props} />
+            )}
 
         </Container.Flex>
     );

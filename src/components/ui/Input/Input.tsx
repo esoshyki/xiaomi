@@ -28,6 +28,10 @@ const InputWrapper = styled.input<InputProps>`
 	font-size: 16px;
 	line-height: 20px;
 	color: ${props => props.theme.colors.text.default};
+	background: rgba(255, 255, 255, 0.7);
+	box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.04);
+	backdrop-filter: blur(8px);
+	
 	&::placeholder {
 		color: ${props => props.theme.colors.text.secondary}
 	}

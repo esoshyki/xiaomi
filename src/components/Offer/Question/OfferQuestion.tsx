@@ -6,6 +6,7 @@ import Typography from "../../ui/Typography";
 import { useOfferData } from "../hooks/useOfferData";
 import FreeInput from "./FreeInput";
 import FromList from "./FromList";
+import QrCode from './QrCode';
 
 export interface OfferQuestionProps {
     questionData: Question
@@ -33,6 +34,10 @@ const OfferQuestion = (props: OfferQuestionProps) => {
             )}
             {answerType === "free_input" && (
                 <FreeInput {...props} combinationId={combinationId} />
+            )}
+
+            {answerType === "show_qr_link" && (
+                <QrCode link='bubenchiki' />
             )}
 
             {!!questionDescription && <Info>{questionDescription}</Info>}

@@ -48,6 +48,7 @@ export const useOfferData = () => {
     const _setTreeProps = (props: SetTreeDataProps) => {
         const { combinationId, offerId, additionalAction } = props;
         const { givenAnswers } = offer;
+        if (!combinationId && !offerId && !additionalAction) return;
         if (
             combinationId !== givenAnswers.combinationId ||
             offerId !== givenAnswers.offerId ||

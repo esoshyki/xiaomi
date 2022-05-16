@@ -14,7 +14,7 @@ export type OfferSteps =
     | "create-order"
     | "preliminary"
 
-export type AnswerType = "from_list" | "free_input"
+export type AnswerType = "from_list" | "free_input" | "show_qr_link"
 
 export type Answer = {
     answerName: string

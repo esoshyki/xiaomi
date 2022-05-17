@@ -9,3 +9,4 @@ export { default as Delete } from './Delete'
 export { default as Overlay } from './Overlay'
 export { Box } from './Box/Box';
 export { Img } from './Progress/Progress'
+export { default as Select } from './Input/Select'

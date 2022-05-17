@@ -7,7 +7,7 @@ import Button from "../ui/Button";
 
 const ThemeTooltips = () => {
     return (
-        <Card>
+        <Card padding={20} styles={{overflow: "visible", zIndex: 5}}>
             <Typography.Title styles={{ marginTop: 0 }}>Тултипы</Typography.Title>
             <Container.Flex direction="row" justify="start" wrapped breakpoints={{
                 "600": {

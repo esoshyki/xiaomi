@@ -42,7 +42,6 @@ export const useOfferData = () => {
 
     const fetchQuestions = () => {
         if (offer.givenAnswers.additionalAction) {
-            console.log("here", offer.givenAnswers.additionalAction);
             dispatch(makeAdditionAction(offer.givenAnswers.additionalAction));
             return;
         }
@@ -56,15 +55,12 @@ export const useOfferData = () => {
         const { givenAnswers } = offer;
         if (!(Object.values(props).filter(el => !!el).length)) return;
         if (combinationId && (combinationId !== givenAnswers.combinationId)) {
-            console.log(combinationId);
             dispatch(setTreeProps({ combinationId }));
         };
         if (offerId && (offerId !== givenAnswers.offerId)) {
-            console.log(offerId);
             dispatch(setTreeProps({ offerId }));
         };
         if (additionalAction && (additionalAction !== givenAnswers.additionalAction)) {
-            console.log(additionalAction);
             dispatch(setTreeProps({ additionalAction }))
         };
     };

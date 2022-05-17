@@ -18,12 +18,15 @@ import ExitIcon from './icons/exit';
 import BellIcon from './icons/bell';
 import EditIcon from "./icons/edit";
 import EyeClose from "./icons/eye-close";
+import Arrow from './icons/arrow';
 
 const Icon = (props: IconProps) => {
 
     switch (props.name) {
         case "add-plus":
             return <AddPlus {...props} />
+        case "arrow":
+            return <Arrow {...props} />
         case "color-indicator":
             return <ColorIndicatorIcon {...props} />
         case "telegram":

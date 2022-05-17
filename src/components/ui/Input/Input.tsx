@@ -35,7 +35,6 @@ const InputWrapper = styled.input<InputProps>`
 	&::placeholder {
 		color: ${props => props.theme.colors.text.secondary}
 	}
-    
 `;
 
 const Wrapper = styled.div<InputProps>`

@@ -22,7 +22,7 @@ const Wrapper = styled.div<CardProps>`
     overflow-x: ${(props) => (props.animateWidth ? "hidden" : "auto")};
     ${(props) => getCommonProps(props)};
     padding: 0;
-	background-color: ${(props) => props.theme.colors.background.opacity};
+	background-color: ${(props) => props.theme.colors.background.contrast60};
 	backdrop-filter: blur(8px);
 
     & > * {
@@ -101,7 +101,6 @@ const Card = forwardRef<HTMLDivElement, CardProps>((props: CardProps, ref) => {
             {...props}
             style={{
                 height: height ? `${height}px` : "auto",
-                overflow: "hidden",
             }}
         >
             <ContentWrapper ref={contentRef} style={{

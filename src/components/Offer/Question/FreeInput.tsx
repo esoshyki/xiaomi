@@ -17,7 +17,7 @@ const FreeInput = (props: OfferQuestionProps ) => {
     const [failure, setFailure] = useState("");
 
     const { questionData } = props;
-    const { validator, validateFailure } = questionData;
+    const { validator, validateFailure, questionInputButtonName, questionInputPlaceholder } = questionData;
 
     const validate = () => {
         return new RegExp(validator ?? IMEIvalidator).test(value)
@@ -38,14 +38,14 @@ const FreeInput = (props: OfferQuestionProps ) => {
 
     return (
         <Container.Flex fullWidth gap={16} alignItems="center">
-            <Input value={value} onChange={onChange} fullWidth />
+            <Input value={value} onChange={onChange} fullWidth placeholder={questionInputPlaceholder || ""}/>
 
             {failure && <Typography.Error>
                     {failure}
                 </Typography.Error>}
 
             <Button fullWidth onClick={onClick}>
-                Проверить
+                {questionInputButtonName ?? "ОК"}
             </Button>
         </Container.Flex>
     )

@@ -1,18 +1,17 @@
+import { collectGetOrderData } from './helpers/collectGetOrderData';
 import { collectCreateOrderData } from './helpers/collectCreateOrderData';
-import { CreateOrderResponse, OfferState } from './../store/offerSlice/types';
-import { RequestAnswers } from '../store/offerSlice/types';
+import { GetOrderRequest, Order } from './../store/offerSlice/types';
 import { ResponseData } from './types'
 import { api } from './instance';
 import { AxiosResponse } from 'axios';
-import { collectFormData, getErrorResponse } from './helpers/collectFormData';
-import { User } from "../store/userSlice/types"
-import { N } from '../store/types';
+import { getErrorResponse } from './helpers/collectFormData';
 import { RootState } from '../store';
+import { User } from '../store/userSlice/types';
 
-const createOrder = async (state: RootState): Promise<ResponseData<CreateOrderResponse>> => {
+const createOrder = async (state: RootState): Promise<ResponseData<GetOrderRequest>> => {
 
     try {
-        const response: AxiosResponse<ResponseData<CreateOrderResponse>> = await api.post("/orderrequest/create/", collectCreateOrderData(state), {
+        const response: AxiosResponse<ResponseData<GetOrderRequest>> = await api.post("/orderrequest/create/", collectCreateOrderData(state), {
         })
         return response.data
     } catch (error: any) {
@@ -20,6 +19,16 @@ const createOrder = async (state: RootState): Promise<ResponseData<CreateOrderRe
     }
 }
 
+const getOrderData = async (orderNumber: string, itemHash: string, user: User): Promise<ResponseData<Order>> => {
+    try {
+        const response: AxiosResponse<ResponseData<Order>> = await api.post("/orderrequest/getorder", collectGetOrderData(orderNumber, itemHash, user), {});
+        return response.data
+    } catch (error: any) {
+        return getErrorResponse(error.message)
+    }
+}
+
 export const orderApi = {
-    createOrder
+    createOrder,
+    getOrderData
 }

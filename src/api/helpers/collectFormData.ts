@@ -15,7 +15,7 @@ export const getErrorResponse = (message?: string) : ResponseData<any> => {
     return {
         data: null,
         errors: [{
-            message: "Error",
+            message: message ?? "Error",
             code: 500
         }],
         status: "error",

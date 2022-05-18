@@ -10,11 +10,6 @@ export const collectAnswerData = (
         questionGroup,
         questionName,
         questionShortName,
-        questionDescription,
-        questionDescriptionUrl,
-        questionDescriptionUrlName,
-        questionInputButtonName,
-        questionInputPlaceholder,
         questionKey
     } = questionData;
 

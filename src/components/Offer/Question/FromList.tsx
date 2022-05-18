@@ -6,14 +6,15 @@ import { collectAnswerData } from "../helpers/collectAnswerData";
 const FromList = (props: OfferQuestionProps) => {
     const { giveAnswer } = useOfferData();
 
-    const { questionData, combinationId } = props;
-    const { answers } = questionData;
+    const { questionData } = props;
+    const { answers, validator } = questionData;
 
     const onClick = (answerName: string, answerId: string) => {
         giveAnswer(
             collectAnswerData(questionData,answerName, answerId),
         );
     };
+
 
     return (
         <Container.Flex

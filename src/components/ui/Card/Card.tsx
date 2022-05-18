@@ -20,6 +20,7 @@ const Wrapper = styled.div<CardProps>`
     transition: all 200ms linear;
     overflow-y: ${(props) => (props.animateHeight ? "hidden" : "auto")};
     overflow-x: ${(props) => (props.animateWidth ? "hidden" : "auto")};
+    overflow: hidden;
     ${(props) => getCommonProps(props)};
     padding: 0;
 	background-color: ${(props) => props.theme.colors.background.contrast60};

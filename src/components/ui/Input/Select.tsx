@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { getCommonProps, Props } from "../../types";
-import Select, { Option } from "rc-select";
 import { useTheme } from "styled-components";
 import styled from "styled-components";
 import Icon from "../Icon";

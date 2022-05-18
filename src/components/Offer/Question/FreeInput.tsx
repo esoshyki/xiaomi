@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useOfferData } from "../hooks/useOfferData";
-import { Button, Container } from "../../ui";
+import { Button, Container, Typography } from "../../ui";
 import Input from "../../ui/Input";
 import { OfferQuestionProps } from "./OfferQuestion";
-import { GivenAnswer } from "../../../store/offerSlice/types";
 import { collectAnswerData } from "../helpers/collectAnswerData";
+
+const IMEIvalidator = `^\\d{15}$`;
+const IMEIvalidateError = "Неправильный формат IMEI";
 
 
 const FreeInput = (props: OfferQuestionProps ) => {
@@ -12,16 +14,35 @@ const FreeInput = (props: OfferQuestionProps ) => {
     const { giveAnswer } = useOfferData();
 
     const [value, setValue] = useState("350320523229662");
+    const [failure, setFailure] = useState("");
 
     const { questionData } = props;
+    const { validator, validateFailure } = questionData;
+
+    const validate = () => {
+        return new RegExp(validator ?? IMEIvalidator).test(value)
+    }
 
     const onClick = () => {
-        giveAnswer(collectAnswerData(questionData, value))
+        if (validate()) {
+            giveAnswer(collectAnswerData(questionData, value))
+        } else {
+            setFailure(validateFailure ?? IMEIvalidateError)
+        }
+    }
+
+    const onChange = (e: any) => {
+        setValue(e.target.value);
+        setFailure("")
     }
 
     return (
         <Container.Flex fullWidth gap={16} alignItems="center">
-            <Input value={value} onChange={e => setValue(e.target.value)} fullWidth />
+            <Input value={value} onChange={onChange} fullWidth />
+
+            {failure && <Typography.Error>
+                    {failure}
+                </Typography.Error>}
 
             <Button fullWidth onClick={onClick}>
                 Проверить

@@ -1,6 +1,6 @@
 import { RootState } from '..';
 import { createAction, createSelector, PayloadAction } from '@reduxjs/toolkit';
-import { AdditionActions, CreateOrderResponse, DeviceInfo, GivenAnswer, OfferState, OfferSteps, QuestionsResponse, QuestionTree, ServerError, SetTreeDataProps } from './types';
+import { AdditionActions, Order, CreateOrderResponse, DeviceInfo, GivenAnswer, OfferState, OfferSteps, QuestionsResponse, QuestionTree, ServerError, SetTreeDataProps, GetOrderRequest } from './types';
 import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
 import { N } from '../types'
@@ -15,7 +15,7 @@ const initialState: OfferState = {
     createOrder: {
         result: null,
         loading: false,
-        errors: []
+        errors: [],
     },
     questionsData: null,
     questionsTree: null,
@@ -29,17 +29,24 @@ const initialState: OfferState = {
         answers: []
     },
     deviceInfo: null,
-    questionsReceived: 0
+    questionsReceived: 0,
+    order: {
+        data: null,
+        loading: false,
+        status: null,
+        errors: []
+    }
 }
 
 export const CreateOrder = createRoutine("offer/Create-Order");
 export const GetQuestions = createRoutine("offer/Get-Questions");
+export const GetOrder = createRoutine("offer/Get-Order");
 
 const offerSlice = createSlice({
     name: "offer",
-    initialState: {...initialState},
+    initialState: { ...initialState },
     reducers: {
-        giveAnswer(state: OfferState, { payload } : PayloadAction<GivenAnswer>) {
+        giveAnswer(state: OfferState, { payload }: PayloadAction<GivenAnswer>) {
             const answerIndex = state.givenAnswers.answers.findIndex(el => el.questionId === payload.questionId);
             if (answerIndex >= 0) {
                 state.givenAnswers.answers[answerIndex] = payload
@@ -53,52 +60,52 @@ const offerSlice = createSlice({
                 state.currentGivenAnswers.answers.push(payload)
             }
         },
-        setTreeProps(state: OfferState, { payload } : PayloadAction<SetTreeDataProps>) {
+        setTreeProps(state: OfferState, { payload }: PayloadAction<SetTreeDataProps>) {
             const { combinationId, offerId, additionalAction } = payload;
             if (combinationId) state.givenAnswers.combinationId = combinationId;
             if (offerId) state.givenAnswers.offerId = offerId;
             if (additionalAction) state.givenAnswers.additionalAction = additionalAction;
         },
-        setAdditionalAction(state: OfferState, { payload } : PayloadAction<AdditionActions | undefined>) {
+        setAdditionalAction(state: OfferState, { payload }: PayloadAction<AdditionActions | undefined>) {
             state.givenAnswers.additionalAction = payload;
         },
-        setQuestionsTree(state: OfferState, { payload } : PayloadAction<N<QuestionTree>>) {
+        setQuestionsTree(state: OfferState, { payload }: PayloadAction<N<QuestionTree>>) {
             state.questionsTree = payload
         },
-        setCombinationsId(state: OfferState, { payload } : PayloadAction<string | undefined>) {
+        setCombinationsId(state: OfferState, { payload }: PayloadAction<string | undefined>) {
             state.givenAnswers.combinationId = payload;
             state.currentGivenAnswers.combinationId = payload;
         },
-        setOfferId(state: OfferState, { payload } : PayloadAction<string | undefined>) {
+        setOfferId(state: OfferState, { payload }: PayloadAction<string | undefined>) {
             state.givenAnswers.offerId = payload;
             state.currentGivenAnswers.offerId = payload;
         },
-        setStep(state: OfferState, { payload } : PayloadAction<OfferSteps>) {
+        setStep(state: OfferState, { payload }: PayloadAction<OfferSteps>) {
             state.step = payload;
         },
-        setDeviceInfo(state: OfferState, { payload } : PayloadAction<DeviceInfo>) {
+        setDeviceInfo(state: OfferState, { payload }: PayloadAction<DeviceInfo>) {
             state.deviceInfo = payload
         },
-        restoreOffer: () => ({...initialState}),
-        setPhotoFront(state: OfferState, { payload } : PayloadAction<string | null>) {
+        restoreOffer: () => ({ ...initialState }),
+        setPhotoFront(state: OfferState, { payload }: PayloadAction<string | null>) {
             state.photoFront = payload;
             state.step = "photo-back"
         },
-        setPhotoBack(state: OfferState, { payload } : PayloadAction<string | null>) {
+        setPhotoBack(state: OfferState, { payload }: PayloadAction<string | null>) {
             state.photoBack = payload;
             state.step = "pending"
         },
-    }, 
+    },
     extraReducers: {
         [GetQuestions.REQUEST](state) {
             state.getQuestions.result = null;
             state.getQuestions.loading = true;
         },
-        [GetQuestions.FAILURE](state, { payload } : PayloadAction<ServerError[]>) {
+        [GetQuestions.FAILURE](state, { payload }: PayloadAction<ServerError[]>) {
             state.getQuestions.result = "error";
             state.getQuestions.errors = payload
         },
-        [GetQuestions.SUCCESS](state, { payload } : PayloadAction<QuestionsResponse>) {
+        [GetQuestions.SUCCESS](state, { payload }: PayloadAction<QuestionsResponse>) {
             state.getQuestions.result = "success"
             state.getQuestions.errors = [];
             state.questionsData = payload.questionsData;
@@ -116,12 +123,25 @@ const offerSlice = createSlice({
             state.createOrder.result = null;
             state.getQuestions.loading = true;
         },
-        [CreateOrder.FAILURE](state, { payload } : PayloadAction<ServerError[]>) {
+        [CreateOrder.FAILURE](state, { payload }: PayloadAction<ServerError[]>) {
             state.createOrder.result = "error";
             state.createOrder.errors = payload;
         },
-        [CreateOrder.SUCCESS](state, { payload } : PayloadAction<CreateOrderResponse>) {
-            state.createOrderData = payload;
+        [CreateOrder.SUCCESS](state, { payload }: PayloadAction<CreateOrderResponse>) {
+            state.createOrderData = payload.data;
+        },
+        [GetOrder.REQUEST](state, { payload } : PayloadAction<GetOrderRequest | undefined>) {
+            state.order.loading = true;
+        },
+        [GetOrder.FAILURE](state, { payload }: PayloadAction<string[]>) {
+            state.order.status = "error";
+            state.order.errors = payload;
+        },
+        [GetOrder.SUCCESS](state, { payload }: PayloadAction<Order>) {
+            state.order.data = payload;
+        },
+        [GetOrder.FULFILL](state) {
+            state.order.loading = false
         }
     }
 });
@@ -133,7 +153,7 @@ export const getOfferData = createSelector(
     offer => offer
 )
 
-export const { 
+export const {
     setStep,
     setCombinationsId,
     setQuestionsTree,

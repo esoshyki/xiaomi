@@ -29,7 +29,7 @@ const OfferDevice = ({ deviceInfo, givenAnswers }: { deviceInfo: DeviceInfo, giv
             justify="start"
         >
             <ImgWrapper>
-                <Image src={deviceImage} alt={deviceName} height={75} styles={{
+                <Image noBasePath src={deviceImage} alt={deviceName} height={75} styles={{
                     maxWidth: "75px",
                     maxHeight: "75px"
                 }}/>

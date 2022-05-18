@@ -98,7 +98,6 @@ const offerSlice = createSlice({
     },
     extraReducers: {
         [GetQuestions.REQUEST](state) {
-            state.getQuestions.result = null;
             state.getQuestions.loading = true;
         },
         [GetQuestions.FAILURE](state, { payload }: PayloadAction<ServerError[]>) {

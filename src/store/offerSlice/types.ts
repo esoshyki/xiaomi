@@ -54,6 +54,8 @@ export type CreateOrderRequest = {
     offerId?: string
     deviceId?: string
     questions: Array<{[questionId: string] : string}>
+    productId?: string
+    combination?: string
 }
 
 export type CreateOrderResponse = {

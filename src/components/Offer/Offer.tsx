@@ -1,13 +1,13 @@
-import { Fragment, useCallback, useMemo } from "react";
-import { OfferStep } from ".";
 import { useOfferData } from "./hooks/useOfferData";
 import Container from "../ui/Container";
 import { Progress, Card, Info, Typography, Button } from "../ui";
 import { memo, useEffect, useRef, useState } from "react";
 import OfferDevice from "./OfferDevice";
 import AddNewDevice from "../AddNewDevice";
-import { resetCheckout } from "../../store/userSlice";
 import { OfferQuestions } from ".";
+import OfferQR from "./Question/OfferQR";
+import Icon from "../ui/Icon";
+import { useTheme } from "styled-components";
 
 const Offer = () => {
     const {
@@ -15,8 +15,11 @@ const Offer = () => {
         fetchQuestions,
         deviceInfo,
         givenAnswers,
-        progress
+        progress,
+        setStep,
     } = useOfferData();
+
+    const theme = useTheme();
 
     const [hint, setHint] = useState(true);
     const [cardHeight, setCardHeight] = useState("auto");
@@ -36,9 +39,9 @@ const Offer = () => {
 
     useEffect(() => {
         if (step === "start") {
-            fetchQuestions()
+            fetchQuestions();
         }
-    }, [])
+    }, []);
 
     return (
         <Container.Flex
@@ -93,14 +96,23 @@ const Offer = () => {
                 onClick={() => setHint(false)}
                 isQuestion={true}
             >
-                <Progress progress={progress}/>
+                <Progress progress={progress} />
                 {/* {phone?.[0] && <OfferDevice phone={phone[0]} />} */}
-                {deviceInfo && <OfferDevice deviceInfo={deviceInfo} givenAnswers={givenAnswers.answers}/>}
+                {deviceInfo && (
+                    <OfferDevice
+                        deviceInfo={deviceInfo}
+                        givenAnswers={givenAnswers.answers}
+                    />
+                )}
                 {step === "questions" && <OfferQuestions />}
-                {step === "create-order" && <Typography.Title>Успех</Typography.Title>}
+                {step === "create-order" && (
+                    <Typography.Title>Успех</Typography.Title>
+                )}
+                {step === "qr-code" && <OfferQR />}
             </Card>
 
             {step === "pending" && <AddNewDevice />}
+
         </Container.Flex>
     );
 };

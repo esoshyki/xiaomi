@@ -13,6 +13,7 @@ import Eye from './icons/eye';
 import SettingsIcon from './icons/settings';
 import EmployeeIcon from './icons/employee';
 import OrderList from './icons/orderList';
+import QrCodeIcon from './icons/qrCode';
 import NewOrderIcon from './icons/newOrder';
 import ExitIcon from './icons/exit';
 import BellIcon from './icons/bell';
@@ -51,6 +52,8 @@ const Icon = (props: IconProps) => {
             return <OrderList {...props} />
         case "photo":
             return <PhotoIcon {...props} />
+        case "qr-code":
+            return <QrCodeIcon {...props} />
         case "hidden":
             return <Hidden {...props} />
         case "eye":

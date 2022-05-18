@@ -104,6 +104,10 @@ export const useOfferData = () => {
         );
     };
 
+    const _setStep = (step: OfferSteps) => () => {
+        dispatch(setStep(step))
+    }
+
     return {
         ...offer,
         changeStep,
@@ -112,6 +116,7 @@ export const useOfferData = () => {
         fetchQuestions,
         progress,
         setPhoto,
+        setStep: _setStep,
         getNextQuestion: getQuestion,
     };
 };

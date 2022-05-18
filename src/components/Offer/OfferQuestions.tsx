@@ -2,11 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useOfferData } from "./hooks/useOfferData";
 import Container from "../ui/Container";
 import OfferQuestion from "./Question/OfferQuestion";
-import { Typography } from "../ui";
+import { Button, Typography } from "../ui";
 
 const OfferQuestions = () => {
 
-    const { getNextQuestion, getQuestions, givenAnswers, questionsTree, fetchQuestions } = useOfferData();
+    const { getNextQuestion, getQuestions, givenAnswers, questionsTree, fetchQuestions, changeStep } = useOfferData();
     const { errors } = getQuestions;
 
     const question = useMemo(getNextQuestion, [givenAnswers, questionsTree]);
@@ -19,7 +19,7 @@ const OfferQuestions = () => {
 
     return (
         <Container.Flex fullWidth fullHeight>
-            {(!!question ) && <OfferQuestion questionData={question} />}
+            {!!question && <OfferQuestion questionData={question} />}
             {!!errors.length && (
                 <Typography.Error>
                     {errors.map(err => err.message).join(". ")}

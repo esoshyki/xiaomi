@@ -4,7 +4,7 @@ import { connectUserData } from './collectUserData';
 import { RootState } from "../../store";
 
 export const collectCreateOrderData = (state: RootState) => {
-    const formData = toFormData(formatCreateOrderRequest(state));
+    const formData = toFormData({data: formatCreateOrderRequest(state)});
     connectUserData(state.user, formData)
     return formData
 }

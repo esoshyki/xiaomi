@@ -12,11 +12,13 @@ export const formatCreateOrderRequest = (state: RootState) : CreateOrderRequest 
     };
 
     if (combinationId) {
-        obj.combinationId = combinationId
+        obj.combinationId = combinationId;
+        obj.combination = combinationId;
     }
 
     if (offerId) {
         obj.offerId = offerId
+        obj.productId = offerId
     }
 
     if (deviceInfo?.deviceID) {

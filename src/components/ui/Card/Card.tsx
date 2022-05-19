@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { getCommonProps, Props } from "../../types";
 import styled, { keyframes } from "styled-components/macro";
-import { fadeIn } from 'react-animations'
+import { fadeInUp } from 'react-animations'
 
 type CardProps = Props<{
     noPadding?: boolean;
@@ -63,10 +63,10 @@ const hide = keyframes`
     }
 `;
 
-const fadeInAnimation = keyframes`${fadeIn}`
+const fadeInAnimation = keyframes`${fadeInUp}`
 
 const ContentWrapper = styled.div`
-    animation: ${fadeInAnimation} 600ms linear 0s;
+    animation: ${fadeInAnimation} 500ms linear 0s;
     transition: opacity 100ms ease-in;
 `;
 

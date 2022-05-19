@@ -3,19 +3,14 @@ import { useOfferData } from "./hooks/useOfferData";
 import Container from "../ui/Container";
 import OfferQuestion from "./Question/OfferQuestion";
 import { Button, Typography } from "../ui";
+import { Question, ServerError } from "../../store/offerSlice/types";
 
-const OfferQuestions = () => {
+interface OfferQuestionsProps {
+    question: Question | null
+    errors: ServerError[]
+}
 
-    const { getNextQuestion, getQuestions, givenAnswers, questionsTree, fetchQuestions, createOrder } = useOfferData();
-    const { errors } = getQuestions;
-
-    const question = useMemo(getNextQuestion, [givenAnswers, questionsTree]);
-
-    useEffect(() => {
-        if (!question && !getQuestions.loading && !createOrder.loading) {
-            fetchQuestions();
-        }
-    }, [question, getQuestions.loading, createOrder.loading]);
+const OfferQuestions = ({ question, errors } : OfferQuestionsProps) => {
 
     return (
         <Container.Flex fullWidth fullHeight>

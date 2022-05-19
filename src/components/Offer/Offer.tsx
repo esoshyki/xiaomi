@@ -1,21 +1,23 @@
 import { useOfferData } from "./hooks/useOfferData";
 import Container from "../ui/Container";
 import { Progress, Card, Info, Typography, Button } from "../ui";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState, useMemo } from "react";
 import OfferDevice from "./OfferDevice";
 import AddNewDevice from "../AddNewDevice";
 import { OfferQuestions } from ".";
-import OfferQR from "./Question/OfferQR";
-import Icon from "../ui/Icon";
-import { useTheme } from "styled-components";
 
 const Offer = () => {
     const {
         step,
         fetchQuestions,
+        getNextQuestion,
         deviceInfo,
         givenAnswers,
+        questionsTree,
+        createOrder,
+        getQuestions,
         progress,
+        
     } = useOfferData();
 
     const [hint, setHint] = useState(true);
@@ -23,6 +25,17 @@ const Offer = () => {
     const [cardWidth, setCardWidth] = useState("auto");
 
     const hintRef = useRef<HTMLDivElement>(null);
+
+    const { errors } = getQuestions;
+
+    const question = useMemo(getNextQuestion, [givenAnswers, questionsTree]);
+
+    useEffect(() => {
+        if (step !== "questions") return;
+        if (!question && !getQuestions.loading && !createOrder.loading) {
+            fetchQuestions();
+        }
+    }, [question, getQuestions.loading, createOrder.loading]);
 
     useEffect(() => {
         if (!!hintRef.current) {
@@ -98,15 +111,12 @@ const Offer = () => {
                         givenAnswers={givenAnswers.answers}
                     />
                 )}
-                {step === "questions" && <OfferQuestions />}
-                {step === "create-order" && (
-                    <Typography.Title>Успех</Typography.Title>
+                {step === "questions" && (
+                    <OfferQuestions question={question} errors={errors} />
                 )}
-                {step === "qr-code" && <OfferQR />}
             </Card>
 
             {step === "pending" && <AddNewDevice />}
-
         </Container.Flex>
     );
 };

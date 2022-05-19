@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useMemo } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 import {
     GetQuestions,
     giveAnswer,
@@ -23,17 +23,14 @@ import { getFromTree } from "../helpers/getFromTree";
 
 export const useOfferData = () => {
     const offer = useSelector(getOfferData);
-
-    const progress = useMemo(() => {
-        if (offer.questionsData) {
-            return offer.questionsReceived
-                ? (offer.givenAnswers.answers.length * 0.5) /
-                      offer.questionsReceived
-                : 0;
-        } else {
-            return 0;
-        }
-    }, [offer]);
+    const {
+        givenAnswers,
+        step,
+        getQuestions,
+        createOrder,
+        questionsData,
+        order,
+    } = offer;
 
     const dispatch = useDispatch();
 
@@ -41,37 +38,21 @@ export const useOfferData = () => {
         dispatch(setStep(step));
     };
 
-    const fetchQuestions = () => {
-        if (offer.givenAnswers.additionalAction) {
-            const additionalAction = offer.givenAnswers.additionalAction;
-            dispatch(resetAdditionActions());
-            dispatch(makeAdditionAction(additionalAction));
-            return;
-        }
-        if (!offer.getQuestions.loading) {
-            dispatch(GetQuestions.request());
-        }
-    }
-    
-    const _setTreeProps = (props: SetTreeDataProps) => {
-        const { combinationId, offerId, additionalAction } = props;
-        const { givenAnswers } = offer;
-        if (!(Object.values(props).filter(el => !!el).length)) return;
-        if (combinationId && (combinationId !== givenAnswers.combinationId)) {
-            dispatch(setTreeProps({ combinationId }));
-        };
-        if (offerId && (offerId !== givenAnswers.offerId)) {
-            dispatch(setTreeProps({ offerId }));
-        };
-        if (additionalAction && (additionalAction !== givenAnswers.additionalAction)) {
-            dispatch(setTreeProps({ additionalAction }))
-        };
-    };
+    const isLoading = useMemo(
+        () => order.loading || getQuestions.loading || createOrder.loading,
+        [getQuestions, createOrder, order]
+    );
 
     const getQuestion = () => {
-        const { questionsTree, givenAnswers, questionsData, getQuestions, createOrder } = offer;
+        const {
+            questionsTree,
+            givenAnswers,
+            questionsData,
+            getQuestions,
+            createOrder,
+        } = offer;
         if (getQuestions.loading || createOrder.loading) {
-                return null
+            return null;
         }
         const { answers } = givenAnswers;
 
@@ -96,6 +77,24 @@ export const useOfferData = () => {
         };
     };
 
+    const _setTreeProps = (props: SetTreeDataProps) => {
+        const { combinationId, offerId, additionalAction } = props;
+        const { givenAnswers } = offer;
+        if (!Object.values(props).filter((el) => !!el).length) return;
+        if (combinationId && combinationId !== givenAnswers.combinationId) {
+            dispatch(setTreeProps({ combinationId }));
+        }
+        if (offerId && offerId !== givenAnswers.offerId) {
+            dispatch(setTreeProps({ offerId }));
+        }
+        if (
+            additionalAction &&
+            additionalAction !== givenAnswers.additionalAction
+        ) {
+            dispatch(setTreeProps({ additionalAction }));
+        }
+    };
+
     const _giveAnswer = (answer: GivenAnswer) => {
         dispatch(giveAnswer(answer));
     };
@@ -111,18 +110,62 @@ export const useOfferData = () => {
     };
 
     const _setStep = (step: OfferSteps) => () => {
-        dispatch(setStep(step))
-    }
+        dispatch(setStep(step));
+    };
+
+    const fetchQuestions = () => {
+        if (offer.givenAnswers.additionalAction) {
+            const additionalAction = offer.givenAnswers.additionalAction;
+            dispatch(resetAdditionActions());
+            dispatch(makeAdditionAction(additionalAction));
+            return;
+        }
+        if (!offer.getQuestions.loading) {
+            dispatch(GetQuestions.request());
+        }
+    };
+
+    const question = useMemo(getQuestion, [givenAnswers, questionsData]);
+
+    const progress = useMemo(() => {
+        const questionsCount = questionsData ? Object.keys(questionsData).length : 0;
+        if (question && questionsData) {
+            if (!questionsCount) return 0;
+            return 0.5 * (question.answerOrder || 0) / Object.keys(questionsData).length
+        } else {
+            return 0
+        }
+        return Math.random() * 0.5
+    }, [question]);
+
+    /** |||||||||||||||||||||||||||||||||||||||
+     *     EFFECTS
+     *  |||||||||||||||||||||||||||||||||||||||
+     */
+
+    useEffect(() => {
+        if (step !== "questions") return;
+        if (!question && !getQuestions.loading && !createOrder.loading) {
+            fetchQuestions();
+        }
+    }, [question, getQuestions.loading, createOrder.loading]);
+
+    useEffect(() => {
+        if (step === "start") {
+            fetchQuestions();
+        }
+    }, []);
 
     return {
         ...offer,
+        question,
         changeStep,
-        giveAnswer: _giveAnswer,
+        giveAnswer: useCallback(_giveAnswer, []),
         restoreOffer: _restoreOffer,
         fetchQuestions,
         progress,
         setPhoto,
         setStep: _setStep,
-        getNextQuestion: getQuestion,
+        isLoading
     };
 };

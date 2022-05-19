@@ -37,8 +37,6 @@ const ProgressContent = styled.div<{ progress: number}>`
 
 const Progress = ({ progress } : { progress: number }) => {
 
-
-
     return (
         <>
             <Container.Flex justify='between' direction='row' fullWidth margin={"0 0 4px"}>

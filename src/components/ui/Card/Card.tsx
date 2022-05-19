@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { getCommonProps, Props } from "../../types";
 import styled, { keyframes } from "styled-components/macro";
-import { fadeInUp } from 'react-animations'
+import { bounceInUp, fadeIn, merge } from 'react-animations'
 
 type CardProps = Props<{
     noPadding?: boolean;
@@ -63,10 +63,10 @@ const hide = keyframes`
     }
 `;
 
-const fadeInAnimation = keyframes`${fadeInUp}`
+const fadeInAnimation = keyframes`${merge(bounceInUp, fadeIn)}`
 
 const ContentWrapper = styled.div`
-    animation: ${fadeInAnimation} 500ms linear 0s;
+    animation: ${fadeInAnimation} 100ms;
     transition: opacity 100ms ease-in;
 `;
 
@@ -78,7 +78,7 @@ const Inner = styled.div<{ padding: any }>`
                 : props.padding
             : ""};
     border-radius: inherit;
-    transition: opacity 200ms;
+    /* transition: opacity 200ms; */
 `;
 
 const Card = forwardRef<HTMLDivElement, CardProps>((props: CardProps, ref) => {

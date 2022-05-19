@@ -2,6 +2,7 @@ import styled from "styled-components/macro";
 import { getFlexAligns, getFlexJustify } from "../../../helpers/getFlexProps";
 import { Aligns, getCommonProps, Justifies, Props } from "../../types";
 import { getAnimations } from "../../../theme/animations";
+import { forwardRef } from "react";
 
 export type FlexProps = Props<{
     direction?: "row" | "column"
@@ -31,10 +32,11 @@ const FlexContainer = styled.div<FlexProps>`
 	gap: ${props => props.gap ? `${props.gap}px` : ""};
 `;
 
-const Flex = (props: FlexProps) => {
+const Flex = forwardRef<HTMLDivElement, FlexProps>((props, ref) => {
 
     return (
         <FlexContainer 
+            ref={ref}
             className={props.className}
             onClick={props.onClick}
             onMouseEnter={props.onMouseEnter}
@@ -44,6 +46,6 @@ const Flex = (props: FlexProps) => {
             {!!props.children && props.children}
         </FlexContainer>
     );
-};
+});
 
 export default Flex;

@@ -116,6 +116,7 @@ export type Question = {
     validator?: string
     validateFailure?: string
     answers?: { [id: string]: Answer }
+    answerOrder?: number
 }
 
 export type QuestionsData = {
@@ -192,8 +193,9 @@ export type OfferState = {
     givenAnswers: GivenAnswers
     currentGivenAnswers: GivenAnswers
     deviceInfo: N<DeviceInfo>
-    questionsReceived: number,
     order: {
+        orderNumber: string
+        itemHash: string
         data: Order | null,
         status: "success" | "error" | null
         loading: boolean,

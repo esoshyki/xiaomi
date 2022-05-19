@@ -15,9 +15,13 @@ const useQuery = () => {
 
     const makeStateData = () => {
 
-        const { createOrderData } = offer;
+        const { order } = offer;
 
-        return createOrderData ? qs.stringify(createOrderData) : "";
+        const { itemHash, orderNumber } = order;
+
+        return (itemHash && orderNumber) ? qs.stringify({
+            itemHash, orderNumber
+        }) : "";
     }
 
     return ({

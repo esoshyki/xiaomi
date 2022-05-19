@@ -1,6 +1,6 @@
 import { customErrors } from './../../helpers/getCustomError';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { CreateOrder, GetOrder, makeAdditionAction, resetAdditionActions, setTreeProps } from './index';
+import { CreateOrder, GetOrder, makeAdditionAction, resetAdditionActions, setItemHash, setOrderNumber, setTreeProps } from './index';
 import { takeLeading, call, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 import { GetQuestions, setDeviceInfo, setStep } from ".";
 import { deviceApi, orderApi} from "../../api";
@@ -39,6 +39,8 @@ function* createOrderWorker() {
 
         if (itemHash && orderNumber) {
             yield put(GetOrder.request({ itemHash, orderNumber }));
+            yield put(setOrderNumber(orderNumber));
+            yield put(setItemHash(itemHash));
         }
     }
     if (response.status === "error") {

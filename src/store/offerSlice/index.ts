@@ -29,8 +29,9 @@ const initialState: OfferState = {
         answers: []
     },
     deviceInfo: null,
-    questionsReceived: 0,
     order: {
+        orderNumber: "",
+        itemHash: "",
         data: null,
         loading: false,
         status: null,
@@ -100,6 +101,12 @@ const offerSlice = createSlice({
         },
         makeAdditionAction(state: OfferState, { payload } : PayloadAction<AdditionActions>) {
             state.givenAnswers.additionalAction = undefined;
+        },
+        setOrderNumber(state: OfferState, { payload } : PayloadAction<string> ) {
+            state.order.orderNumber = payload
+        },
+        setItemHash(state: OfferState, { payload } : PayloadAction<string>) {
+            state.order.itemHash = payload
         }
     },
     extraReducers: {
@@ -113,10 +120,11 @@ const offerSlice = createSlice({
         [GetQuestions.SUCCESS](state, { payload }: PayloadAction<QuestionsResponse>) {
             state.getQuestions.result = "success"
             state.getQuestions.errors = [];
-            state.questionsData = payload.questionsData;
+            if (!Object.keys(payload.questionsData).every(el => Object.keys(state.questionsData || {}).includes(el))) {
+                state.questionsData = payload.questionsData;
+            }
             state.questionsTree = payload.questionsTree;
             state.currentGivenAnswers = { answers: [] }
-            state.questionsReceived += Object.keys(payload.questionsData || {}).length
         },
         [GetQuestions.FULFILL](state) {
             state.getQuestions.loading = false
@@ -171,7 +179,9 @@ export const {
     setDeviceInfo,
     setTreeProps,
     makeAdditionAction,
-    resetAdditionActions
+    resetAdditionActions,
+    setOrderNumber,
+    setItemHash
 } = offerSlice.actions
 
 export default offerSlice.reducer;

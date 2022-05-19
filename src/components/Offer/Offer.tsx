@@ -5,37 +5,17 @@ import { memo, useEffect, useRef, useState, useMemo } from "react";
 import OfferDevice from "./OfferDevice";
 import AddNewDevice from "../AddNewDevice";
 import { OfferQuestions } from ".";
+import OfferLoader from "./OfferLoader";
 
 const Offer = () => {
-    const {
-        step,
-        fetchQuestions,
-        getNextQuestion,
-        deviceInfo,
-        givenAnswers,
-        questionsTree,
-        createOrder,
-        getQuestions,
-        progress,
-        
-    } = useOfferData();
+    const { step, deviceInfo, givenAnswers, getQuestions, progress, question, isLoading } =
+        useOfferData();
 
     const [hint, setHint] = useState(true);
     const [cardHeight, setCardHeight] = useState("auto");
     const [cardWidth, setCardWidth] = useState("auto");
 
     const hintRef = useRef<HTMLDivElement>(null);
-
-    const { errors } = getQuestions;
-
-    const question = useMemo(getNextQuestion, [givenAnswers, questionsTree]);
-
-    useEffect(() => {
-        if (step !== "questions") return;
-        if (!question && !getQuestions.loading && !createOrder.loading) {
-            fetchQuestions();
-        }
-    }, [question, getQuestions.loading, createOrder.loading]);
 
     useEffect(() => {
         if (!!hintRef.current) {
@@ -46,12 +26,6 @@ const Offer = () => {
             }
         }
     }, [setCardHeight, setCardWidth]);
-
-    useEffect(() => {
-        if (step === "start") {
-            fetchQuestions();
-        }
-    }, []);
 
     return (
         <Container.Flex
@@ -112,8 +86,12 @@ const Offer = () => {
                     />
                 )}
                 {step === "questions" && (
-                    <OfferQuestions question={question} errors={errors} />
+                    <OfferQuestions
+                        question={question}
+                        errors={getQuestions.errors}
+                    />
                 )}
+                {isLoading && <OfferLoader />}
             </Card>
 
             {step === "pending" && <AddNewDevice />}

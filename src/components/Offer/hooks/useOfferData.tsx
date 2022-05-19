@@ -69,7 +69,10 @@ export const useOfferData = () => {
     };
 
     const getQuestion = () => {
-        const { questionsTree, givenAnswers, questionsData } = offer;
+        const { questionsTree, givenAnswers, questionsData, getQuestions, createOrder } = offer;
+        if (getQuestions.loading || createOrder.loading) {
+                return null
+        }
         const { answers } = givenAnswers;
 
         if (!questionsTree || !questionsData) return null;

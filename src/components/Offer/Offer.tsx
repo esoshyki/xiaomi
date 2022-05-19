@@ -87,15 +87,11 @@ const Offer = () => {
             <Card
                 padding="28px"
                 fullWidth
-                styles={{
-                    flexShrink: 0,
-                }}
                 onClick={() => setHint(false)}
                 isQuestion={true}
                 minHeight={312}
             >
                 <Progress progress={progress} />
-                {/* {phone?.[0] && <OfferDevice phone={phone[0]} />} */}
                 {deviceInfo && (
                     <OfferDevice
                         deviceInfo={deviceInfo}

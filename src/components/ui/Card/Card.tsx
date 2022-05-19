@@ -1,6 +1,7 @@
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { getCommonProps, Props } from "../../types";
 import styled, { keyframes } from "styled-components/macro";
+import { fadeIn } from 'react-animations'
 
 type CardProps = Props<{
     noPadding?: boolean;
@@ -62,8 +63,10 @@ const hide = keyframes`
     }
 `;
 
+const fadeInAnimation = keyframes`${fadeIn}`
+
 const ContentWrapper = styled.div`
-    animation: ${hide} 100ms linear 0s;
+    animation: ${fadeInAnimation} 600ms linear 0s;
     transition: opacity 100ms ease-in;
 `;
 
@@ -83,6 +86,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>((props: CardProps, ref) => {
 
     const [height, setHeight] = useState<number>();
     const [isTransition, setIsTransition] = useState(true);
+    
 
     useEffect(() => {
         if (contentRef.current && props.isQuestion) {
@@ -99,6 +103,10 @@ const Card = forwardRef<HTMLDivElement, CardProps>((props: CardProps, ref) => {
         setIsTransition(false);
     };
 
+    useEffect(() => {
+        setIsTransition(false);
+    }, [])
+
     const contentRef = useRef<HTMLDivElement>(null);
     return (
         <Wrapper
@@ -113,7 +121,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>((props: CardProps, ref) => {
             <ContentWrapper
                 ref={contentRef}
                 style={{
-                    opacity: isTransition && props.isQuestion ? 0 : 1,
+                    opacity: 1
                 }}
             >
                 {!!children && <Inner padding={padding}>{children}</Inner>}

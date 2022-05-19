@@ -126,7 +126,7 @@ const offerSlice = createSlice({
         },
         [CreateOrder.REQUEST](state) {
             state.createOrder.result = null;
-            state.getQuestions.loading = true;
+            state.createOrder.loading = true;
         },
         [CreateOrder.FAILURE](state, { payload }: PayloadAction<ServerError[]>) {
             state.createOrder.result = "error";
@@ -134,6 +134,9 @@ const offerSlice = createSlice({
         },
         [CreateOrder.SUCCESS](state, { payload }: PayloadAction<CreateOrderResponse>) {
             state.createOrderData = payload.data;
+        },
+        [CreateOrder.FULFILL](state) {
+            state.createOrder.loading = false;
         },
         [GetOrder.REQUEST](state, { payload } : PayloadAction<GetOrderRequest | undefined>) {
             state.order.loading = true;

@@ -81,7 +81,11 @@ function* getOrderWorker({ payload } : PayloadAction<GetOrderRequest | undefined
 function* makeAdditionActionWorker({ payload } : PayloadAction<AdditionActions>) {
     switch (payload) {
         case "createOrder":
-            yield put(CreateOrder.request())
+            yield put(CreateOrder.request());
+            break
+        case "addPhoto":
+            yield put(GetQuestions.request());
+            break
     }
 }
 

@@ -6,16 +6,16 @@ import { Button, Typography } from "../ui";
 
 const OfferQuestions = () => {
 
-    const { getNextQuestion, getQuestions, givenAnswers, questionsTree, fetchQuestions, changeStep } = useOfferData();
+    const { getNextQuestion, getQuestions, givenAnswers, questionsTree, fetchQuestions, createOrder } = useOfferData();
     const { errors } = getQuestions;
 
     const question = useMemo(getNextQuestion, [givenAnswers, questionsTree]);
 
     useEffect(() => {
-        if (!question) {
-            fetchQuestions()
+        if (!question && !getQuestions.loading && !createOrder.loading) {
+            fetchQuestions();
         }
-    }, [question]);
+    }, [question, getQuestions.loading, createOrder.loading]);
 
     return (
         <Container.Flex fullWidth fullHeight>

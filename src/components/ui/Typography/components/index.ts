@@ -9,4 +9,5 @@ export { default as RublesLarge } from "./RublesLarge"
 export { default as RublesSmall } from "./RublesSmall"
 export { default as Error } from './Error'
 export { default as Tertiary } from './Tertiary'
+export { default as Micro } from './Micro'
 

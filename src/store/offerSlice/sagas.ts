@@ -1,6 +1,6 @@
 import { customErrors } from './../../helpers/getCustomError';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { CreateOrder, GetOrder, makeAdditionAction } from './index';
+import { CreateOrder, GetOrder, makeAdditionAction, resetAdditionActions, setTreeProps } from './index';
 import { takeLeading, call, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 import { GetQuestions, setDeviceInfo, setStep } from ".";
 import { deviceApi, orderApi} from "../../api";
@@ -38,7 +38,7 @@ function* createOrderWorker() {
         const orderNumber = response.data?.orderNumber;
 
         if (itemHash && orderNumber) {
-            yield put(GetOrder.request({ itemHash, orderNumber }))
+            yield put(GetOrder.request({ itemHash, orderNumber }));
         }
     }
     if (response.status === "error") {
@@ -49,7 +49,6 @@ function* createOrderWorker() {
 };
 
 function* getOrderWorker({ payload } : PayloadAction<GetOrderRequest | undefined>) {
-    yield put(GetOrder.request());
     const state: RootState = yield select();
     const orderNumber = payload?.orderNumber ?? state.offer.createOrderData?.orderNumber;
     const itemHash = payload?.itemHash ?? state.offer.createOrderData?.itemHash;
@@ -66,7 +65,8 @@ function* getOrderWorker({ payload } : PayloadAction<GetOrderRequest | undefined
         const response: ResponseData<Order> = yield call(orderApi.getOrderData, orderNumber, itemHash, user);
 
         if (response.status === "success") {
-            yield put(GetOrder.success(response.data))
+            yield put(resetAdditionActions());
+            yield put(GetOrder.success(response.data));
         }
 
         if (response.status === "error") {
@@ -89,5 +89,6 @@ export default function* offerSagas() {
     yield takeLeading(GetQuestions.REQUEST, getQuestionsWorker);
     yield takeLeading(CreateOrder.REQUEST, createOrderWorker);
     yield takeEvery(makeAdditionAction, makeAdditionActionWorker);
-    yield takeLatest(CreateOrder.SUCCESS, getOrderWorker)
+    yield takeLeading(GetOrder.REQUEST, getOrderWorker)
+    yield takeLatest(CreateOrder.fulfill, getQuestionsWorker)
 }

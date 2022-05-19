@@ -16,10 +16,7 @@ const Offer = () => {
         deviceInfo,
         givenAnswers,
         progress,
-        setStep,
     } = useOfferData();
-
-    const theme = useTheme();
 
     const [hint, setHint] = useState(true);
     const [cardHeight, setCardHeight] = useState("auto");
@@ -95,6 +92,7 @@ const Offer = () => {
                 }}
                 onClick={() => setHint(false)}
                 isQuestion={true}
+                minHeight={312}
             >
                 <Progress progress={progress} />
                 {/* {phone?.[0] && <OfferDevice phone={phone[0]} />} */}
@@ -117,4 +115,4 @@ const Offer = () => {
     );
 };
 
-export default Offer;
+export default memo(Offer);

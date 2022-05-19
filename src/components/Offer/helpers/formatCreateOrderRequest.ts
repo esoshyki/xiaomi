@@ -8,24 +8,24 @@ export const formatCreateOrderRequest = (state: RootState) : CreateOrderRequest 
     const { combinationId, offerId } = givenAnswers;
 
     const obj: CreateOrderRequest = {
-        questions: []
+        questions: {}
     };
 
     if (combinationId) {
         obj.combinationId = combinationId;
-        obj.combination = combinationId;
+        // obj.combination = combinationId;
     }
 
     if (offerId) {
         obj.offerId = offerId
-        obj.productId = offerId
+        // obj.productId = offerId
     }
 
     if (deviceInfo?.deviceID) {
         obj.deviceId = deviceInfo.deviceID
     };
 
-    obj.questions = collectAnswers(givenAnswers.answers)
+    obj.questions = collectAnswers(givenAnswers.answers.filter(ans => !ans.answerId))
     
     return obj
 }

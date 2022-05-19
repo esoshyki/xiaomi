@@ -8,6 +8,7 @@ type CardProps = Props<{
     animateHeight?: boolean;
     animateWidth?: boolean;
     isQuestion?: boolean;
+    minHeight?: number;
 }>;
 
 const Wrapper = styled.div<CardProps>`
@@ -23,8 +24,8 @@ const Wrapper = styled.div<CardProps>`
     overflow: hidden;
     ${(props) => getCommonProps(props)};
     padding: 0;
-	background-color: ${(props) => props.theme.colors.background.contrast60};
-	backdrop-filter: blur(8px);
+    background-color: ${(props) => props.theme.colors.background.contrast60};
+    backdrop-filter: blur(8px);
 
     & > * {
         opacity: ${(props) => (props.isHidden ? "0" : "1")};
@@ -78,19 +79,24 @@ const Inner = styled.div<{ padding: any }>`
 `;
 
 const Card = forwardRef<HTMLDivElement, CardProps>((props: CardProps, ref) => {
-    const { children, onAnimationEnd, padding } = props;
+    const { children, onAnimationEnd, padding, minHeight } = props;
 
     const [height, setHeight] = useState<number>();
     const [isTransition, setIsTransition] = useState(true);
 
     useEffect(() => {
         if (contentRef.current && props.isQuestion) {
-            setHeight(contentRef.current.offsetHeight);
+            const newHeight = minHeight
+                ? contentRef.current.offsetHeight > minHeight
+                    ? contentRef.current.offsetHeight
+                    : minHeight
+                : contentRef.current.offsetHeight;
+            setHeight(newHeight);
         }
     });
 
     const onTransitionEnd = () => {
-        setIsTransition(false)
+        setIsTransition(false);
     };
 
     const contentRef = useRef<HTMLDivElement>(null);
@@ -104,9 +110,12 @@ const Card = forwardRef<HTMLDivElement, CardProps>((props: CardProps, ref) => {
                 height: height ? `${height}px` : "auto",
             }}
         >
-            <ContentWrapper ref={contentRef} style={{
-                opacity: (isTransition && props.isQuestion) ? 0 : 1
-            }}>
+            <ContentWrapper
+                ref={contentRef}
+                style={{
+                    opacity: isTransition && props.isQuestion ? 0 : 1,
+                }}
+            >
                 {!!children && <Inner padding={padding}>{children}</Inner>}
             </ContentWrapper>
         </Wrapper>

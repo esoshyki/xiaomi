@@ -53,7 +53,7 @@ export type CreateOrderRequest = {
     combinationId?: string
     offerId?: string
     deviceId?: string
-    questions: Array<{[questionId: string] : string}>
+    questions: {[questionId: string] : string}
     productId?: string
     combination?: string
 }

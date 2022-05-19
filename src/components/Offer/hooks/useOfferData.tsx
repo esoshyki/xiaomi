@@ -10,6 +10,7 @@ import {
     getOfferData,
     setTreeProps,
     makeAdditionAction,
+    resetAdditionActions,
 } from "../../../store/offerSlice";
 import {
     GivenAnswer,
@@ -42,7 +43,9 @@ export const useOfferData = () => {
 
     const fetchQuestions = () => {
         if (offer.givenAnswers.additionalAction) {
-            dispatch(makeAdditionAction(offer.givenAnswers.additionalAction));
+            const additionalAction = offer.givenAnswers.additionalAction;
+            dispatch(resetAdditionActions());
+            dispatch(makeAdditionAction(additionalAction));
             return;
         }
         if (!offer.getQuestions.loading) {

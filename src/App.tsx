@@ -1,15 +1,10 @@
 import React from "react";
 import { withTheme } from "./hooks/withTheme";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Theme from "./pages/Theme";
+import { 
+    HomePage, ThemePage, ProfilePage, NewRequestPage, ProfileEditPage, LoginPage, PartnerPage, HelpPage, ChatPage
+} from './pages'
 import styled from "styled-components/macro";
-import Profile from "./pages/Profile";
-import Login from "./pages/Login";
-import Partner from "./pages/Partner";
-import Help from "./pages/Help";
-import ProfileEdit from "./pages/ProfileEdit";
-import NewRequest from "./pages/NewRequest";
 
 const AppWrapper = styled.div`
     width: 100%;
@@ -21,14 +16,15 @@ function App() {
         <AppWrapper>
             <Router>
                 <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/theme" element={<Theme />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/profile/new_request" element={<NewRequest />} />
-                    <Route path="/edit" element={<ProfileEdit />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/partner" element={<Partner />} />
-                    <Route path="/help" element={<Help />} />
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/theme" element={<ThemePage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/profile/new_request" element={<NewRequestPage />} />
+                    <Route path="/edit" element={<ProfileEditPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/partner" element={<PartnerPage />} />
+                    <Route path="/help" element={<HelpPage />} />
+                    <Route path="/chat" element={<ChatPage />} />
                 </Routes>
             </Router>
         </AppWrapper>

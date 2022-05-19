@@ -1,5 +1,5 @@
 import * as CSS from 'csstype'
-import { Title, TitleSecondary, Small, RublesLarge, RublesSmall, Medium, Main, Link, Button, Error, Tertiary } from './components'
+import { Title, TitleSecondary, Small, RublesLarge, RublesSmall, Medium, Main, Link, Button, Error, Tertiary, Micro } from './components'
 
 export const IndicatorStyles: CSS.Properties = {
   position: "absolute",
@@ -18,7 +18,8 @@ const Typography = {
   Link,
   Button,
   Error,
-  Tertiary
+  Tertiary,
+  Micro
 };
 
 export default Typography

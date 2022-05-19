@@ -66,6 +66,9 @@ const offerSlice = createSlice({
             if (offerId) state.givenAnswers.offerId = offerId;
             if (additionalAction) state.givenAnswers.additionalAction = additionalAction;
         },
+        resetAdditionActions(state: OfferState) {
+            state.givenAnswers.additionalAction = undefined
+        },
         setAdditionalAction(state: OfferState, { payload }: PayloadAction<AdditionActions | undefined>) {
             state.givenAnswers.additionalAction = payload;
         },
@@ -95,6 +98,9 @@ const offerSlice = createSlice({
             state.photoBack = payload;
             state.step = "pending"
         },
+        makeAdditionAction(state: OfferState, { payload } : PayloadAction<AdditionActions>) {
+            state.givenAnswers.additionalAction = undefined;
+        }
     },
     extraReducers: {
         [GetQuestions.REQUEST](state) {
@@ -145,8 +151,6 @@ const offerSlice = createSlice({
     }
 });
 
-export const makeAdditionAction = createAction<AdditionActions>("offer/make_addition_action");
-
 export const getOfferData = createSelector(
     (state: RootState) => state.offer,
     offer => offer
@@ -163,6 +167,8 @@ export const {
     setPhotoBack,
     setDeviceInfo,
     setTreeProps,
+    makeAdditionAction,
+    resetAdditionActions
 } = offerSlice.actions
 
 export default offerSlice.reducer;

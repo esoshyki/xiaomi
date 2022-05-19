@@ -1,17 +1,18 @@
 import { GivenAnswer } from './../../../store/offerSlice/types';
 
-type ReturnedAnswers = Array<{
+type ReturnedAnswers = {
     [key: string] : string
-}>
+}
 
 export const collectAnswers = (answers: GivenAnswer[]) => {
     const requestAnswers = answers.reduce(
         (acc, next) => {
             const { questionId, answerId, answerName } = next;
-            acc.push({ [questionId]: answerId ?? answerName });
+            acc[questionId] = answerId ?? answerName
+            // acc.push({ [questionId]: answerId ?? answerName });
             return acc;
         },
-        [] as ReturnedAnswers
+        {} as ReturnedAnswers
     );
 
     return requestAnswers

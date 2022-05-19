@@ -135,7 +135,6 @@ export const useOfferData = () => {
         } else {
             return 0
         }
-        return Math.random() * 0.5
     }, [question]);
 
     /** |||||||||||||||||||||||||||||||||||||||

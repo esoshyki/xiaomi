@@ -27,6 +27,7 @@ const OfferDevice = ({ deviceInfo, givenAnswers }: { deviceInfo: DeviceInfo, giv
             alignItems="start"
             horizontalGap={16}
             justify="start"
+            margin={"0 0 16px"}
         >
             <ImgWrapper>
                 <Image noBasePath src={deviceImage} alt={deviceName} height={75} styles={{
@@ -34,6 +35,7 @@ const OfferDevice = ({ deviceInfo, givenAnswers }: { deviceInfo: DeviceInfo, giv
                     maxHeight: "75px"
                 }}/>
             </ImgWrapper>
+
             <Container.Flex verticalGap={2} alignItems="stretch">
                 <Typography.Title textAlign="start" styles={{ order: 0, margin: "0 0 4px" }}>{deviceName}</Typography.Title>
                 {Object.entries(categories).map(([groupName, value], key) => (

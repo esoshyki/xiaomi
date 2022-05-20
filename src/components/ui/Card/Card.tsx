@@ -115,7 +115,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>((props: CardProps, ref) => {
             onTransitionEnd={onTransitionEnd}
             {...props}
             style={{
-                height: height ? `${height}px` : "auto",
+                height: height && props.isQuestion ? `${height}px` : "auto",
             }}
         >
             <ContentWrapper

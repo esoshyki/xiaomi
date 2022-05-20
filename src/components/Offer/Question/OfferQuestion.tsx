@@ -8,6 +8,7 @@ import FreeInput from "./FreeInput";
 import FromList from "./FromList";
 import QrCode from './OfferQR';
 import UploadImage from './UploadImage';
+import { TitleSecondary } from "../../ui/Typography/components";
 
 export interface OfferQuestionProps {
     questionData: Question
@@ -25,16 +26,19 @@ const OfferQuestion = (props: OfferQuestionProps) => {
     return (
         <Container.Flex fullWidth alignItems="start" verticalGap={16}>
             {questionData.questionHeader && (
-                <Typography.Title>
+                <Typography.TitleSecondary styles={{margin: "0 0 8px"}} textAlign="start">
                     {questionData.questionHeader}
-                </Typography.Title>
+                </Typography.TitleSecondary>
             )}
-            <Typography.Main
-                textAlign="start"
-                styles={{ marginBottom: "6px", marginTop: "0" }}
-            >
-                {questionName}
-            </Typography.Main>
+
+            {!!questionName && (
+                <Typography.Main
+                    textAlign="start"
+                    styles={{ marginBottom: "6px", marginTop: "0" }}
+                >
+                    {questionName}
+                </Typography.Main>
+            )}
             {answerType !== "free_input" && (
                 <FromList {...props} combinationId={combinationId} />
             )}

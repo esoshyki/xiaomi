@@ -17,29 +17,32 @@ const FromList = (props: OfferQuestionProps) => {
 
 
     return (
-        <Container.Flex
-            fullWidth
-            direction="row"
-            justify="between"
-            wrapped
-            gap={16}
-            alignItems="center"
-        >
+        <>
             {!!answers &&
-                Object.entries(answers).map(([answerId, answer], idx) => {
-                    const { answerName } = answer;
-                    return (
-                        <Button
-                            styles={{ width: "calc(50% - 8px)" }}
-                            key={idx}
-                            variant="outline"
-                            onClick={() => onClick(answerName, answerId)}
-                        >
-                            {answerName}
-                        </Button>
-                    );
-                })}
-        </Container.Flex>
+                <Container.Flex
+                    fullWidth
+                    direction="row"
+                    justify="between"
+                    wrapped
+                    gap={16}
+                    alignItems="center"
+                >
+                    {Object.entries(answers).map(([answerId, answer], idx) => {
+                        const { answerName } = answer;
+                        return (
+                            <Button
+                                styles={{ width: "calc(50% - 8px)" }}
+                                key={idx}
+                                variant="outline"
+                                onClick={() => onClick(answerName, answerId)}
+                            >
+                                {answerName}
+                            </Button>
+                        );
+                    })}
+                </Container.Flex>
+            }
+        </>
     );
 };
 

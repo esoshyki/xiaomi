@@ -12,20 +12,6 @@ interface OfferQuestionsProps {
 
 const OfferQuestions = ({ question, errors } : OfferQuestionsProps) => {
 
-    // const [opacity, setOpacity] = useState(0);
-
-    // const hide = () => setOpacity(0);
-    // const show = () => setOpacity(1);
-
-    // useEffect(() => {
-    //     hide();
-
-    //     setTimeout(show, 300);
-    //     return () => {
-    //         hide()
-    //     }
-    // }, [question])
-
     const { changeContent } = useOfferData();
 
     return (

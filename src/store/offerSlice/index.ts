@@ -1,6 +1,6 @@
 import { RootState } from '..';
-import { createAction, createSelector, PayloadAction } from '@reduxjs/toolkit';
-import { AdditionActions, Order, CreateOrderResponse, DeviceInfo, GivenAnswer, OfferState, OfferSteps, QuestionsResponse, QuestionTree, ServerError, SetTreeDataProps, GetOrderRequest } from './types';
+import { createSelector, PayloadAction } from '@reduxjs/toolkit';
+import { AdditionActions, DeviceInfo, GivenAnswer, ImageFile, OfferState, OfferSteps, QuestionsResponse, QuestionTree, ServerError, SetTreeDataProps, MakeAdditionAction } from './types';
 import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
 import { N } from '../types'
@@ -20,8 +20,7 @@ const initialState: OfferState = {
     questionsData: null,
     questionsTree: null,
     hint: "",
-    photoFront: null,
-    photoBack: null,
+    images: [],
     givenAnswers: {
         answers: []
     },
@@ -29,19 +28,9 @@ const initialState: OfferState = {
         answers: []
     },
     deviceInfo: null,
-    order: {
-        orderNumber: "",
-        itemHash: "",
-        data: null,
-        loading: false,
-        status: null,
-        errors: []
-    }
 }
 
-export const CreateOrder = createRoutine("offer/Create-Order");
 export const GetQuestions = createRoutine("offer/Get-Questions");
-export const GetOrder = createRoutine("offer/Get-Order");
 
 const offerSlice = createSlice({
     name: "offer",
@@ -91,22 +80,11 @@ const offerSlice = createSlice({
             state.deviceInfo = payload
         },
         restoreOffer: () => ({ ...initialState }),
-        setPhotoFront(state: OfferState, { payload }: PayloadAction<string | null>) {
-            state.photoFront = payload;
-            state.step = "photo-back"
-        },
-        setPhotoBack(state: OfferState, { payload }: PayloadAction<string | null>) {
-            state.photoBack = payload;
-            state.step = "pending"
-        },
-        makeAdditionAction(state: OfferState, { payload } : PayloadAction<AdditionActions>) {
+        makeAdditionAction(state: OfferState, { payload } : PayloadAction<MakeAdditionAction>) {
             state.givenAnswers.additionalAction = undefined;
         },
-        setOrderNumber(state: OfferState, { payload } : PayloadAction<string> ) {
-            state.order.orderNumber = payload
-        },
-        setItemHash(state: OfferState, { payload } : PayloadAction<string>) {
-            state.order.itemHash = payload
+        uploadImage(state: OfferState, { payload } : PayloadAction<ImageFile>) {
+            state.images.push(payload)
         }
     },
     extraReducers: {
@@ -132,33 +110,6 @@ const offerSlice = createSlice({
                 state.step = "questions"
             }
         },
-        [CreateOrder.REQUEST](state) {
-            state.createOrder.result = null;
-            state.createOrder.loading = true;
-        },
-        [CreateOrder.FAILURE](state, { payload }: PayloadAction<ServerError[]>) {
-            state.createOrder.result = "error";
-            state.createOrder.errors = payload;
-        },
-        [CreateOrder.SUCCESS](state, { payload }: PayloadAction<CreateOrderResponse>) {
-            state.createOrderData = payload.data;
-        },
-        [CreateOrder.FULFILL](state) {
-            state.createOrder.loading = false;
-        },
-        [GetOrder.REQUEST](state, { payload } : PayloadAction<GetOrderRequest | undefined>) {
-            state.order.loading = true;
-        },
-        [GetOrder.FAILURE](state, { payload }: PayloadAction<string[]>) {
-            state.order.status = "error";
-            state.order.errors = payload;
-        },
-        [GetOrder.SUCCESS](state, { payload }: PayloadAction<Order>) {
-            state.order.data = payload;
-        },
-        [GetOrder.FULFILL](state) {
-            state.order.loading = false
-        }
     }
 });
 
@@ -174,14 +125,11 @@ export const {
     setOfferId,
     giveAnswer,
     restoreOffer,
-    setPhotoFront,
-    setPhotoBack,
     setDeviceInfo,
     setTreeProps,
     makeAdditionAction,
     resetAdditionActions,
-    setOrderNumber,
-    setItemHash
+    uploadImage
 } = offerSlice.actions
 
 export default offerSlice.reducer;

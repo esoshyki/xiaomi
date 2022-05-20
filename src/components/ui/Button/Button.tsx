@@ -6,7 +6,9 @@ import React, {
     useRef,
     ChangeEvent
 } from "react";
+import { useUploadFiles } from "../../../contexts/uploadFiles";
 import { styled } from "../../../helpers/styled";
+import { ImageFile } from "../../../store/offerSlice/types";
 import { getCommonProps, Props } from "../../types";
 import Icon from "../Icon";
 import { Icons } from "../Icon/types";
@@ -45,6 +47,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
         const buttonRef = useRef<HTMLButtonElement>(null);
         const inputRef = useRef<HTMLInputElement>(null);
+        const { files, setFiles } = useUploadFiles()
 
         useEffect(() => {
             if (buttonRef.current) {
@@ -64,6 +67,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         const onChange = (e: ChangeEvent<HTMLInputElement>) => {
             const file = e.target.files?.[0];
             if (file) {
+                setFiles([...files, file])
                 onFileInput && onFileInput(file)
             }
         }   

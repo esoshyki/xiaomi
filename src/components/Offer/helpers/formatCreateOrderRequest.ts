@@ -1,6 +1,5 @@
 import { RootState } from './../../../store/index';
-import { CreateOrderRequest } from '../../../store/offerSlice/types';
-import { off } from 'process';
+import { CreateOrderRequest } from '../../../store/orderSlice/types';
 import { collectAnswers } from './collectAnswers';
 
 export const formatCreateOrderRequest = (state: RootState) : CreateOrderRequest => {

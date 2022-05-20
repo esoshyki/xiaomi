@@ -25,7 +25,7 @@ const Wrapper = styled.div<CardProps>`
     overflow: hidden;
     ${(props) => getCommonProps(props)};
     padding: 0;
-    background-color: ${(props) => props.theme.colors.background.contrast60};
+    background-color: ${(props) => props.styles?.backgroundColor ?? props.theme.colors.background.contrast60};
     backdrop-filter: blur(8px);
 
     & > * {

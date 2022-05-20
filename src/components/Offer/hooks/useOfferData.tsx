@@ -5,34 +5,37 @@ import {
     giveAnswer,
     setStep,
     restoreOffer,
-    setPhotoFront,
-    setPhotoBack,
     getOfferData,
     setTreeProps,
     makeAdditionAction,
     resetAdditionActions,
+    uploadImage,
 } from "../../../store/offerSlice";
 import {
     GivenAnswer,
+    ImageFile,
     OfferSteps,
     SetTreeDataProps,
 } from "../../../store/offerSlice/types";
 import { getFromTree } from "../helpers/getFromTree";
+import { getOrderData } from "../../../store/orderSlice";
+import { useUploadFiles } from "../../../contexts/uploadFiles";
 
 // 350320523229662
 
 export const useOfferData = () => {
     const offer = useSelector(getOfferData);
+    const order = useSelector(getOrderData);
     const {
         givenAnswers,
         step,
         getQuestions,
         createOrder,
         questionsData,
-        order,
     } = offer;
 
     const dispatch = useDispatch();
+    const { files } = useUploadFiles()
 
     const changeStep = (step: OfferSteps) => {
         dispatch(setStep(step));
@@ -103,12 +106,6 @@ export const useOfferData = () => {
         dispatch(restoreOffer());
     };
 
-    const setPhoto = (type: "front" | "back", imageURL: string) => {
-        dispatch(
-            type === "front" ? setPhotoFront(imageURL) : setPhotoBack(imageURL)
-        );
-    };
-
     const _setStep = (step: OfferSteps) => () => {
         dispatch(setStep(step));
     };
@@ -117,7 +114,10 @@ export const useOfferData = () => {
         if (offer.givenAnswers.additionalAction) {
             const additionalAction = offer.givenAnswers.additionalAction;
             dispatch(resetAdditionActions());
-            dispatch(makeAdditionAction(additionalAction));
+            dispatch(makeAdditionAction({
+                action: additionalAction,
+                images: files
+            }));
             return;
         }
         if (!offer.getQuestions.loading) {
@@ -142,6 +142,10 @@ export const useOfferData = () => {
      *  |||||||||||||||||||||||||||||||||||||||
      */
 
+    const _uploadImage = (image: ImageFile) => {
+        dispatch(uploadImage(image))
+    }
+
     useEffect(() => {
         if (step !== "questions") return;
         if (!question && !getQuestions.loading && !createOrder.loading) {
@@ -163,8 +167,8 @@ export const useOfferData = () => {
         restoreOffer: _restoreOffer,
         fetchQuestions,
         progress,
-        setPhoto,
         setStep: _setStep,
-        isLoading
+        isLoading,
+        uploadImage: _uploadImage
     };
 };

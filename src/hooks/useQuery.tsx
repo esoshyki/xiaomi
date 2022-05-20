@@ -1,21 +1,18 @@
 import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import qs from 'qs';
-import { RootState } from "../store";
 import { useSelector } from "react-redux";
-import { select } from "../store/selector";
+import { getOrderData } from "../store/orderSlice";
 
 const useQuery = () => {
 
     const { search } = useLocation();
 
-    const offer = useSelector(select.offer);
+    const order = useSelector(getOrderData);
 
     const getParams = useMemo(() => qs.parse(search.replace("?", "")), [search]);
 
     const makeStateData = () => {
-
-        const { order } = offer;
 
         const { itemHash, orderNumber } = order;
 

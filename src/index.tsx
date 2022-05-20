@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import persistStore from "redux-persist/es/persistStore";
 import { PersistGate } from "redux-persist/integration/react";
+import { InputFilesContext } from "./contexts/uploadFiles";
 
 const root = ReactDOM.createRoot(
     document.getElementById("root") as HTMLElement

@@ -11,7 +11,7 @@ const ProfileRostokCount = () => {
 
     return (
         <Card fullWidth padding={28} styles={{
-            backgroundColor: theme.colors.background.first,
+            backgroundColor: theme.colors.background.first50,
         }}>
             <Container.Flex direction="row">
                 <Image noBasePath src={RostokImage} alt="rostok" width={60} height={60} margin={"0 12px 0 0"}/>

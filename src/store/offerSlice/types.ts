@@ -22,6 +22,10 @@ export type Answer = {
 
 export type AdditionActions = "createOrder" | "addPhoto";
 
+export type MakeAdditionAction = {
+    action: AdditionActions,
+    images?: File[]
+}
 //API 
 
 export type ApiResult = "success" | "error" | null
@@ -30,12 +34,6 @@ export type ApiProps = {
     loading: boolean
     result: ApiResult
     errors: ServerError[]
-}
-
-type ApiResponse<T> = {
-    status: "success" | "error"
-    data: T
-    errors: string[]
 }
 
 export type RequestAnswers = {
@@ -47,55 +45,7 @@ export type QuestionsResponse = {
     questionsTree: QuestionTree
     complete?: true
     deviceInfo?: DeviceInfo | []
-}
-
-export type CreateOrderRequest = {
-    combinationId?: string
-    offerId?: string
-    deviceId?: string
-    questions: {[questionId: string] : string}
-    productId?: string
-    combination?: string
-}
-
-export type CreateOrderResponse = {
-    status: "success" | "error"
-    data?: GetOrderRequest,
-    errors: string[]
-};
-
-export type GetOrderRequest = {
-    orderNumber: string
-    itemHash: string
-};
-
-export type GetOrderResponse = ApiResponse<Order>
-
-export type Order = {
-    id: string
-    number: string
-    amount: string
-    currency: string
-    status: string
-    property: {
-        id: string
-        name: string
-        type: string
-        value: string
-    }
-    items: Array<{
-        id: number
-        product_id: number
-        price: number
-        name: string
-        quantity: number
-        property: Array<{
-            id: string
-            code: string
-            name: string
-            value: string
-        }>
-    }>
+    maxLengthCombination?: number
 }
 
 // QUESTIONS
@@ -180,26 +130,22 @@ export type SetTreeDataProps = {
     additionalAction?: AdditionActions
 }
 
+export type ImageFile = {
+    uri: string
+    fileName: string
+    type: string
+}
+
 export type OfferState = {
     step: OfferSteps
     getQuestions: ApiProps
     createOrder: ApiProps
-    createOrderData?: GetOrderRequest
     questionsData: QuestionsData | null
     questionsTree: QuestionTree | null
     hint: string,
-    photoFront: isString
-    photoBack: isString
+    images: ImageFile[]
     givenAnswers: GivenAnswers
     currentGivenAnswers: GivenAnswers
     deviceInfo: N<DeviceInfo>
-    order: {
-        orderNumber: string
-        itemHash: string
-        data: Order | null,
-        status: "success" | "error" | null
-        loading: boolean,
-        errors: string[]
-    }
 }
 

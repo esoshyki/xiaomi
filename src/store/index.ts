@@ -7,6 +7,7 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
 import offerSlice from "./offerSlice";
 import viewSlice from "./viewSlice";
+import orderSlice from "./orderSlice";
 
 const persistConfig = {
     key: "root",
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
     theme: themeSliceReducer,
     user: persistReducer(userPersistConfig, userSlice),
     offer: offerSlice,
+    order: orderSlice,
     view: viewSlice
 })
 

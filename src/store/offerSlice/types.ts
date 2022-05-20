@@ -61,6 +61,7 @@ export type Question = {
     questionInputButtonName?: isString
     questionShortName: isString
     questionGroup: string
+    questionHelp?: string
     questionHeader?: string
     answerType: AnswerType
     validator?: string
@@ -147,5 +148,6 @@ export type OfferState = {
     givenAnswers: GivenAnswers
     currentGivenAnswers: GivenAnswers
     deviceInfo: N<DeviceInfo>
+    changeQuestionsContent: boolean
 }
 

@@ -18,7 +18,7 @@ const OfferQR = () => {
 
             <Box
                 
-                margin={"10px auto 26px auto"}
+                margin={0}
                 padding={20}
                 styles={{
                     alignSelf: "center",

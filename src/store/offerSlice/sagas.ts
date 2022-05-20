@@ -1,11 +1,11 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { makeAdditionAction } from './index';
-import { takeLeading, call, put, select, takeEvery } from "redux-saga/effects";
+import { giveAnswer, giveAnswerRequest, hideQuestionContent, makeAdditionAction } from './index';
+import { takeLeading, call, put, select, takeEvery, delay } from "redux-saga/effects";
 import { GetQuestions, setDeviceInfo, setStep } from ".";
 import { deviceApi } from "../../api";
-import { MakeAdditionAction, QuestionsResponse, RequestAnswers } from "./types";
+import { GivenAnswer, MakeAdditionAction, QuestionsResponse, RequestAnswers } from "./types";
 import { ResponseData } from "../../api/types";
-import { RootState } from "..";
+import { RootState } from '..';
 import { formatRequestAnswer } from "../../components/Offer/helpers/formatRequestAnswer";
 import { CreateOrder, SendPhoto } from '../orderSlice'
 
@@ -39,7 +39,14 @@ function* makeAdditionActionWorker({ payload } : PayloadAction<MakeAdditionActio
     }
 }
 
+function* giveAnswerRequestWorker({ payload } : PayloadAction<GivenAnswer>) {
+    yield put(hideQuestionContent());
+    yield delay(400);
+    yield put(giveAnswer(payload))
+}
+
 export default function* offerSagas() {
     yield takeLeading(GetQuestions.REQUEST, getQuestionsWorker);
     yield takeEvery(makeAdditionAction, makeAdditionActionWorker);
+    yield takeEvery(giveAnswerRequest, giveAnswerRequestWorker)
 }

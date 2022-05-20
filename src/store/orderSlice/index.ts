@@ -13,6 +13,10 @@ const initialState: OrderState = {
         loading: false,
         errors: []
     },
+    sendPhoto: {
+        status: null,
+        loading: false
+    },
     orders: [],
 
 };
@@ -64,17 +68,17 @@ const orderSlice = createSlice({
             state.order.loading = false
         },
         [SendPhoto.REQUEST](state, { payload } : PayloadAction<File[] | undefined>) {
-            state.order.loading = true
+            state.sendPhoto.loading = true
         },
         [SendPhoto.FAILURE](state, { payload } : PayloadAction<string[]>) {
             state.order.errors = payload;
-            state.order.status = "error"
+            state.sendPhoto.status = "error"
         },
         [SendPhoto.SUCCESS](state) {
-            state.order.status = "success";
+            state.sendPhoto.status = "success";
         },
         [SendPhoto.FULFILL](state) {
-            state.order.loading = false
+            state.sendPhoto.loading = false
         }
     }
 });
@@ -87,6 +91,16 @@ export const getOrderData = createSelector(
 export const getOrdersData = createSelector(
     (state: RootState) => state.order,
     orderData => orderData.orders
+);
+
+export const getCreateOrderResult = createSelector(
+    (state: RootState) => state.order,
+    orderData => ({status: orderData.order.status, data: orderData.order.data })
+)
+
+export const getOrderSendPhotosStatus = createSelector(
+    (state: RootState) => state.order,
+    orderData => orderData.sendPhoto.status,
 )
 
 export const {

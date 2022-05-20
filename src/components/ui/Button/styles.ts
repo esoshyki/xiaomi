@@ -13,7 +13,7 @@ export const collectButtonStyles = (props: ButtonProps & { theme: DefaultTheme }
         outline: none;
         box-shadow: none;  
         width: ${props.fullWidth ? "100%" : "auto"};
-        height: ${props.fullHeight ? "100%" : "auto"};
+        height: ${props.fullHeight ? "100%" : "40px"};
         text-transform: ${props.uppercase ? "uppercase" : "none"};
         border: none;
 		font-weight: 500;

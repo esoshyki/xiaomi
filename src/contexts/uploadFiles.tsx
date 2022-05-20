@@ -1,4 +1,6 @@
 import { createContext, useContext, ReactNode, useState, useEffect } from "react";
+import { useOfferData } from "../components/Offer/hooks/useOfferData";
+import useOrderData from "../hooks/useOrderData";
 
 interface InputContextState {
     files: File[],
@@ -18,9 +20,13 @@ export default function UploadFiles ({ children } : { children : ReactNode } ) {
 
     const [files, setFiles] = useState<File[]>([]);
 
+    const { sendPhotoStatus } = useOrderData()
+
     useEffect(() => {
-        console.log(files)
-    }, [files])
+        if (sendPhotoStatus === "success") {
+            setFiles([])
+        }
+    }, [sendPhotoStatus])
 
     return (
         <InputFilesContext.Provider value={{

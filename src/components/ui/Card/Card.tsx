@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { getCommonProps, Props } from "../../types";
 import styled, { keyframes } from "styled-components/macro";
 import { bounceInUp, fadeIn, merge } from 'react-animations'
@@ -35,6 +35,9 @@ const Wrapper = styled.div<CardProps>`
 
     @media (min-width: 660px) and (max-width: 768px) {
         max-width: calc(50% - 18px);
+    }
+    @media (max-width: 660px) {
+        max-width: 312px;
     }
     ${(props) => {
         if (props.isHidden) {
@@ -86,9 +89,8 @@ const Card = forwardRef<HTMLDivElement, CardProps>((props: CardProps, ref) => {
 
     const [height, setHeight] = useState<number>();
     const [isTransition, setIsTransition] = useState(true);
-    
 
-    useEffect(() => {
+    const resize = () => {
         if (contentRef.current && props.isQuestion) {
             const newHeight = minHeight
                 ? contentRef.current.offsetHeight > minHeight
@@ -97,7 +99,9 @@ const Card = forwardRef<HTMLDivElement, CardProps>((props: CardProps, ref) => {
                 : contentRef.current.offsetHeight;
             setHeight(newHeight);
         }
-    });
+    }
+
+    useLayoutEffect(resize);
 
     const onTransitionEnd = () => {
         setIsTransition(false);

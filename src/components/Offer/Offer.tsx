@@ -52,6 +52,7 @@ const Offer = () => {
                     height: cardHeight,
                     width: cardWidth,
                     flexShrink: 0,
+                    maxWidth: "312px"
                 }}
             >
                 <Info>

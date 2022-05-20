@@ -1,19 +1,8 @@
 import React from "react";
 import { withTheme } from "./hooks/withTheme";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import {
-    HomePage,
-    ThemePage,
-    ProfilePage,
-    NewRequestPage,
-    ProfileEditPage,
-    LoginPage,
-    PartnerPage,
-    HelpPage,
-    ChatPage,
-} from "./pages";
 import styled from "styled-components/macro";
 import UploadFiles from "./contexts/uploadFiles";
+import Routes from "./pages/Routes";
 
 const AppWrapper = styled.div`
     width: 100%;
@@ -24,22 +13,7 @@ function App() {
     return (
         <UploadFiles>
             <AppWrapper>
-                <Router>
-                    <Routes>
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/theme" element={<ThemePage />} />
-                        <Route path="/profile" element={<ProfilePage />} />
-                        <Route
-                            path="/profile/new_request"
-                            element={<NewRequestPage />}
-                        />
-                        <Route path="/edit" element={<ProfileEditPage />} />
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/partner" element={<PartnerPage />} />
-                        <Route path="/help" element={<HelpPage />} />
-                        <Route path="/chat" element={<ChatPage />} />
-                    </Routes>
-                </Router>
+                <Routes />
             </AppWrapper>
         </UploadFiles>
     );

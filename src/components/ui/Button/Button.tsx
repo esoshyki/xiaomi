@@ -13,12 +13,18 @@ import { getCommonProps, Props } from "../../types";
 import Icon from "../Icon";
 import { Icons } from "../Icon/types";
 import { collectButtonStyles } from "./styles";
+import { useNavigate } from "react-router-dom"
 
 export type ButtonVariants = "primary" | "disabled" | "outline" | "danger";
 
 const Root = styled.button<ButtonProps>`
+    height: 40px;
     ${(props) => collectButtonStyles(props)}
-    ${(props) => getCommonProps(props)}
+    ${(props) => getCommonProps(props)};
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 `;
 
 const Input = styled.input`
@@ -39,15 +45,18 @@ export type ButtonProps = Props<{
     square?: true;
     sumbit?: true;
     fileInput?: true;
+    link?: string
 }>;
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     (props: ButtonProps, ref) => {
-        const { children, withLoader, pending, icon, fileInput, onFileInput } = props;
+        const { children, withLoader, pending, icon, fileInput, onFileInput, link } = props;
+
+        const navigate = useNavigate()
 
         const buttonRef = useRef<HTMLButtonElement>(null);
         const inputRef = useRef<HTMLInputElement>(null);
-        const { files, setFiles } = useUploadFiles()
+        const { files, setFiles } = useUploadFiles();
 
         useEffect(() => {
             if (buttonRef.current) {
@@ -56,6 +65,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         });
 
         const onClick = () => {
+            if (link) {
+                navigate(link)
+            }
             if (fileInput) {
                 if (inputRef.current) {
                     inputRef.current.click()

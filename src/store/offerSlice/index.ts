@@ -1,5 +1,5 @@
 import { RootState } from '..';
-import { createSelector, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSelector, PayloadAction } from '@reduxjs/toolkit';
 import { AdditionActions, DeviceInfo, GivenAnswer, ImageFile, OfferState, OfferSteps, QuestionsResponse, QuestionTree, ServerError, SetTreeDataProps, MakeAdditionAction } from './types';
 import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
@@ -28,14 +28,23 @@ const initialState: OfferState = {
         answers: []
     },
     deviceInfo: null,
+    changeQuestionsContent: false
 }
 
 export const GetQuestions = createRoutine("offer/Get-Questions");
+
+export const giveAnswerRequest = createAction<GivenAnswer>("offer/Get-Question-Request")
 
 const offerSlice = createSlice({
     name: "offer",
     initialState: { ...initialState },
     reducers: {
+        hideQuestionContent(state: OfferState) {
+            state.changeQuestionsContent = true;
+        },
+        showQuestionContent(state: OfferState) {
+            state.changeQuestionsContent = false;
+        },
         giveAnswer(state: OfferState, { payload }: PayloadAction<GivenAnswer>) {
             const answerIndex = state.givenAnswers.answers.findIndex(el => el.questionId === payload.questionId);
             if (answerIndex >= 0) {
@@ -49,6 +58,7 @@ const offerSlice = createSlice({
             } else {
                 state.currentGivenAnswers.answers.push(payload)
             }
+            state.changeQuestionsContent = false
         },
         setTreeProps(state: OfferState, { payload }: PayloadAction<SetTreeDataProps>) {
             const { combinationId, offerId, additionalAction } = payload;
@@ -118,6 +128,11 @@ export const getOfferData = createSelector(
     offer => offer
 )
 
+export const getChangeContent = createSelector(
+    (state: RootState) => state.offer,
+    offer => offer.changeQuestionsContent
+)
+
 export const {
     setStep,
     setCombinationsId,
@@ -129,7 +144,10 @@ export const {
     setTreeProps,
     makeAdditionAction,
     resetAdditionActions,
-    uploadImage
+    uploadImage,
+    hideQuestionContent,
+    showQuestionContent,
+    setAdditionalAction
 } = offerSlice.actions
 
 export default offerSlice.reducer;

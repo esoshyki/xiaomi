@@ -10,6 +10,8 @@ import {
     makeAdditionAction,
     resetAdditionActions,
     uploadImage,
+    giveAnswerRequest,
+    getChangeContent,
 } from "../../../store/offerSlice";
 import {
     GivenAnswer,
@@ -33,6 +35,8 @@ export const useOfferData = () => {
         createOrder,
         questionsData,
     } = offer;
+
+    const changeContent = useSelector(getChangeContent)
 
     const dispatch = useDispatch();
     const { files } = useUploadFiles()
@@ -99,7 +103,7 @@ export const useOfferData = () => {
     };
 
     const _giveAnswer = (answer: GivenAnswer) => {
-        dispatch(giveAnswer(answer));
+        dispatch(giveAnswerRequest(answer));
     };
 
     const _restoreOffer = () => {
@@ -169,6 +173,7 @@ export const useOfferData = () => {
         progress,
         setStep: _setStep,
         isLoading,
-        uploadImage: _uploadImage
+        uploadImage: _uploadImage,
+        changeContent
     };
 };

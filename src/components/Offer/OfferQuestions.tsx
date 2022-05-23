@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useOfferData } from "./hooks/useOfferData";
 import Container from "../ui/Container";
 import OfferQuestion from "./Question/OfferQuestion";
@@ -12,8 +12,13 @@ interface OfferQuestionsProps {
 
 const OfferQuestions = ({ question, errors } : OfferQuestionsProps) => {
 
+    const { changeContent } = useOfferData();
+
     return (
-        <Container.Flex fullWidth fullHeight>
+        <Container.Flex fullWidth fullHeight styles={{
+            transition: "opacity 200ms ease-in",
+            opacity: changeContent ? 0 : 1
+        }}>
             {!!question && <OfferQuestion questionData={question} />}
             {!!errors.length && (
                 <Typography.Error>

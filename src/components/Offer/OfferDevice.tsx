@@ -36,8 +36,8 @@ const OfferDevice = ({ deviceInfo, givenAnswers }: { deviceInfo: DeviceInfo, giv
                 }}/>
             </ImgWrapper>
 
-            <Container.Flex verticalGap={2} alignItems="stretch">
-                <Typography.Title textAlign="start" styles={{ order: 0, margin: "0 0 4px" }}>{deviceName}</Typography.Title>
+            <Container.Flex verticalGap={4} alignItems="stretch">
+                <Typography.Title textAlign="start" styles={{ order: 0, margin: "0" }}>{deviceName}</Typography.Title>
                 {Object.entries(categories).map(([groupName, value], key) => (
                     <Container.Flex direction="row" key={key}>
                         <Typography.Tertiary margin={"0 4px 0 0"}>{groupName}</Typography.Tertiary>

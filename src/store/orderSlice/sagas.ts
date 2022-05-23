@@ -88,7 +88,9 @@ function* sendPhotoWorker ({ payload } : PayloadAction<File[] | undefined>) {
 
     if (response.status === "error") {
         yield put(SendPhoto.failure(response.errors))
-    }
+    };
+
+    yield put(SendPhoto.fulfill())
 };
 
 export default function* orderSagas() {

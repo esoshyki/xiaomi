@@ -63,5 +63,9 @@ export type OrderState = {
         loading: boolean,
         errors: string[]
     }
+    sendPhoto: {
+        status: "success" | "error" | null
+        loading: boolean
+    }
     orders: Order[],
 }

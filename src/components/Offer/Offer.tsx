@@ -77,7 +77,7 @@ const Offer = () => {
                 fullWidth
                 onClick={() => setHint(false)}
                 isQuestion={true}
-                minHeight={312}
+
             >
                 <Progress progress={progress} />
                 {deviceInfo && (

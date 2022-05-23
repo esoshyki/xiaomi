@@ -14,6 +14,7 @@ const getQuestions = async (user: N<User>, answers: RequestAnswers): Promise<Res
     try {
         const response: AxiosResponse<ResponseData<QuestionsResponse>> = await api.post("/devicedata/getquestions/", collectFormData({ answers: _answers }, user), {
         })
+        console.log(response.data);
         return response.data
     } catch (error: any) {
         return getErrorResponse(error.message)

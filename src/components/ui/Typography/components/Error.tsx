@@ -5,7 +5,6 @@ import { getCommonProps } from "../../../types";
 import { IndicatorStyles } from "..";
 import Icon from "../../Icon";
 
-
 export const ErrorWrapper = styled.span<TextProps>`
     ${(props) => getTextAlign(props)};
     ${(props) => ({
@@ -14,13 +13,17 @@ export const ErrorWrapper = styled.span<TextProps>`
         ...props.styles,
     })};
     ${(props) => getCommonProps(props)};
-    ${(props) => (props.color ? { color: props.color } : {})}
+    ${(props) => (props.color ? { color: props.color } : {})};
+    transition: all 200ms ease-in;
 `;
 
-export default function Error (props: TextProps) {
-
-    return <ErrorWrapper {...props}>
-        {props.children}
-        {props.withIndicator && <Icon name="color-indicator" styles={IndicatorStyles}/>}
-    </ErrorWrapper>
+export default function Error(props: TextProps) {
+    return (
+        <ErrorWrapper {...props}>
+            {props.children}
+            {props.withIndicator && (
+                <Icon name="color-indicator" styles={IndicatorStyles} />
+            )}
+        </ErrorWrapper>
+    );
 }

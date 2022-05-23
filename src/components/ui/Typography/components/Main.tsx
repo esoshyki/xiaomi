@@ -13,6 +13,7 @@ export const MainWrapper = styled.p<TextProps>`
     })};
     ${(props) => getCommonProps(props)};
     ${(props) => (props.color ? { color: props.color } : {})};
+    transition: all 200ms ease-in;
 `;
 
 export default function Main (props: TextProps) {

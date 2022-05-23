@@ -3,27 +3,48 @@ import { useOfferData } from "../../hooks/useOfferData";
 import Container from "../ui/Container";
 import OfferQuestion from "./Question/OfferQuestion";
 import { Button, Typography } from "../ui";
-import { Question, ServerError } from "../../store/offerSlice/types";
+import {
+    GivenAnswers,
+    Question,
+    ServerError,
+} from "../../store/offerSlice/types";
 
 interface OfferQuestionsProps {
-    question: Question | null
-    errors: ServerError[]
+    question: Question | null;
+    errors: ServerError[];
+    changeContent: boolean;
+    givenAnswers: GivenAnswers;
 }
 
-const OfferQuestions = ({ question, errors } : OfferQuestionsProps) => {
+const OfferQuestions = ({
+    question,
+    errors,
+    changeContent,
+    givenAnswers,
+}: OfferQuestionsProps) => {
 
-    const { changeContent } = useOfferData();
+    console.log(question);
 
     return (
-        <Container.Flex fullWidth fullHeight styles={{
-            transition: "opacity 200ms ease-in",
-            opacity: changeContent ? 0 : 1
-        }}>
-            {!!question && <OfferQuestion questionData={question} />}
+        <Container.Flex
+            fullWidth
+            fullHeight
+            styles={{
+                transition: "opacity 200ms ease-in",
+                opacity: changeContent ? 0 : 1,
+            }}
+        >
+            {!!question && (
+                <OfferQuestion
+                    questionData={question}
+                    givenAnswers={givenAnswers}
+                />
+            )}
             {!!errors.length && (
                 <Typography.Error>
-                    {errors.map(err => err.message).join(". ")}
-                </Typography.Error>)}
+                    {errors.map((err) => err.message).join(". ")}
+                </Typography.Error>
+            )}
         </Container.Flex>
     );
 };

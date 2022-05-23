@@ -8,7 +8,7 @@ import { OfferQuestions } from ".";
 import OfferCard from "./OfferCard";
 
 const Offer = () => {
-    const { step, deviceInfo, givenAnswers, getQuestions, progress, question, isLoading } =
+    const { step, deviceInfo, givenAnswers, getQuestions, progress, question, isLoading, changeContent } =
         useOfferData();
 
     const [hint, setHint] = useState(true);
@@ -83,6 +83,8 @@ const Offer = () => {
                     <OfferQuestions
                         question={question}
                         errors={getQuestions.errors}
+                        givenAnswers={givenAnswers}
+                        changeContent={changeContent}
                     />
                 )}
                 {step === "createOrderFailure" && <Typography.Error>

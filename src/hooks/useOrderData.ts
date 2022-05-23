@@ -5,7 +5,7 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOrderSendPhotosStatus, setCurrentItem } from '../store/orderSlice';
 import { useParams } from 'react-router-dom';
-import { setGivenAnswers, setQuestionsTree } from '../store/offerSlice';
+import { GetQuestions, setGivenAnswers } from '../store/offerSlice';
 
 
 export default function useOrderData () {
@@ -35,10 +35,8 @@ export default function useOrderData () {
     }
 
     const changeStep = useCallback((step: string) => {
-        if (!isLoading) {
-            dispatch(setCurrentItemStatus(step))
-        }
-    }, [isLoading])
+        dispatch(setCurrentItemStatus(step))
+    }, [])
 
     useEffect(() => {
         setOrderPath(newOrderNumber, newItemNumber);
@@ -61,12 +59,17 @@ export default function useOrderData () {
     }, [currentItem])
 
     useEffect(() => {
-        console.log(orderData);
         const currentItem = orderData?.items.find(el => el.itemNumber === itemNumber) ?? null;
         if (currentItem) {
             dispatch(setCurrentItem(currentItem));
         }
-    }, [orderData])
+    }, [orderData]);
+
+    useEffect(() => {
+        if (step === "questions") {
+            dispatch(GetQuestions.request());
+        }
+    }, [step])
 
     return ({
         sendPhotoStatus,

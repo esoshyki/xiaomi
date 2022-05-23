@@ -23,7 +23,7 @@ import { getFromTree } from "../components/Offer/helpers/getFromTree";
 import { getOrderPending, getOrderData } from "../store/orderSlice";
 import { useUploadFiles } from "../contexts/uploadFiles";
 
-export const useOfferData = () => {
+export const useOfferData = (isOrder?: true) => {
     const offer = useSelector(getOfferData);
 
     const { givenAnswers, step, getQuestions, createOrder, questionsData } =
@@ -49,18 +49,20 @@ export const useOfferData = () => {
     );
 
     const getQuestion = () => {
+
         const {
             questionsTree,
             givenAnswers,
             questionsData,
         } = offer;
+
         if (isLoading ) {
             return null;
         }
 
         if (_getQuestionsResult === "error") {
             return null;
-        }
+        };
 
         const { answers } = givenAnswers;
 
@@ -118,6 +120,7 @@ export const useOfferData = () => {
     const fetchQuestions = () => {
         if (offer.givenAnswers.additionalAction) {
             const additionalAction = offer.givenAnswers.additionalAction;
+            console.log(files);
             dispatch(resetAdditionActions());
             dispatch(
                 makeAdditionAction({
@@ -136,6 +139,7 @@ export const useOfferData = () => {
         givenAnswers,
         questionsData,
         _getQuestionsResult,
+        isLoading
     ]);
 
     const progress = useMemo(() => {
@@ -163,7 +167,7 @@ export const useOfferData = () => {
     };
 
     useEffect(() => {
-        if (step !== "questions" || _getQuestionsResult === "error") return;
+        if (step !== "questions" || _getQuestionsResult === "error" || isLoading) return;
         if (
             !question &&
             !getQuestions.loading &&
@@ -180,10 +184,10 @@ export const useOfferData = () => {
     ]);
 
     useEffect(() => {
-        if (step === "start") {
+        if (step === "start" && !isOrder) {
             fetchQuestions();
         }
-    }, []);
+    }, [isLoading]);
 
     return {
         ...offer,

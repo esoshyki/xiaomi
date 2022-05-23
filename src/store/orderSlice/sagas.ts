@@ -1,4 +1,4 @@
-import { setQuestionsTree, setStep } from '../offerSlice';
+import { setAdditionalAction, setQuestionsTree, setStep } from '../offerSlice';
 import { customErrors } from './../../helpers/getCustomError';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { CreateOrder, GetOrder, setItemNumber, setOrderNumber, SendPhoto } from './index';
@@ -20,7 +20,6 @@ function* createOrderWorker() {
         const orderNumber = response.data?.number;
 
         if (itemNumber && orderNumber) {
-            yield put(GetOrder.request({ itemNumber, orderNumber }));
             yield put(setOrderNumber(orderNumber));
             yield put(setItemNumber(itemNumber));
         }
@@ -71,7 +70,6 @@ function* sendPhotoWorker({ payload }: PayloadAction<File[] | undefined>) {
     const state: RootState = yield select();
     const user = state.user.user;
     const { itemNumber, number } = state.order.order;
-    const { images } = state.offer;
 
     if (!user) {
         yield put(SendPhoto.failure([customErrors.noUser]));
@@ -86,7 +84,8 @@ function* sendPhotoWorker({ payload }: PayloadAction<File[] | undefined>) {
     const response: ResponseData<any> = yield call(orderApi.sendPhoto, payload, number, itemNumber, user);
 
     if (response.status === "success") {
-        yield put(SendPhoto.success(response.data))
+        yield put(SendPhoto.success(response.data));
+        yield put(setAdditionalAction());
     };
 
     if (response.status === "error") {

@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { useTheme } from "styled-components";
-import { Question } from "../../../store/offerSlice/types";
+import { GivenAnswers, Question } from "../../../store/offerSlice/types";
 import { Box, Button, Info } from "../../ui";
 import Container from "../../ui/Container";
 import Typography from "../../ui/Typography";
@@ -13,13 +13,13 @@ import UploadImage from "./UploadImage";
 export interface OfferQuestionProps {
     questionData: Question;
     combinationId?: string;
+    givenAnswers: GivenAnswers
 }
 
 const OfferQuestion = (props: OfferQuestionProps) => {
-    const { givenAnswers } = useOfferData();
+    
+    const { questionData, givenAnswers } = props;
     const { combinationId } = givenAnswers;
-
-    const { questionData } = props;
     const {
         answerType,
         questionName,

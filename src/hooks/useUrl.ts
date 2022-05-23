@@ -8,15 +8,12 @@ import { useNavigate } from 'react-router-dom';
 export default function useURL() {
 
     const navigate = useNavigate();
-    const dispatch = useDispatch()
 
     const createOrderResult = useSelector(getCreateOrderResult);
 
     useEffect(() => {
         const { status, itemNumber, orderNumber } = createOrderResult;
         if (status === "success") {
-            dispatch(setItemNumber(itemNumber));
-            dispatch(setOrderNumber(orderNumber));
             navigate(`/order/${orderNumber}/${itemNumber}`)
         }
     }, [createOrderResult]);

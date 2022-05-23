@@ -30,10 +30,10 @@ const getOrderData = async (orderNumber: string, deviceId: string, user: User): 
     }
 }
 
-const sendPhoto = async (photos: File[], orderNumber: string, itemHash: string, user: User) : Promise<ResponseData<any>> => {
+const sendPhoto = async (images: File[], orderNumber: string, itemNumber: string, user: User) : Promise<ResponseData<any>> => {
     try {
         const response: AxiosResponse<ResponseData<any>> = await api.post("/orderrequest/addfile/", collectFormData(
-            { photos, orderNumber, itemHash} ,  user ));
+            { images, number: orderNumber, itemNumber } ,  user ));
 
         return response.data;
     } catch (error: any) {

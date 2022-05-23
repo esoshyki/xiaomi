@@ -9,19 +9,30 @@ import OrderItem from "./OrderItem";
 const Order = () => {
 
     const { orderData, currentItem, changeStep, isLoading, progress, step } = useOrderData();
-    const { question, getQuestions } = useOfferData();
+        const { question, getQuestions, givenAnswers, changeContent, isLoading: isQuestionsLoading } = useOfferData(true);
+
+    const currentQuestion = useMemo(() => {
+        console.log(`step: ${step}`);
+        console.log(isQuestionsLoading);
+        if (step === "questions" && !isQuestionsLoading) {
+            return question
+        };
+        return null
+    }, [step, question, isQuestionsLoading])
 
     return (
         <Container.Flex verticalGap={15}>
             {!!orderData && !!currentItem && <OrderItem 
                 {...currentItem} 
+                givenAnswers={givenAnswers}
+                changeContent={changeContent}
                 currency={orderData.currency} 
                 changeStep={changeStep}
                 isLoading={isLoading}
                 progress={progress}
                 step={step}
                 itemData={currentItem}
-                currentQuestion={question}
+                currentQuestion={currentQuestion}
                 errors={getQuestions.errors}
                 />}
             <AddNewDevice />

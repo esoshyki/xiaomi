@@ -31,6 +31,7 @@ function* getQuestionsWorker() {
 }
 
 function* makeAdditionActionWorker({ payload } : PayloadAction<MakeAdditionAction>) {
+    console.log("saga", payload);
     switch (payload.action) {
         case "createOrder":
             yield put(CreateOrder.request());

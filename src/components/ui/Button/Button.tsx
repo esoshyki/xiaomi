@@ -93,14 +93,14 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                     type={props.sumbit ? "submit" : "button"}
                 >
                     {withLoader && pending && (
-                        <Icon name="loading" styles={{ marginRight: "10px" }} />
+                        <Icon name="loading" styles={{ marginRight: "4px", verticalAlign: "middle",transform: "translateY(-2px)" }} width={20} height={20}/>
                     )}
                     {icon && !(withLoader && pending) && (
-                        <Icon name={icon} styles={{ marginRight: "10px" }} />
+                        <Icon name={icon} styles={{ marginRight: "4px", verticalAlign: "middle",transform: "translateY(-2px)" }} width={20} height={20}/>
                     )}
                     {!!children && children}
                 </Root>
-                {fileInput && <Input type="file" ref={inputRef} onChange={onChange} />}
+                {fileInput && <Input type="file" ref={inputRef} onChange={onChange} hidden />}
             </Fragment>
         );
     }

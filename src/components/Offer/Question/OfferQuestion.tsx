@@ -9,6 +9,7 @@ import FreeInput from "./FreeInput";
 import FromList from "./FromList";
 import QrCode from "./OfferQR";
 import UploadImage from "./UploadImage";
+import { TitleSecondary } from "../../ui/Typography/components";
 
 export interface OfferQuestionProps {
     questionData: Question;
@@ -35,35 +36,34 @@ const OfferQuestion = (props: OfferQuestionProps) => {
     console.log(questionData)
 
     return (
-        <Container.Flex fullWidth alignItems="start" verticalGap={16} margin={"16px 0 0 0"}>
+        <Container.Flex fullWidth alignItems="start" verticalGap={16} >
             {!!questionHeader && (
-                <Typography.Title
-                    color={theme.colors.text.secondary}
-                    margin={0}
+                <Typography.TitleSecondary textAlign={"start"}
+                    styles={{paddingLeft: "4px", paddingRight: "4px", margin: "0 0 8px"}}
                 >
                     {questionHeader}
-                </Typography.Title>
+                </Typography.TitleSecondary>
             )}
 
             {!!questionDescription && (
-                <Typography.Main textAlign="start" margin={"8px 0 20px 0"} >
+                <Typography.Main textAlign="start" styles={{paddingLeft: "4px", paddingRight: "4px", margin: "0 0 4px"}}>
                     {questionDescription}
                     {!!questionDescriptionUrl &&
                         !!questionDescriptionUrlName && (
-                            <Typography.Link href={questionDescriptionUrl} target="_blank">
-                                {questionDescriptionUrlName}
-                            </Typography.Link>
+                        <Typography.Link href={questionDescriptionUrl} target="_blank" styles={{borderBottom: "1px solid currentColor", marginLeft: "3px"}}>
+                            {questionDescriptionUrlName}
+                        </Typography.Link>
                         )}
                 </Typography.Main>
             )}
 
             {questionName && <Typography.Main
                 textAlign="start"
-                margin={0}
+                styles={{paddingLeft: "4px", paddingRight: "4px", margin: "0 0 6px"}}
             >
                 {questionName}
             </Typography.Main>}
-            
+
             {answerType !== "free_input" && (
                 <FromList {...props} combinationId={combinationId} />
             )}
@@ -74,7 +74,7 @@ const OfferQuestion = (props: OfferQuestionProps) => {
             {answerType === "show_qr_link" && <QrCode />}
 
             {!!questionHelp && (
-                <Box styles={{ marginTop: "5px" }}>
+                <Box styles={{ marginTop: "4px" }}>
                     <Info>{questionHelp}</Info>
                 </Box>
             )}

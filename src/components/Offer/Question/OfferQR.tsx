@@ -14,20 +14,19 @@ const OfferQR = () => {
     console.log(value);
 
     return (
-        <Container.Flex fullWidth alignItems="start" margin={"0 0 20px 0"}>
-
+        <Container.Flex fullWidth alignItems="start">
             <Box
-                
-                margin={0}
-                padding={20}
+                padding={10}
                 styles={{
                     alignSelf: "center",
-                    backgroundColor: "#fff"
+                    backgroundColor: "#fff",
+                    borderRadius: "12px",
+                    fontSize: "0",
+                    lineHeight: "0"
                 }}
             >
-                <QRCode value={value} size={144} />
+                <QRCode value={value} size={140} />
             </Box>
-
         </Container.Flex>
     );
 };

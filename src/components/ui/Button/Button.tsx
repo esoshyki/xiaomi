@@ -18,7 +18,6 @@ import { useNavigate } from "react-router-dom"
 export type ButtonVariants = "primary" | "disabled" | "outline" | "danger";
 
 const Root = styled.button<ButtonProps>`
-    height: 40px;
     ${(props) => collectButtonStyles(props)}
     ${(props) => getCommonProps(props)};
     display: flex;

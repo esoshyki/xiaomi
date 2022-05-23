@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { useTheme } from "styled-components";
 import { Question } from "../../../store/offerSlice/types";
-import { Box, Info } from "../../ui";
+import { Box, Button, Info } from "../../ui";
 import Container from "../../ui/Container";
 import Typography from "../../ui/Typography";
 import { useOfferData } from "../hooks/useOfferData";
@@ -78,6 +78,15 @@ const OfferQuestion = (props: OfferQuestionProps) => {
                     <Info>{questionHelp}</Info>
                 </Box>
             )}
+
+            {answerType === "show_qr_link" &&
+                <Button
+                    fullWidth
+                    variant="outline"
+                >
+                    Назад
+                </Button>
+            }
 
             {answerType === "upload_image" && <UploadImage {...props} />}
         </Container.Flex>

@@ -4,12 +4,11 @@ import { Question } from "../../../store/offerSlice/types";
 import { Box, Info } from "../../ui";
 import Container from "../../ui/Container";
 import Typography from "../../ui/Typography";
-import { useOfferData } from "../hooks/useOfferData";
+import { useOfferData } from "../../../hooks/useOfferData";
 import FreeInput from "./FreeInput";
 import FromList from "./FromList";
 import QrCode from "./OfferQR";
 import UploadImage from "./UploadImage";
-import { TitleSecondary } from "../../ui/Typography/components";
 
 export interface OfferQuestionProps {
     questionData: Question;
@@ -19,8 +18,6 @@ export interface OfferQuestionProps {
 const OfferQuestion = (props: OfferQuestionProps) => {
     const { givenAnswers } = useOfferData();
     const { combinationId } = givenAnswers;
-
-    const theme = useTheme()
 
     const { questionData } = props;
     const {
@@ -32,8 +29,6 @@ const OfferQuestion = (props: OfferQuestionProps) => {
         questionDescriptionUrl,
         questionDescriptionUrlName,
     } = questionData;
-
-    console.log(questionData)
 
     return (
         <Container.Flex fullWidth alignItems="start" verticalGap={16} >

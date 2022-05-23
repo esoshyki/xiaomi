@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { useOfferData } from "./hooks/useOfferData";
+import { useOfferData } from "../../hooks/useOfferData";
 import Container from "../ui/Container";
 import OfferQuestion from "./Question/OfferQuestion";
 import { Button, Typography } from "../ui";

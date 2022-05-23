@@ -1,5 +1,5 @@
 import { createContext, useContext, ReactNode, useState, useEffect } from "react";
-import { useOfferData } from "../components/Offer/hooks/useOfferData";
+import { useOfferData } from "../hooks/useOfferData";
 import useOrderData from "../hooks/useOrderData";
 
 interface InputContextState {

@@ -1,6 +1,6 @@
 import { Button } from "../../ui";
 import { OfferQuestionProps } from "./OfferQuestion";
-import { useOfferData } from "../hooks/useOfferData";
+import { useOfferData } from "../../../hooks/useOfferData";
 import { collectAnswerData } from "../helpers/collectAnswerData";
 import { ImageFile } from "../../../store/offerSlice/types";
 import { useUploadFiles } from "../../../contexts/uploadFiles";

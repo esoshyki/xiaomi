@@ -20,6 +20,8 @@ function* getQuestionsWorker() {
         yield put(GetQuestions.success(response.data))
         if (response.data?.deviceInfo && !Array.isArray(response.data.deviceInfo)) {
             yield put(setDeviceInfo(response.data.deviceInfo))
+        } else {
+            // yield put(GetQuestions.failure(customErrors.deviceNotFound))
         }
     };
     if (response.status === "error") {

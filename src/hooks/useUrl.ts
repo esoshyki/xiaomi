@@ -1,5 +1,6 @@
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { getCreateOrderResult } from './../store/orderSlice/index';
+import { getCreateOrderResult, setItemNumber, setOrderNumber } from './../store/orderSlice/index';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,13 +8,16 @@ import { useNavigate } from 'react-router-dom';
 export default function useURL() {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
     const createOrderResult = useSelector(getCreateOrderResult);
 
     useEffect(() => {
-        const { status, data } = createOrderResult;
+        const { status, itemNumber, orderNumber } = createOrderResult;
         if (status === "success") {
-            navigate("/order/")
+            dispatch(setItemNumber(itemNumber));
+            dispatch(setOrderNumber(orderNumber));
+            navigate(`/order/${orderNumber}/${itemNumber}`)
         }
     }, [createOrderResult]);
 

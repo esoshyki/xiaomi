@@ -1,4 +1,4 @@
-import { useOfferData } from "./hooks/useOfferData";
+import { useOfferData } from "../../hooks/useOfferData";
 import { Button, Container, Typography } from "../ui";
 
 const OfferCostConfirm = () => {

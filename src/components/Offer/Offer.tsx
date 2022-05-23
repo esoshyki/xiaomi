@@ -1,11 +1,11 @@
-import { useOfferData } from "./hooks/useOfferData";
+import { useOfferData } from "../../hooks/useOfferData";
 import Container from "../ui/Container";
-import { Progress, Card, Info, Typography, Button } from "../ui";
+import { Card, Info, Typography, Button } from "../ui";
 import { memo, useEffect, useRef, useState, useMemo } from "react";
 import OfferDevice from "./OfferDevice";
 import AddNewDevice from "../AddNewDevice";
 import { OfferQuestions } from ".";
-import OfferLoader from "./OfferLoader";
+import OfferCard from "./OfferCard";
 
 const Offer = () => {
     const { step, deviceInfo, givenAnswers, getQuestions, progress, question, isLoading } =
@@ -72,14 +72,7 @@ const Offer = () => {
                 </Button>
             </Card>
 
-            <Card
-                padding="28px"
-                fullWidth
-                onClick={() => setHint(false)}
-                isQuestion={true}
-
-            >
-                <Progress progress={progress} />
+            <OfferCard isLoading={isLoading} progress={progress} setHint={() => setHint(false)}>
                 {deviceInfo && (
                     <OfferDevice
                         deviceInfo={deviceInfo}
@@ -92,8 +85,11 @@ const Offer = () => {
                         errors={getQuestions.errors}
                     />
                 )}
-                {isLoading && <OfferLoader />}
-            </Card>
+                {step === "createOrderFailure" && <Typography.Error>
+                        Ошибка создания заказа.
+                    </Typography.Error>}
+
+            </OfferCard>
 
             {step === "pending" && <AddNewDevice />}
         </Container.Flex>

@@ -1,6 +1,6 @@
 import { RootState } from '..';
 import { createAction, createSelector, PayloadAction } from '@reduxjs/toolkit';
-import { AdditionActions, DeviceInfo, GivenAnswer, ImageFile, OfferState, OfferSteps, QuestionsResponse, QuestionTree, ServerError, SetTreeDataProps, MakeAdditionAction } from './types';
+import { AdditionActions, DeviceInfo, GivenAnswer, ImageFile, OfferState, OfferSteps, QuestionsResponse, QuestionTree, ServerError, SetTreeDataProps, MakeAdditionAction, GivenAnswers } from './types';
 import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
 import { N } from '../types'
@@ -59,6 +59,9 @@ const offerSlice = createSlice({
                 state.currentGivenAnswers.answers.push(payload)
             }
             state.changeQuestionsContent = false
+        },
+        setGivenAnswers(state: OfferState, { payload } : PayloadAction<GivenAnswers>) {
+            state.givenAnswers = payload;
         },
         setTreeProps(state: OfferState, { payload }: PayloadAction<SetTreeDataProps>) {
             const { combinationId, offerId, additionalAction } = payload;
@@ -123,6 +126,11 @@ const offerSlice = createSlice({
     }
 });
 
+export const getQuestionsResult = createSelector(
+    (state: RootState) => state.offer,
+    offer => offer.getQuestions.result
+)
+
 export const getOfferData = createSelector(
     (state: RootState) => state.offer,
     offer => offer
@@ -147,7 +155,8 @@ export const {
     uploadImage,
     hideQuestionContent,
     showQuestionContent,
-    setAdditionalAction
+    setAdditionalAction,
+    setGivenAnswers
 } = offerSlice.actions
 
 export default offerSlice.reducer;

@@ -14,6 +14,7 @@ export const TertiaryWrapper = styled.span<TextProps>`
     })};
     ${(props) => getCommonProps(props)};
     ${(props) => (props.color ? { color: props.color } : {})};
+    transition: all 200ms ease-in;
 `;
 
 export default function Tertiary (props: TextProps) {

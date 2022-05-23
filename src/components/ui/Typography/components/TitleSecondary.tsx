@@ -14,6 +14,7 @@ export const TitleSecondaryWrapper = styled.h2<TextProps>`
     })};
     ${(props) => getCommonProps(props)};
     ${(props) => (props.color ? { color: props.color } : {})};
+    transition: all 200ms ease-in;
 `;
 
 export default function TitleSecondary (props: TextProps) {

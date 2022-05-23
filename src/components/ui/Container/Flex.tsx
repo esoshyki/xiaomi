@@ -15,7 +15,6 @@ export type FlexProps = Props<{
     gap?: number
     verticalGap?: number
     horizontalGap?: number
-    padding?: number
 }>;
 
 const FlexContainer = styled.div<FlexProps>`

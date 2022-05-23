@@ -19,6 +19,7 @@ export const LinkWrapper = styled.a<LinkProps>`
     ${(props) => getCommonProps(props)};
     ${(props) => (props.color ? { color: props.color } : {})}
     ${props => getTextProps(props)};
+    transition: all 200ms ease-in;
     
     &:hover {
         color: ${(props) => props.theme.colors.link.hover};

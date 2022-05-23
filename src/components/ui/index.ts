@@ -10,3 +10,5 @@ export { default as Overlay } from './Overlay'
 export { Box } from './Box/Box';
 export { Img } from './Progress/Progress'
 export { default as Select } from './Input/Select'
+export { Radio } from './Input'
+export { RadioSelect } from './Input'

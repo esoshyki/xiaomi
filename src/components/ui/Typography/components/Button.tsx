@@ -14,6 +14,7 @@ export const ButtonWrapper = styled.span<TextProps>`
     ${(props) => getCommonProps(props)};
     ${(props) => (props.color ? { color: props.color } : {})}
     position: relative;
+    transition: all 200ms ease-in;
 `;
 
 export default function Button (props: TextProps) {

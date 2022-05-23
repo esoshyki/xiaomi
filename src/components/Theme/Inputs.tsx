@@ -26,19 +26,19 @@ const ThemeInputs = () => {
         <Card padding={20}>
             <Typography.Title>Инпуты</Typography.Title>
             <Container.Flex direction="column" justify="start" wrapped gap={20}>
-                <Input value={text} onChange={onChange} breakpoints={{"600" : mobileProps}} />
+                <Input value={text} onChange={onChange} breakpoints={{"600" : mobileProps}} placeholder={"Плейсхолдер"}/>
                 <Input
                     value={text}
-                    label="С лейблом"
                     breakpoints={{600 : mobileProps}}
                     onChange={onChange}
+                    placeholder="Плейсхолдер"
                 />
                 <Input
                     value={text}
-                    label="Ошибка"
                     breakpoints={{600 : mobileProps}}
                     onChange={onChange}
                     error="Ошибка сервера"
+                    placeholder="Плейсхолдер"
                 />
             </Container.Flex>
         </Card>

@@ -7,7 +7,7 @@ import { User } from "../store/userSlice/types"
 import { N } from '../store/types';
 
 const getQuestions = async (user: N<User>, answers: RequestAnswers): Promise<ResponseData<QuestionsResponse>> => {
-    if (!user) return getErrorResponse();
+    if (!user) return getErrorResponse("Чтобы продолжить, войдите или зарегестрируйтесь");
 
     const _answers = Object.keys(answers).length !== 0 ? answers : "[]"
 

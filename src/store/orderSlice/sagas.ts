@@ -94,7 +94,14 @@ function* createOrderSuccessWorker() {
 
 function* sendPhotoWorker({ payload }: PayloadAction<File[] | undefined>) {
     const state: RootState = yield select();
+
+    
+
     const user = state.user.user;
+
+    if (!state.order) return;
+    if (!state.order.order) return;
+
     const { itemNumber, number } = state.order.order;
 
     if (!user) {
@@ -122,9 +129,15 @@ function* sendPhotoWorker({ payload }: PayloadAction<File[] | undefined>) {
 };
 
 function* getItemStatusRequestWorker () {
-    const orderData: OrderState = yield getOrderData();
-    const user: User | null = yield getUserData();
-    const { itemNumber, number: orderNumber } = orderData.order;
+    const state: RootState = yield select();
+
+    if (!state) return;
+    if (!state.order) return;
+    if (!state.order.order) return;
+
+    const user = state.user.user;
+
+    const { itemNumber, number: orderNumber } = state.order.order;
     if (!orderNumber || !itemNumber || !user) return;
     const response : ResponseData<{status: string}> = yield call(orderApi.getItemStatus, orderNumber, itemNumber, user);
 

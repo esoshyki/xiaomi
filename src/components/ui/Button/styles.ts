@@ -6,7 +6,7 @@ export const collectButtonStyles = (props: ButtonProps & { theme: DefaultTheme }
     const theme = props.theme;
 
     const defaultProps = css`
-        padding: 10px 10px 8px;
+        padding: 8px 10px 8px;
         transition: background-color 200ms, color 200ms, border-color 200ms;
         border-radius: 12px;
         position: relative;

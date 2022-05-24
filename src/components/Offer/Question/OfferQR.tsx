@@ -11,8 +11,6 @@ const OfferQR = () => {
 
     const value = basePath + (params ? "?" : "") + params;
 
-    console.log(value);
-
     return (
         <Container.Flex fullWidth alignItems="start">
             <Box

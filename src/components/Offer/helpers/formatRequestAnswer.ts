@@ -4,6 +4,7 @@ import { RequestAnswers } from "../../../store/offerSlice/types";
 export const formatRequestAnswer = (state: RootState): RequestAnswers => {
     const { givenAnswers, deviceInfo } = state.offer;
     const { combinationId, offerId } = givenAnswers;
+
     const requestAnswers: RequestAnswers = givenAnswers.answers.reduce(
         (acc, next) => {
             const { questionId, answerId, answerName } = next;

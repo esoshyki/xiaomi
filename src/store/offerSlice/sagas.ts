@@ -1,6 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { giveAnswer, giveAnswerRequest, hideQuestionContent, makeAdditionAction } from './index';
-import { takeLeading, call, put, select, takeEvery, delay } from "redux-saga/effects";
+import { giveAnswer, giveAnswerRequest, hideQuestionContent, makeAdditionAction, setGetQuestionLoading } from './index';
+import { takeLatest, call, put, select, takeEvery, delay } from "redux-saga/effects";
 import { GetQuestions, setDeviceInfo, setStep } from ".";
 import { deviceApi } from "../../api";
 import { GivenAnswer, MakeAdditionAction, QuestionsResponse, RequestAnswers } from "./types";
@@ -12,6 +12,12 @@ import { CreateOrder, SendPhoto } from '../orderSlice'
 function* getQuestionsWorker() {
     const state: RootState = yield select();
     const answers: RequestAnswers = yield call(formatRequestAnswer, state);
+    const { loading } = state.offer.getQuestions;
+    console.log(loading);
+    if (loading) {
+        return;
+    }
+    yield put(setGetQuestionLoading(true));
     const response: ResponseData<QuestionsResponse> = yield call(deviceApi.getQuestions, state.user.user, answers);
     if (response.data?.complete) {
         yield put(setStep("summary"));
@@ -20,6 +26,8 @@ function* getQuestionsWorker() {
         yield put(GetQuestions.success(response.data))
         if (response.data?.deviceInfo && !Array.isArray(response.data.deviceInfo)) {
             yield put(setDeviceInfo(response.data.deviceInfo))
+        } else {
+            // yield put(GetQuestions.failure(customErrors.deviceNotFound))
         }
     };
     if (response.status === "error") {
@@ -46,7 +54,7 @@ function* giveAnswerRequestWorker({ payload } : PayloadAction<GivenAnswer>) {
 }
 
 export default function* offerSagas() {
-    yield takeLeading(GetQuestions.REQUEST, getQuestionsWorker);
+    yield takeEvery(GetQuestions.REQUEST, getQuestionsWorker);
     yield takeEvery(makeAdditionAction, makeAdditionActionWorker);
     yield takeEvery(giveAnswerRequest, giveAnswerRequestWorker)
 }

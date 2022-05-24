@@ -13,6 +13,8 @@ export type OfferSteps =
     | "pending"
     | "create-order"
     | "preliminary"
+    | "createOrder"
+    | "createOrderFailure"
 
 export type AnswerType = "from_list" | "free_input" | "show_qr_link" | "upload_image"
 
@@ -109,6 +111,7 @@ export type GivenAnswer = {
 
 export type GivenAnswers = {
     combinationId?: string
+    combinationCode?: string
     offerId?: string
     additionalAction?: AdditionActions
     answers: GivenAnswer[]
@@ -146,7 +149,6 @@ export type OfferState = {
     hint: string,
     images: ImageFile[]
     givenAnswers: GivenAnswers
-    currentGivenAnswers: GivenAnswers
     deviceInfo: N<DeviceInfo>
     changeQuestionsContent: boolean
 }

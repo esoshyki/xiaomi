@@ -1,28 +1,25 @@
 import { memo } from "react";
 import { useTheme } from "styled-components";
-import { Question } from "../../../store/offerSlice/types";
+import { GivenAnswers, Question } from "../../../store/offerSlice/types";
 import { Box, Button, Info } from "../../ui";
 import Container from "../../ui/Container";
 import Typography from "../../ui/Typography";
-import { useOfferData } from "../hooks/useOfferData";
+import { useOfferData } from "../../../hooks/useOfferData";
 import FreeInput from "./FreeInput";
 import FromList from "./FromList";
 import QrCode from "./OfferQR";
 import UploadImage from "./UploadImage";
-import { TitleSecondary } from "../../ui/Typography/components";
 
 export interface OfferQuestionProps {
     questionData: Question;
     combinationId?: string;
+    givenAnswers: GivenAnswers
 }
 
 const OfferQuestion = (props: OfferQuestionProps) => {
-    const { givenAnswers } = useOfferData();
+    
+    const { questionData, givenAnswers } = props;
     const { combinationId } = givenAnswers;
-
-    const theme = useTheme()
-
-    const { questionData } = props;
     const {
         answerType,
         questionName,
@@ -32,8 +29,6 @@ const OfferQuestion = (props: OfferQuestionProps) => {
         questionDescriptionUrl,
         questionDescriptionUrlName,
     } = questionData;
-
-    console.log(questionData)
 
     return (
         <Container.Flex fullWidth alignItems="start" verticalGap={16} >

@@ -1,45 +1,54 @@
+import { OfferState } from './../offerSlice/types';
 import { RootState } from '..';
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { OrderState, CreateOrderResponse, GetOrderRequest, Order } from './types';
+import { OrderState, CreateOrderResponse, GetOrderRequest, Order, OrderItem } from './types';
 import { createRoutine } from 'redux-saga-routines';
 import { PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: OrderState = {
+const initialState : OrderState = {
     order: {
-        orderNumber: "",
-        itemHash: "",
+        itemNumber: "",
+        number: "",
         data: null,
         status: null,
         loading: false,
         errors: []
     },
+    currentItem: null,
     sendPhoto: {
         status: null,
         loading: false
     },
     orders: [],
-
-};
+}
 
 export const GetOrder = createRoutine("order/Get-Order");
 export const CreateOrder = createRoutine("order/Create-Order");
-export const SendPhoto = createRoutine("order/Send-Photo")
+export const SendPhoto = createRoutine("order/Send-Photo");
+export const GetItemStatus = createRoutine("order/Get-Item-Status")
 
 const orderSlice = createSlice({
     name: "order",
-    initialState,
+    initialState: initialState,
     reducers: {
         setOrderNumber(state: OrderState, { payload } : PayloadAction<string> ) {
-            state.order.orderNumber = payload
+            state.order.number = payload
         },
-        setItemHash(state: OrderState, { payload } : PayloadAction<string>) {
-            state.order.itemHash = payload
-        }
+        setItemNumber(state: OrderState, { payload } : PayloadAction<string>) {
+            state.order.itemNumber = payload
+        },
+        setCurrentItem(state: OrderState, { payload } : PayloadAction<OrderItem | null>) {
+            state.currentItem = payload
+        },
+        setCurrentItemStatus(state: OrderState, { payload } : PayloadAction<string>) {
+            if (state.currentItem) {
+                state.currentItem.status = payload;
+            }
+        },
+        restoreOrderState(state: OrderState) {state = Object.assign(state, initialState)},
     },
     extraReducers: {
         [CreateOrder.REQUEST](state) {
-            state.order.orderNumber = "";
-            state.order.itemHash = "";
             state.order.loading = true;
         },
         [CreateOrder.FAILURE](state, { payload }: PayloadAction<string[]>) {
@@ -47,9 +56,7 @@ const orderSlice = createSlice({
             state.order.errors = payload;
         },
         [CreateOrder.SUCCESS](state, { payload }: PayloadAction<CreateOrderResponse>) {
-            state.order.itemHash = payload.data?.itemHash ?? "";
-            state.order.orderNumber = payload.data?.orderNumber ?? "";
-
+            state.order.status = "success";
         },
         [CreateOrder.FULFILL](state) {
             state.order.loading = false;
@@ -79,6 +86,20 @@ const orderSlice = createSlice({
         },
         [SendPhoto.FULFILL](state) {
             state.sendPhoto.loading = false
+        },
+        [GetItemStatus.REQUEST](state) {
+            state.order.loading = true
+        },
+        [GetItemStatus.FAILURE](state, { payload } : PayloadAction<string[]>) {
+            state.order.errors = payload
+        },
+        [GetItemStatus.SUCCESS](state, { payload } : PayloadAction<{status: string}>) {
+            if (state.order.data) {
+                state.order.data.status = payload.status
+            }
+        },
+        [GetItemStatus.FULFILL](state) {
+            state.order.loading = false;
         }
     }
 });
@@ -88,14 +109,53 @@ export const getOrderData = createSelector(
     orderData => orderData.order
 )
 
+export const getOrderErrors = createSelector(
+    (state: RootState) => state.order,
+    order => order.order.errors
+)
+
+export const getOrderResponseData = createSelector(
+    (state: RootState) => state.order,
+    order => order.order.data
+)
+
+export const getOrderNumber = createSelector(
+    (state: RootState) => state.order,
+    orderData => orderData.order.number
+)
+
+export const getItemNumber = createSelector(
+    (state: RootState) => state.order,
+    orderData => orderData.order.itemNumber
+)
+
 export const getOrdersData = createSelector(
     (state: RootState) => state.order,
     orderData => orderData.orders
 );
 
+export const getOrderPending = createSelector(
+    (state: RootState) => state.order,
+    order => order.order.loading
+);
+
+export const getCurrentItem = createSelector(
+    (state: RootState) => state.order,
+    order => order.currentItem
+)
+
 export const getCreateOrderResult = createSelector(
     (state: RootState) => state.order,
-    orderData => ({status: orderData.order.status, data: orderData.order.data })
+    orderData => ({
+        status: orderData.order.status, 
+        itemNumber: orderData.order.itemNumber,
+        orderNumber: orderData.order.number
+    })
+)
+
+export const getSendPhotoStatus = createSelector(
+    (state: RootState) => state.order,
+    order => order.sendPhoto.status
 )
 
 export const getOrderSendPhotosStatus = createSelector(
@@ -105,7 +165,10 @@ export const getOrderSendPhotosStatus = createSelector(
 
 export const {
     setOrderNumber,
-    setItemHash
+    setItemNumber,
+    setCurrentItem,
+    setCurrentItemStatus,
+    restoreOrderState
 } = orderSlice.actions
 
 export default orderSlice.reducer;

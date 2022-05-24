@@ -1,4 +1,4 @@
-import { useOfferData } from "../hooks/useOfferData";
+import { useOfferData } from "../../../hooks/useOfferData";
 import { Button, Container } from "../../ui";
 import { OfferQuestionProps } from "./OfferQuestion";
 import { collectAnswerData } from "../helpers/collectAnswerData";

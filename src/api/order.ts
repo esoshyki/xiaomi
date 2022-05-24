@@ -4,7 +4,7 @@ import { collectFormData } from './helpers/collectFormData';
 import { GetOrderRequest, Order } from './../store/orderSlice/types';
 import { ResponseData } from './types'
 import { api } from './instance';
-import { AxiosResponse } from 'axios';
+import { Axios, AxiosResponse } from 'axios';
 import { getErrorResponse } from './helpers/collectFormData';
 import { RootState } from '../store';
 import { User } from '../store/userSlice/types';
@@ -21,19 +21,28 @@ const createOrder = async (state: RootState): Promise<ResponseData<GetOrderReque
     }
 }
 
-const getOrderData = async (orderNumber: string, itemHash: string, user: User): Promise<ResponseData<Order>> => {
+const getOrderData = async (orderNumber: string, deviceId: string, user: User): Promise<ResponseData<Order>> => {
     try {
-        const response: AxiosResponse<ResponseData<Order>> = await api.post("/orderrequest/getorder/", collectGetOrderData(orderNumber, itemHash, user), {});
+        const response: AxiosResponse<ResponseData<Order>> = await api.post("/orderrequest/getorder/", collectGetOrderData(orderNumber, deviceId, user), {});
         return response.data
     } catch (error: any) {
         return getErrorResponse(error.message)
     }
 }
 
-const sendPhoto = async (photos: File[], orderNumber: string, itemHash: string, user: User) : Promise<ResponseData<any>> => {
+const getItemStatus = async (orderNumber: string, itemNumber: string, user: User) : Promise<ResponseData<{status: string}>> => {
+    try {
+        const response: AxiosResponse<ResponseData<{status: string}>> = await api.post("/orderrequest/getitemstatus/", collectGetOrderData(orderNumber, itemNumber, user), {});
+        return response.data
+    } catch (error: any) {
+        return getErrorResponse(error.message)
+    }
+}
+
+const sendPhoto = async (images: File[], orderNumber: string, itemNumber: string, user: User) : Promise<ResponseData<any>> => {
     try {
         const response: AxiosResponse<ResponseData<any>> = await api.post("/orderrequest/addfile/", collectFormData(
-            { photos, orderNumber, itemHash} ,  user ));
+            { images, number: orderNumber, itemNumber } ,  user ));
 
         return response.data;
     } catch (error: any) {
@@ -44,5 +53,6 @@ const sendPhoto = async (photos: File[], orderNumber: string, itemHash: string, 
 export const orderApi = {
     createOrder,
     getOrderData,
-    sendPhoto
+    sendPhoto,
+    getItemStatus
 }

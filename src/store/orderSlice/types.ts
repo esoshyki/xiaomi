@@ -7,15 +7,21 @@ export type CreateOrderRequest = {
     combination?: string
 }
 
+export type CreateOrderResponseData = {
+    number: string
+    itemNumber: string
+    success: boolean
+}
+
 export type CreateOrderResponse = {
     status: "success" | "error"
-    data?: GetOrderRequest,
+    data?: CreateOrderResponseData,
     errors: string[]
 };
 
 export type GetOrderRequest = {
     orderNumber: string
-    itemHash: string
+    itemNumber: string
 };
 
 
@@ -25,44 +31,40 @@ type ApiResponse<T> = {
     errors: string[]
 }
 
+export type OrderItem = {
+    price: number
+    name: string
+    image: string
+    itemNumber: string
+    status: string
+    combinationCode?: string
+    combinationId?: string
+    answers: Array<{
+        name: string,
+        value: string
+    }>
+}
+
 export type Order = {
-    id: string
     number: string
     amount: string
     currency: string
     status: string
-    property: {
-        id: string
-        name: string
-        type: string
-        value: string
-    }
-    items: Array<{
-        id: number
-        product_id: number
-        price: number
-        name: string
-        quantity: number
-        property: Array<{
-            id: string
-            code: string
-            name: string
-            value: string
-        }>
-    }>
+    items: OrderItem[]
 }
 
 export type GetOrderResponse = ApiResponse<Order>
 
 export type OrderState = {
     order: {
-        orderNumber: string
-        itemHash: string
+        number: string
+        itemNumber: string
         data: Order | null,
         status: "success" | "error" | null
         loading: boolean,
         errors: string[]
-    }
+    },
+    currentItem: OrderItem | null,
     sendPhoto: {
         status: "success" | "error" | null
         loading: boolean

@@ -5,7 +5,7 @@ import { OrderState, CreateOrderResponse, GetOrderRequest, Order, OrderItem } fr
 import { createRoutine } from 'redux-saga-routines';
 import { PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: OrderState = {
+const initialState : OrderState = {
     order: {
         itemNumber: "",
         number: "",
@@ -20,16 +20,16 @@ const initialState: OrderState = {
         loading: false
     },
     orders: [],
-
-};
+}
 
 export const GetOrder = createRoutine("order/Get-Order");
 export const CreateOrder = createRoutine("order/Create-Order");
-export const SendPhoto = createRoutine("order/Send-Photo")
+export const SendPhoto = createRoutine("order/Send-Photo");
+export const GetItemStatus = createRoutine("order/Get-Item-Status")
 
 const orderSlice = createSlice({
     name: "order",
-    initialState,
+    initialState: initialState,
     reducers: {
         setOrderNumber(state: OrderState, { payload } : PayloadAction<string> ) {
             state.order.number = payload
@@ -44,7 +44,8 @@ const orderSlice = createSlice({
             if (state.currentItem) {
                 state.currentItem.status = payload;
             }
-        }
+        },
+        restoreOrderState(state: OrderState) {state = Object.assign(state, initialState)},
     },
     extraReducers: {
         [CreateOrder.REQUEST](state) {
@@ -85,6 +86,20 @@ const orderSlice = createSlice({
         },
         [SendPhoto.FULFILL](state) {
             state.sendPhoto.loading = false
+        },
+        [GetItemStatus.REQUEST](state) {
+            state.order.loading = true
+        },
+        [GetItemStatus.FAILURE](state, { payload } : PayloadAction<string[]>) {
+            state.order.errors = payload
+        },
+        [GetItemStatus.SUCCESS](state, { payload } : PayloadAction<{status: string}>) {
+            if (state.order.data) {
+                state.order.data.status = payload.status
+            }
+        },
+        [GetItemStatus.FULFILL](state) {
+            state.order.loading = false;
         }
     }
 });
@@ -92,6 +107,11 @@ const orderSlice = createSlice({
 export const getOrderData = createSelector(
     (state: RootState) => state.order,
     orderData => orderData.order
+)
+
+export const getOrderErrors = createSelector(
+    (state: RootState) => state.order,
+    order => order.order.errors
 )
 
 export const getOrderResponseData = createSelector(
@@ -133,6 +153,11 @@ export const getCreateOrderResult = createSelector(
     })
 )
 
+export const getSendPhotoStatus = createSelector(
+    (state: RootState) => state.order,
+    order => order.sendPhoto.status
+)
+
 export const getOrderSendPhotosStatus = createSelector(
     (state: RootState) => state.order,
     orderData => orderData.sendPhoto.status,
@@ -142,7 +167,8 @@ export const {
     setOrderNumber,
     setItemNumber,
     setCurrentItem,
-    setCurrentItemStatus
+    setCurrentItemStatus,
+    restoreOrderState
 } = orderSlice.actions
 
 export default orderSlice.reducer;

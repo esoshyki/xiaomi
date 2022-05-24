@@ -1,12 +1,10 @@
-import { getCurrentItem, setCurrentItemStatus, setItemNumber, setOrderNumber, getItemNumber, getOrderNumber, getOrderResponseData } from './../store/orderSlice/index';
+import { getCurrentItem, setCurrentItemStatus, setItemNumber, setOrderNumber, getItemNumber, getOrderNumber, getOrderResponseData, GetItemStatus } from './../store/orderSlice/index';
 import { useMemo, useEffect } from 'react';
-import { GetOrder, getOrderData, getOrderPending } from './../store/orderSlice';
+import { GetOrder, getOrderPending } from './../store/orderSlice';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrderSendPhotosStatus, setCurrentItem } from '../store/orderSlice';
+import { getOrderSendPhotosStatus } from '../store/orderSlice';
 import { useParams } from 'react-router-dom';
-import { GetQuestions, setGivenAnswers } from '../store/offerSlice';
-
 
 export default function useOrderData () {
 
@@ -46,30 +44,11 @@ export default function useOrderData () {
                 itemNumber: newItemNumber
             }));
         }
-    }, [newItemNumber, newOrderNumber])
+    }, [newItemNumber, newOrderNumber]);
 
-    useEffect(() => {
-        if (currentItem) {
-            dispatch(setGivenAnswers({
-                combinationId: currentItem.combinationId,
-                combinationCode: currentItem.combinationCode,
-                answers: []
-            }))
-        }
-    }, [currentItem])
-
-    useEffect(() => {
-        const currentItem = orderData?.items.find(el => el.itemNumber === itemNumber) ?? null;
-        if (currentItem) {
-            dispatch(setCurrentItem(currentItem));
-        }
-    }, [orderData]);
-
-    useEffect(() => {
-        if (step === "questions") {
-            dispatch(GetQuestions.request());
-        }
-    }, [step])
+    const getItemStatus = useCallback(() => {
+        dispatch(GetItemStatus.request())
+    }, [])
 
     return ({
         sendPhotoStatus,
@@ -80,6 +59,7 @@ export default function useOrderData () {
         currentItem,
         step,
         changeStep,
-        setOrderPath
+        setOrderPath,
+        getItemStatus
     })
 }

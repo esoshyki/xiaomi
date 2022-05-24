@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { memo, ReactNode } from "react";
 import {
     BrowserRouter as Router,
     Routes,
@@ -19,8 +19,10 @@ import {
 } from ".";
 import useURL from "../hooks/useUrl";
 
-const WithUrl = () => {
-    useURL();
+const WithUrl = memo(() => {
+    const { pathname } = useURL();
+
+    console.log(pathname);
 
     return (
         <Routes>
@@ -42,7 +44,7 @@ const WithUrl = () => {
             />
         </Routes>
     );
-};
+});
 
 const RoutesComponent = () => {
     return (
@@ -52,4 +54,4 @@ const RoutesComponent = () => {
     );
 };
 
-export default RoutesComponent;
+export default memo(RoutesComponent);

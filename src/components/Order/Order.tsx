@@ -7,37 +7,62 @@ import { Container } from "../ui";
 import OrderItem from "./OrderItem";
 
 const Order = () => {
-
-    const { orderData, currentItem, changeStep, isLoading, progress, step } = useOrderData();
-        const { question, getQuestions, givenAnswers, changeContent, isLoading: isQuestionsLoading } = useOfferData(true);
+    const {
+        orderData,
+        currentItem,
+        changeStep,
+        isLoading,
+        progress,
+        step,
+        getItemStatus,
+    } = useOrderData();
+    const {
+        getQuestion,
+        getQuestions,
+        givenAnswers,
+        changeContent,
+        isLoading: isQuestionsLoading,
+        step: offerStep,
+        fetchQuestions,
+        questionsTree,
+    } = useOfferData(true);
 
     const currentQuestion = useMemo(() => {
-        console.log(`step: ${step}`);
-        console.log(isQuestionsLoading);
-        if (step === "questions" && !isQuestionsLoading) {
-            return question
-        };
-        return null
-    }, [step, question, isQuestionsLoading])
+        if (!currentItem) return null;
+
+        if ((step === "questions" || step === "N") && !isQuestionsLoading) {
+            const question = getQuestion(true);
+            if (question) return question;
+            fetchQuestions();
+            return null;
+        }
+        return null;
+    }, [givenAnswers, getQuestions.result, questionsTree]);
 
     return (
-        <Container.Flex verticalGap={15}>
-            {!!orderData && !!currentItem && <OrderItem 
-                {...currentItem} 
-                givenAnswers={givenAnswers}
-                changeContent={changeContent}
-                currency={orderData.currency} 
-                changeStep={changeStep}
-                isLoading={isLoading}
-                progress={progress}
-                step={step}
-                itemData={currentItem}
-                currentQuestion={currentQuestion}
-                errors={getQuestions.errors}
-                />}
+        <Container.Flex verticalGap={15} styles={{
+            minHeight: "324px"
+        }}>
+            {!!currentItem && (
+                <OrderItem
+                    {...currentItem}
+                    givenAnswers={givenAnswers}
+                    changeContent={changeContent}
+                    currency={orderData?.currency || ""}
+                    changeStep={changeStep}
+                    isLoading={isLoading}
+                    progress={progress}
+                    step={step}
+                    itemData={currentItem}
+                    currentQuestion={currentQuestion}
+                    errors={getQuestions.errors}
+                    offerStep={offerStep}
+                    getItemStatus={getItemStatus}
+                />
+            )}
             <AddNewDevice />
         </Container.Flex>
-    )
-}
+    );
+};
 
 export default Order;

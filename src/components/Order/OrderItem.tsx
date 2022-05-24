@@ -6,9 +6,11 @@ import OfferLoader from "../Offer/OfferLoader";
 import OrderPrePrice from "./OrderPrePrice";
 import {
     GivenAnswers,
+    OfferSteps,
     Question,
     ServerError,
 } from "../../store/offerSlice/types";
+import OrderItemSummary from "./OrderItemSummary";
 
 type OrderItemProps = {
     itemData: OrderItemData;
@@ -21,6 +23,8 @@ type OrderItemProps = {
     errors: ServerError[];
     changeContent: boolean;
     givenAnswers: GivenAnswers;
+    offerStep: OfferSteps;
+    getItemStatus: () => void;
 };
 
 const OrderItem = (props: OrderItemProps) => {
@@ -35,10 +39,10 @@ const OrderItem = (props: OrderItemProps) => {
         errors,
         givenAnswers,
         changeContent,
+        offerStep,
+        getItemStatus,
     } = props;
     const { name, answers, price, image } = itemData;
-
-    console.log(step);
 
     return (
         <OfferCard progress={progress} isLoading={isLoading}>
@@ -61,7 +65,7 @@ const OrderItem = (props: OrderItemProps) => {
                 />
             )}
 
-            {step === "questions" && (
+            {(step === "questions" || step === "F") && (
                 <OfferQuestions
                     question={currentQuestion}
                     errors={errors}
@@ -70,7 +74,14 @@ const OrderItem = (props: OrderItemProps) => {
                 />
             )}
 
-            {isLoading && <OfferLoader />}
+            {offerStep === "summary" && (
+                <OrderItemSummary
+                    data={itemData}
+                    isLoading={isLoading}
+                    getItemStatus={getItemStatus}
+                />
+            )}
+
         </OfferCard>
     );
 };

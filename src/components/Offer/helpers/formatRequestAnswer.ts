@@ -5,7 +5,6 @@ export const formatRequestAnswer = (state: RootState): RequestAnswers => {
     const { givenAnswers, deviceInfo } = state.offer;
     const { combinationId, offerId } = givenAnswers;
 
-    console.log(combinationId);
     const requestAnswers: RequestAnswers = givenAnswers.answers.reduce(
         (acc, next) => {
             const { questionId, answerId, answerName } = next;

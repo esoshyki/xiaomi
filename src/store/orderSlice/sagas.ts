@@ -1,7 +1,8 @@
+import { getGivenAnswers, GetQuestions, resetQuestions, setGivenAnswers } from './../offerSlice/index';
 import { setAdditionalAction, setQuestionsTree, setStep } from '../offerSlice';
 import { customErrors } from './../../helpers/getCustomError';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { CreateOrder, GetOrder, setItemNumber, setOrderNumber, SendPhoto } from './index';
+import { CreateOrder, GetOrder, setItemNumber, setOrderNumber, SendPhoto, setCurrentItem, GetItemStatus } from './index';
 import { takeLeading, call, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 import { orderApi } from "../../api";
 import { GetOrderRequest, Order, CreateOrderResponse } from "./types";
@@ -23,6 +24,7 @@ function* createOrderWorker() {
             yield put(setOrderNumber(orderNumber));
             yield put(setItemNumber(itemNumber));
         }
+        yield put(setStep("questions"));
     }
     if (response.status === "error") {
         yield put(CreateOrder.failure(response.errors));
@@ -49,16 +51,30 @@ function* getOrderWorker({ payload }: PayloadAction<GetOrderRequest | undefined>
         const response: ResponseData<Order> = yield call(orderApi.getOrderData, orderNumber, itemNumber, user);
 
         if (response.status === "success") {
-            yield put(resetAdditionActions());
             yield put(GetOrder.success(response.data));
-            yield put(setQuestionsTree(null));
         }
 
         if (response.status === "error") {
             yield put(GetOrder.failure(response.errors))
         }
 
-        yield put(GetOrder.fulfill())
+        yield put(GetOrder.fulfill());
+        yield put(setAdditionalAction());
+
+        const currentItem = response.data?.items.find(item => item.itemNumber === itemNumber);
+        if (currentItem) {
+            if (currentItem.status === "F") {
+                yield put(setStep("summary"));
+                yield put(setCurrentItem(currentItem));
+            }
+            yield put(resetQuestions());
+            yield put(setGivenAnswers({
+                combinationId: currentItem.combinationId,
+                combinationCode: currentItem.combinationCode,
+                answers: []
+            }));
+            yield put(setCurrentItem(currentItem));
+        }
     }
 }
 
@@ -84,9 +100,9 @@ function* sendPhotoWorker({ payload }: PayloadAction<File[] | undefined>) {
     const response: ResponseData<any> = yield call(orderApi.sendPhoto, payload, number, itemNumber, user);
 
     if (response.status === "success") {
-        yield put(SendPhoto.success(response.data));
         yield put(setAdditionalAction());
-    };
+        yield put(SendPhoto.success(response.data));
+     };
 
     if (response.status === "error") {
         yield put(SendPhoto.failure(response.errors))
@@ -95,9 +111,27 @@ function* sendPhotoWorker({ payload }: PayloadAction<File[] | undefined>) {
     yield put(SendPhoto.fulfill())
 };
 
+function* getItemStatusRequestWorker () {
+    const state: RootState = yield select();
+    const user = state.user.user;
+    const { itemNumber, number: orderNumber } = state.order.order;
+    if (!orderNumber || !itemNumber || !user) return;
+    const response : ResponseData<{status: string}> = yield call(orderApi.getItemStatus, orderNumber, itemNumber, user);
+
+    if (response.status === "success") {
+        yield put(GetItemStatus.success(response.data));
+    }
+    if (response.status === "error") {
+        yield put(GetItemStatus.failure(response.errors))
+    };
+
+    yield put(GetItemStatus.fulfill())
+}
+
 export default function* orderSagas() {
-    yield takeLeading(CreateOrder.REQUEST, createOrderWorker);
-    yield takeLeading(GetOrder.REQUEST, getOrderWorker)
-    yield takeLatest(CreateOrder.fulfill, createOrderSuccessWorker);
-    yield takeLeading(SendPhoto.REQUEST, sendPhotoWorker)
+    yield takeEvery(CreateOrder.REQUEST, createOrderWorker);
+    yield takeEvery(GetOrder.REQUEST, getOrderWorker)
+    yield takeEvery(CreateOrder.fulfill, createOrderSuccessWorker);
+    yield takeEvery(SendPhoto.REQUEST, sendPhotoWorker);
+    yield takeEvery(GetItemStatus.REQUEST, getItemStatusRequestWorker)
 }

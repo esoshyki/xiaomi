@@ -11,6 +11,8 @@ const Offer = () => {
     const { step, deviceInfo, givenAnswers, getQuestions, progress, question, isLoading, changeContent } =
         useOfferData();
 
+    console.log(question)
+
     const [hint, setHint] = useState(true);
     const [cardHeight, setCardHeight] = useState("auto");
     const [cardWidth, setCardWidth] = useState("auto");

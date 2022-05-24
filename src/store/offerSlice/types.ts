@@ -149,7 +149,6 @@ export type OfferState = {
     hint: string,
     images: ImageFile[]
     givenAnswers: GivenAnswers
-    currentGivenAnswers: GivenAnswers
     deviceInfo: N<DeviceInfo>
     changeQuestionsContent: boolean
 }

@@ -23,8 +23,6 @@ const OfferQuestions = ({
     givenAnswers,
 }: OfferQuestionsProps) => {
 
-    console.log(question);
-
     return (
         <Container.Flex
             fullWidth

@@ -12,6 +12,14 @@ import {
     giveAnswerRequest,
     getChangeContent,
     getQuestionsResult,
+    getQuestionTree,
+    getQuestionData,
+    getGivenAnswers,
+    getOfferStep,
+    getAdditionAction,
+    getQuestionsPending,
+    setAdditionalAction,
+    setGetQuestionLoading,
 } from "../store/offerSlice";
 import {
     GivenAnswer,
@@ -20,20 +28,24 @@ import {
     SetTreeDataProps,
 } from "../store/offerSlice/types";
 import { getFromTree } from "../components/Offer/helpers/getFromTree";
-import { getOrderPending, getOrderData } from "../store/orderSlice";
+import { getOrderPending, getOrderData, getOrderErrors, getCurrentItem, getSendPhotoStatus } from "../store/orderSlice";
 import { useUploadFiles } from "../contexts/uploadFiles";
 
 export const useOfferData = (isOrder?: true) => {
     const offer = useSelector(getOfferData);
-
-    const { givenAnswers, step, getQuestions, createOrder, questionsData } =
-        offer;
-
+    const questionsTree = useSelector(getQuestionTree);
+    const questionsData = useSelector(getQuestionData);
+    const givenAnswers = useSelector(getGivenAnswers);
+    const step = useSelector(getOfferStep);
     const _getQuestionsResult = useSelector(getQuestionsResult);
-
     const changeContent = useSelector(getChangeContent);
+    const orderLoading = useSelector(getOrderPending);
+    const additionalAction = useSelector(getAdditionAction);
+    const getQuestionsLoading = useSelector(getQuestionsPending);
+    const orderErrors = useSelector(getOrderErrors);
+    const currentItem = useSelector(getCurrentItem);
+    const sendPhotoStatus = useSelector(getSendPhotoStatus);
 
-    const isCreateOrderPending = useSelector(getOrderPending);
 
     const dispatch = useDispatch();
     const { files } = useUploadFiles();
@@ -44,25 +56,28 @@ export const useOfferData = (isOrder?: true) => {
 
     const isLoading = useMemo(
         () =>
-            isCreateOrderPending || getQuestions.loading || createOrder.loading,
-        [getQuestions, createOrder, isCreateOrderPending]
+        orderLoading || getQuestionsLoading,
+        [getQuestionsLoading, orderLoading]
     );
 
-    const getQuestion = () => {
+    const getQuestion = (_isOrder?: true) => {
 
-        const {
-            questionsTree,
-            givenAnswers,
-            questionsData,
-        } = offer;
-
-        if (isLoading ) {
-            return null;
+        if (isOrder && !_isOrder) {
+            return null
         }
 
         if (_getQuestionsResult === "error") {
             return null;
-        };
+        }
+
+        if (!questionsTree) {
+            fetchQuestions()
+            return null;
+        }
+
+        if (isLoading ) {
+            return null;
+        }
 
         const { answers } = givenAnswers;
 
@@ -88,8 +103,7 @@ export const useOfferData = (isOrder?: true) => {
     };
 
     const _setTreeProps = (props: SetTreeDataProps) => {
-        const { combinationId, offerId, additionalAction } = props;
-        const { givenAnswers } = offer;
+        const { combinationId, offerId, } = props;
         if (!Object.values(props).filter((el) => !!el).length) return;
         if (combinationId && combinationId !== givenAnswers.combinationId) {
             dispatch(setTreeProps({ combinationId }));
@@ -98,10 +112,13 @@ export const useOfferData = (isOrder?: true) => {
             dispatch(setTreeProps({ offerId }));
         }
         if (
-            additionalAction &&
-            additionalAction !== givenAnswers.additionalAction
+            props.additionalAction &&
+            props.additionalAction !== additionalAction
         ) {
-            dispatch(setTreeProps({ additionalAction }));
+            if (props.additionalAction === "addPhoto" && sendPhotoStatus === "success") {
+                return;
+            }
+            dispatch(setAdditionalAction(props.additionalAction));
         }
     };
 
@@ -118,9 +135,8 @@ export const useOfferData = (isOrder?: true) => {
     };
 
     const fetchQuestions = () => {
-        if (offer.givenAnswers.additionalAction) {
-            const additionalAction = offer.givenAnswers.additionalAction;
-            console.log(files);
+        console.log(`getQuestionsLoading`, getQuestionsLoading);
+        if (additionalAction) {
             dispatch(resetAdditionActions());
             dispatch(
                 makeAdditionAction({
@@ -130,7 +146,7 @@ export const useOfferData = (isOrder?: true) => {
             );
             return;
         }
-        if (!offer.getQuestions.loading) {
+        if (!getQuestionsLoading) {
             dispatch(GetQuestions.request());
         }
     };
@@ -139,7 +155,9 @@ export const useOfferData = (isOrder?: true) => {
         givenAnswers,
         questionsData,
         _getQuestionsResult,
-        isLoading
+        isLoading,
+        currentItem,
+        sendPhotoStatus
     ]);
 
     const progress = useMemo(() => {
@@ -167,27 +185,35 @@ export const useOfferData = (isOrder?: true) => {
     };
 
     useEffect(() => {
+        if (isOrder) return;
         if (step !== "questions" || _getQuestionsResult === "error" || isLoading) return;
         if (
             !question &&
-            !getQuestions.loading &&
-            !createOrder.loading &&
-            !createOrder.errors.length
+            !getQuestionsLoading &&
+            !orderLoading &&
+            !orderErrors.length
         ) {
             fetchQuestions();
         }
     }, [
         question,
-        getQuestions.loading,
-        createOrder.loading,
+        getQuestionsLoading,
+        orderLoading,
         _getQuestionsResult,
+        isOrder
     ]);
 
     useEffect(() => {
         if (step === "start" && !isOrder) {
             fetchQuestions();
         }
-    }, [isLoading]);
+    }, [step, isOrder, getQuestionsLoading]);
+
+    useEffect(() => {
+        if (isOrder && step !== "questions" && step !== "summary") {
+            changeStep("questions")
+        }
+    }, [isOrder, step]);
 
     return {
         ...offer,
@@ -199,6 +225,7 @@ export const useOfferData = (isOrder?: true) => {
         progress,
         setStep: _setStep,
         isLoading,
+        getQuestion,
         uploadImage: _uploadImage,
         changeContent,
     };

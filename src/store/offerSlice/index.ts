@@ -104,6 +104,9 @@ const offerSlice = createSlice({
         [GetQuestions.SUCCESS](state, { payload }: PayloadAction<QuestionsResponse>) {
             state.getQuestions.result = "success"
             state.getQuestions.errors = [];
+            if (!payload.questionsData) {
+                return;
+            }
             if (!Object.keys(payload.questionsData).every(el => Object.keys(state.questionsData || {}).includes(el))) {
                 state.questionsData = payload.questionsData;
             }

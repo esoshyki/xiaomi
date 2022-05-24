@@ -15,10 +15,11 @@ const _Radio = styled.div<{
     selected: boolean;
 }>`
     position: absolute;
-    left: -30px;
+    left: 0;
+    top: 0;
     width: 20px;
     height: 20px;
-    border-radius: 10px;
+    border-radius: 50%;
     border-color: ${(props) =>
         props.selected
             ? props.theme.colors.accent.default
@@ -42,17 +43,18 @@ const Radio = (props: RadioProps) => {
     return (
         <Container.Flex
             direction="row"
-            margin={"5px 0"}
             fullWidth
-            styles={{ position: "relative" }}
+            styles={{ position: "relative", paddingLeft: "36px", cursor: "pointer" }}
+            onClick={_onChange}
         >
-            <_Radio onClick={_onChange} selected={selected} />
+            <_Radio selected={selected} />
             <Typography.Main
                 color={
                     selected
                         ? theme.colors.link.default
                         : theme.colors.text.default
                 }
+                margin={0}
             >
                 {label}
             </Typography.Main>

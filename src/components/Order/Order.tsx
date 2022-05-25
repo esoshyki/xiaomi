@@ -40,8 +40,12 @@ const Order = () => {
     }, [givenAnswers, getQuestions.result, questionsTree, combinationCode, offerStep]);
 
     return (
-        <Container.Flex verticalGap={15} alignItems="start" styles={{
-            minHeight: "324px"
+        <Container.Flex direction="row" alignItems="start" gap={36} breakpoints={{
+            660: {
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "24px"
+            }
         }}>
             {!!currentItem && (
                 <OrderItem

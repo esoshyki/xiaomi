@@ -10,6 +10,8 @@ const Img = styled.img<ImgProps>`
         ...props.styles
     })}
     ${props => getCommonProps(props)};
+	image-rendering: -webkit-optimize-contrast;
+	image-rendering: crisp-edges;
 `;
 
 type ImgProps = Props<{

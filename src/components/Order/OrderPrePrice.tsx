@@ -14,16 +14,16 @@ const OrderPrePrice = (props: PrePriceProps) => {
     const theme = useTheme();
 
     return (
-        <Container.Flex verticalGap={20}>
-            <Typography.Title color={theme.colors.text.secondary}>
+        <Container.Flex fullWidth alignItems="stretch" verticalGap={12}>
+            <Typography.Title textAlign="start" margin="0 0 8px" padding="0 4px" color={theme.colors.text.secondary}>
                 Предварительная оценка
             </Typography.Title>
 
-            <Typography.RublesLarge>
+            <Typography.RublesLarge margin={"0 0 12px"}>
                 {`≈ ${price} ${currency}`}
             </Typography.RublesLarge>
 
-            <Button onClick={onClick} fullWidth>
+            <Button onClick={onClick}>
                 К финальной стоимости 
             </Button>
 

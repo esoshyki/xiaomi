@@ -53,6 +53,7 @@ const OrderItem = (props: OrderItemProps) => {
                     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBfmJ3BEREy2MsQ6xLonMfa49OMmYlqFCLEg&usqp=CAU"
                 }
                 answers={answers}
+                hideChars
             />
 
             {step === "N" && (

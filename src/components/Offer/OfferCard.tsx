@@ -32,7 +32,6 @@ const OfferCard = ({
             onClick={() => {
                 setHint && setHint(false);
             }}
-            isQuestion={true}
             styles={{
                 height: height ? `${height}px` : "auto"
             }}

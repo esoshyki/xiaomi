@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { useOfferData } from "../../hooks/useOfferData";
 import useOrderData from "../../hooks/useOrderData";
-import { Order as OrderData } from "../../store/orderSlice/types";
 import AddNewDevice from "../AddNewDevice";
 import { Container } from "../ui";
 import OrderItem from "./OrderItem";
@@ -12,7 +11,6 @@ const Order = () => {
         currentItem,
         changeStep,
         isLoading,
-        progress,
         step,
         getItemStatus,
     } = useOrderData();
@@ -25,6 +23,8 @@ const Order = () => {
         step: offerStep,
         fetchQuestions,
         questionsTree,
+        progress,
+        combinationCode
     } = useOfferData(true);
 
     const currentQuestion = useMemo(() => {
@@ -37,12 +37,10 @@ const Order = () => {
             return null;
         }
         return null;
-    }, [givenAnswers, getQuestions.result, questionsTree]);
+    }, [givenAnswers, getQuestions.result, questionsTree, combinationCode, offerStep]);
 
     return (
-        <Container.Flex direction="row" alignItems="start" gap={36} styles={{
-
-        }} breakpoints={{
+        <Container.Flex direction="row" alignItems="start" gap={36} breakpoints={{
             660: {
                 flexDirection: "column",
                 alignItems: "center",

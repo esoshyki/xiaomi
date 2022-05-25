@@ -20,9 +20,7 @@ import {
 import useURL from "../hooks/useUrl";
 
 const WithUrl = memo(() => {
-    const { pathname } = useURL();
-
-    console.log(pathname);
+    useURL();
 
     return (
         <Routes>

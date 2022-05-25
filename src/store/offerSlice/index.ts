@@ -55,8 +55,9 @@ const offerSlice = createSlice({
             state.givenAnswers = payload;
         },
         setTreeProps(state: OfferState, { payload }: PayloadAction<SetTreeDataProps>) {
-            const { combinationId, offerId, additionalAction } = payload;
+            const { combinationId, offerId, additionalAction, combinationCode } = payload;
             if (combinationId) state.givenAnswers.combinationId = combinationId;
+            if (combinationCode) state.givenAnswers.combinationCode = combinationCode;
             if (offerId) state.givenAnswers.offerId = offerId;
             if (additionalAction) state.givenAnswers.additionalAction = additionalAction;
         },
@@ -78,6 +79,9 @@ const offerSlice = createSlice({
         } ,
         setCombinationsId(state: OfferState, { payload }: PayloadAction<string | undefined>) {
             state.givenAnswers.combinationId = payload;
+        },
+        setCombinationCode(state: OfferState, { payload } : PayloadAction<string | undefined>) {
+            state.givenAnswers.combinationCode = payload
         },
         setOfferId(state: OfferState, { payload }: PayloadAction<string | undefined>) {
             state.givenAnswers.offerId = payload;
@@ -166,6 +170,11 @@ export const getAdditionAction = createSelector(
     offer => offer.givenAnswers.additionalAction
 )
 
+export const getCombinationCode = createSelector(
+    (state: RootState) => state.offer,
+    offer => offer.givenAnswers.combinationCode
+)
+
 export const {
     setStep,
     setCombinationsId,
@@ -183,7 +192,8 @@ export const {
     setAdditionalAction,
     setGivenAnswers,
     resetQuestions,
-    setGetQuestionLoading
+    setGetQuestionLoading,
+    setCombinationCode
 } = offerSlice.actions
 
 export default offerSlice.reducer;

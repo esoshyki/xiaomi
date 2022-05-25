@@ -10,11 +10,9 @@ const useQuery = () => {
     const { orderNumber } = useParams();
     const navigate = useNavigate();
 
-    console.log(pathname);
-
     const getParams = useMemo(() => qs.parse(search.replace("?", "")), [search]);
 
-    const makeStateData = () => {
+    const makePath = () => {
         const url = process.env.REACT_APP_BASE_URL + pathname;
         return url
     }
@@ -25,7 +23,7 @@ const useQuery = () => {
 
     return ({
         getParams,
-        makeStateData,
+        makePath,
         orderNumber,
         redirect
     })

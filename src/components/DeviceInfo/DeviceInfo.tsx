@@ -1,6 +1,6 @@
 import { Container, Image, Typography } from "../ui";
 import styled from "styled-components/macro";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Answer {
     name: string
@@ -42,33 +42,42 @@ const OfferDevice = (props: OfferDeviceProps) => {
 
     const { deviceImage, deviceName, answers, hideChars } = props;
     const [visibleChars, setVisibleChars] = useState(false);
+    const [initVisible, setInitVisible] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
 
-    const toggleChar = () => {
-        if (cardRef.current) {
-            let newHeight;
-            if (!visibleChars) {
-                newHeight = cardRef.current.scrollHeight;
-                setVisibleChars(true);
-            } else {
-                let children = cardRef.current.children as HTMLCollectionOf<HTMLElement>;
-                let gap = 4,
-                    visibleHeight = 0;
-                // calc height of first 2 elems
-                for (let i = 0, l = children.length; i < l; i++) {
-                    if (i === 2) {
-                        break
-                    } else {
-                        visibleHeight += children[i].scrollHeight + gap;
-                    }
-                }
-                newHeight = visibleHeight;
-                setVisibleChars(false);
-            }
-
-            cardRef.current.style.height = newHeight + "px";
+    useEffect(() => {
+        if (cardRef.current && !initVisible) {
+            hideChar();
+            setInitVisible(true);
         }
 
+    }, [initVisible])
+
+    const showChar = () => {
+        if (cardRef.current) {
+            if (!visibleChars) {
+                cardRef.current.style.height = cardRef.current.scrollHeight + "px";
+                setVisibleChars(true);
+            }
+        }
+    }
+
+    const hideChar = () => {
+        if (cardRef.current) {
+            let children = cardRef.current.children as HTMLCollectionOf<HTMLElement>;
+            let gap = 4,
+                visibleHeight = 0;
+            // calc height of first 2 elems
+            for (let i = 0, l = children.length; i < l; i++) {
+                if (i === 2) {
+                    break
+                } else {
+                    visibleHeight += children[i].scrollHeight + gap;
+                }
+            }
+            cardRef.current.style.height = visibleHeight + "px";
+            setVisibleChars(false);
+        }
     }
 
     return (
@@ -103,7 +112,13 @@ const OfferDevice = (props: OfferDeviceProps) => {
                 </Container.Flex>
                 {
                     hideChars &&
-                        <ToggleButton type="button" onClick={toggleChar}>
+                        <ToggleButton type="button" onClick={() => {
+                            if (visibleChars) {
+                                hideChar()
+                            } else {
+                                showChar()
+                            }
+                        }}>
                             {visibleChars && "Свернуть"}
                             {!visibleChars && "Развернуть"}
 

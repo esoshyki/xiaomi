@@ -70,4 +70,5 @@ export type OrderState = {
         loading: boolean
     }
     orders: Order[],
+    qrCode?: string
 }

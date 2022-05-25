@@ -19,7 +19,8 @@ import {
     getAdditionAction,
     getQuestionsPending,
     setAdditionalAction,
-    setGetQuestionLoading,
+    getCombinationCode,
+    setCombinationCode,
 } from "../store/offerSlice";
 import {
     GivenAnswer,
@@ -28,7 +29,7 @@ import {
     SetTreeDataProps,
 } from "../store/offerSlice/types";
 import { getFromTree } from "../components/Offer/helpers/getFromTree";
-import { getOrderPending, getOrderData, getOrderErrors, getCurrentItem, getSendPhotoStatus } from "../store/orderSlice";
+import { getOrderPending, getOrderData, getOrderErrors, getCurrentItem, getSendPhotoStatus, getQrCode, setQrCode } from "../store/orderSlice";
 import { useUploadFiles } from "../contexts/uploadFiles";
 
 export const useOfferData = (isOrder?: true) => {
@@ -45,7 +46,8 @@ export const useOfferData = (isOrder?: true) => {
     const orderErrors = useSelector(getOrderErrors);
     const currentItem = useSelector(getCurrentItem);
     const sendPhotoStatus = useSelector(getSendPhotoStatus);
-
+    const combinationCode = useSelector(getCombinationCode);
+    const qrCode = useSelector(getQrCode);
 
     const dispatch = useDispatch();
     const { files } = useUploadFiles();
@@ -60,7 +62,11 @@ export const useOfferData = (isOrder?: true) => {
         [getQuestionsLoading, orderLoading]
     );
 
-    const getQuestion = (_isOrder?: true) => {
+    const getQuestion = useCallback((_isOrder?: true) => {
+
+        if (isLoading ) {
+            return null;
+        }
 
         if (isOrder && !_isOrder) {
             return null
@@ -72,10 +78,6 @@ export const useOfferData = (isOrder?: true) => {
 
         if (!questionsTree) {
             fetchQuestions()
-            return null;
-        }
-
-        if (isLoading ) {
             return null;
         }
 
@@ -100,13 +102,16 @@ export const useOfferData = (isOrder?: true) => {
             ..._question,
             questionKey,
         };
-    };
+    }, [isLoading, givenAnswers]);
 
     const _setTreeProps = (props: SetTreeDataProps) => {
-        const { combinationId, offerId, } = props;
+        const { combinationId, offerId, combinationCode } = props;
         if (!Object.values(props).filter((el) => !!el).length) return;
         if (combinationId && combinationId !== givenAnswers.combinationId) {
             dispatch(setTreeProps({ combinationId }));
+        }
+        if (combinationCode && combinationCode !== givenAnswers.combinationCode) {
+            dispatch(setTreeProps({ combinationCode }));
         }
         if (offerId && offerId !== givenAnswers.offerId) {
             dispatch(setTreeProps({ offerId }));
@@ -135,7 +140,6 @@ export const useOfferData = (isOrder?: true) => {
     };
 
     const fetchQuestions = () => {
-        console.log(`getQuestionsLoading`, getQuestionsLoading);
         if (additionalAction) {
             dispatch(resetAdditionActions());
             dispatch(
@@ -161,19 +165,20 @@ export const useOfferData = (isOrder?: true) => {
     ]);
 
     const progress = useMemo(() => {
+        const base = isOrder ? 0.5 : 0;
         const questionsCount = questionsData
             ? Object.keys(questionsData).length
             : 0;
         if (question && questionsData) {
             if (!questionsCount) return 0;
             return (
-                (0.5 * (question.answerOrder || 0)) /
+                base + (0.5 * (question.answerOrder || 0)) /
                 Object.keys(questionsData).length
             );
         } else {
             return 0;
         }
-    }, [question]);
+    }, [question, isOrder]);
 
     /** |||||||||||||||||||||||||||||||||||||||
      *     EFFECTS
@@ -204,6 +209,16 @@ export const useOfferData = (isOrder?: true) => {
     ]);
 
     useEffect(() => {
+        if (qrCode) {
+            dispatch(setCombinationCode(qrCode));
+        } else {
+            if (combinationCode === "qrFollowed") {
+                dispatch(setCombinationCode())
+            }
+        }
+    }, [qrCode, combinationCode])
+
+    useEffect(() => {
         if (step === "start" && !isOrder) {
             fetchQuestions();
         }
@@ -228,5 +243,6 @@ export const useOfferData = (isOrder?: true) => {
         getQuestion,
         uploadImage: _uploadImage,
         changeContent,
+        combinationCode
     };
 };

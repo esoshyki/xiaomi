@@ -3,7 +3,7 @@ import { RequestAnswers } from "../../../store/offerSlice/types";
 
 export const formatRequestAnswer = (state: RootState): RequestAnswers => {
     const { givenAnswers, deviceInfo } = state.offer;
-    const { combinationId, offerId } = givenAnswers;
+    const { combinationId, offerId, combinationCode } = givenAnswers;
 
     const requestAnswers: RequestAnswers = givenAnswers.answers.reduce(
         (acc, next) => {
@@ -15,6 +15,9 @@ export const formatRequestAnswer = (state: RootState): RequestAnswers => {
     );
     if (combinationId)
         requestAnswers.combinationId = combinationId;
+
+    if (combinationCode)
+        requestAnswers.combinationCode = combinationCode
 
     if (offerId) 
         requestAnswers.offerId = offerId

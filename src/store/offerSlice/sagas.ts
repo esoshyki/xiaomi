@@ -7,15 +7,12 @@ import { GivenAnswer, MakeAdditionAction, OfferState, QuestionsResponse, Request
 import { ResponseData } from "../../api/types";
 import { RootState } from '..';
 import { formatRequestAnswer } from "../../components/Offer/helpers/formatRequestAnswer";
-import { CreateOrder, SendPhoto } from '../orderSlice';
-
-function* getState () {
-    yield select()
-}
+import { CreateOrder, SendPhoto, setCurrentItemStatus, setQrCode } from '../orderSlice';
 
 function* getQuestionsWorker() {
     const state: RootState = yield select();
     const answers: RequestAnswers = yield call(formatRequestAnswer, state);
+    const qrCode = state.order.qrCode;
     const { loading } = state.offer.getQuestions;
     if (loading) {
         return;
@@ -36,7 +33,12 @@ function* getQuestionsWorker() {
     if (response?.status === "error") {
         yield put(GetQuestions.failure(response.errors))
     }
-    yield put(GetQuestions.fulfill())
+    yield put(GetQuestions.fulfill());
+
+    if (qrCode) {
+        yield put(setStep("questions"));
+        yield put(setCurrentItemStatus("questions"));
+    }
 }
 
 function* makeAdditionActionWorker({ payload } : PayloadAction<MakeAdditionAction>) {

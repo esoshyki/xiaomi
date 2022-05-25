@@ -79,6 +79,7 @@ export type QuestionsData = {
 export type QuestionTree = {
     answerId?: string
     combinationId?: string
+    combinationCode?: string
     offerId?: string
     additionalAction?: AdditionActions
     questions: Array<{
@@ -129,6 +130,7 @@ export type DeviceInfo = {
 }
 
 export type SetTreeDataProps = {
+    combinationCode?: string
     combinationId?: string
     offerId?: string
     additionalAction?: AdditionActions

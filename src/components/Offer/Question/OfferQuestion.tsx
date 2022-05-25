@@ -13,13 +13,12 @@ import UploadImage from "./UploadImage";
 export interface OfferQuestionProps {
     questionData: Question;
     combinationId?: string;
-    givenAnswers: GivenAnswers
+    givenAnswers: GivenAnswers;
 }
 
 const OfferQuestion = (props: OfferQuestionProps) => {
-    
     const { questionData, givenAnswers } = props;
-    const { combinationId } = givenAnswers;
+    const { combinationId, combinationCode } = givenAnswers;
     const {
         answerType,
         questionName,
@@ -31,33 +30,57 @@ const OfferQuestion = (props: OfferQuestionProps) => {
     } = questionData;
 
     return (
-        <Container.Flex fullWidth alignItems="start" verticalGap={16} >
+        <Container.Flex fullWidth alignItems="start" verticalGap={16}>
             {!!questionHeader && (
-                <Typography.TitleSecondary textAlign={"start"}
-                    styles={{paddingLeft: "4px", paddingRight: "4px", margin: "0 0 8px"}}
+                <Typography.TitleSecondary
+                    textAlign={"start"}
+                    styles={{
+                        paddingLeft: "4px",
+                        paddingRight: "4px",
+                        margin: "0 0 8px",
+                    }}
                 >
                     {questionHeader}
                 </Typography.TitleSecondary>
             )}
 
             {!!questionDescription && (
-                <Typography.Main textAlign="start" styles={{paddingLeft: "4px", paddingRight: "4px", margin: "0 0 4px"}}>
+                <Typography.Main
+                    textAlign="start"
+                    styles={{
+                        paddingLeft: "4px",
+                        paddingRight: "4px",
+                        margin: "0 0 4px",
+                    }}
+                >
                     {questionDescription}
-                    {!!questionDescriptionUrl &&
-                        !!questionDescriptionUrlName && (
-                        <Typography.Link href={questionDescriptionUrl} target="_blank" styles={{borderBottom: "1px solid currentColor", marginLeft: "3px"}}>
+                    {!!questionDescriptionUrl && !!questionDescriptionUrlName && (
+                        <Typography.Link
+                            href={questionDescriptionUrl}
+                            target="_blank"
+                            styles={{
+                                borderBottom: "1px solid currentColor",
+                                marginLeft: "3px",
+                            }}
+                        >
                             {questionDescriptionUrlName}
                         </Typography.Link>
-                        )}
+                    )}
                 </Typography.Main>
             )}
 
-            {questionName && <Typography.Main
-                textAlign="start"
-                styles={{paddingLeft: "4px", paddingRight: "4px", margin: "0 0 6px"}}
-            >
-                {questionName}
-            </Typography.Main>}
+            {questionName && (
+                <Typography.Main
+                    textAlign="start"
+                    styles={{
+                        paddingLeft: "4px",
+                        paddingRight: "4px",
+                        margin: "0 0 6px",
+                    }}
+                >
+                    {questionName}
+                </Typography.Main>
+            )}
 
             {answerType !== "free_input" && (
                 <FromList {...props} combinationId={combinationId} />
@@ -66,7 +89,12 @@ const OfferQuestion = (props: OfferQuestionProps) => {
                 <FreeInput {...props} combinationId={combinationId} />
             )}
 
-            {answerType === "show_qr_link" && <QrCode />}
+            {answerType === "show_qr_link" && (
+                <QrCode
+                    combinationCode={combinationCode}
+                    combinationId={combinationId}
+                />
+            )}
 
             {!!questionHelp && (
                 <Box styles={{ marginTop: "4px" }}>
@@ -74,14 +102,11 @@ const OfferQuestion = (props: OfferQuestionProps) => {
                 </Box>
             )}
 
-            {answerType === "show_qr_link" &&
-                <Button
-                    fullWidth
-                    variant="outline"
-                >
+            {answerType === "show_qr_link" && (
+                <Button fullWidth variant="outline">
                     Назад
                 </Button>
-            }
+            )}
 
             {answerType === "upload_image" && <UploadImage {...props} />}
         </Container.Flex>

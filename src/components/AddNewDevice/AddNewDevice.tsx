@@ -15,12 +15,23 @@ const AddNewDevice = () => {
     const color = theme.colors.link.default;
 
     return (
-        <Card onClick={redirect(redirectPath)} fullWidth padding={"28px 40px"} hoverStyles={{
+        <Card onClick={redirect(redirectPath)} fullWidth padding="28px" hoverStyles={{
             cursor: "pointer"
         }}>
-            <Container.Flex direction="row" horizontalGap={10} margin="auto" justify="center">
+            <Container.Flex
+                direction="row"
+                horizontalGap={4}
+                alignItems="center"
+                justify="center"
+                styles={{
+                minHeight: "220px"
+            }} breakpoints={{
+                660: {
+                    minHeight: "0"
+                }
+            }}>
                 <Icon name="add-plus" color={color}/>
-                <Typography.Main color={color} margin={0}>
+                <Typography.Main color={color} margin={0} textAlign="start">
                     ДОБАВИТЬ УСТРОЙСТВО
                 </Typography.Main>
             </Container.Flex>    

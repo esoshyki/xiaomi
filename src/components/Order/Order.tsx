@@ -40,8 +40,14 @@ const Order = () => {
     }, [givenAnswers, getQuestions.result, questionsTree]);
 
     return (
-        <Container.Flex verticalGap={15} styles={{
-            minHeight: "324px"
+        <Container.Flex direction="row" alignItems="start" gap={36} styles={{
+
+        }} breakpoints={{
+            660: {
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "24px"
+            }
         }}>
             {!!currentItem && (
                 <OrderItem

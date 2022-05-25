@@ -47,7 +47,7 @@ const OfferDevice = (props: OfferDeviceProps) => {
                 <Typography.Title textAlign="start" styles={{ order: 0, margin: "0" }}>{deviceName}</Typography.Title>
                 {answers.map((answer, key) => (
                     <Container.Flex direction="row" key={key}>
-                        <Typography.Tertiary margin={"0 4px 0 0"}>{answer.name}</Typography.Tertiary>
+                        {answer.name && <Typography.Tertiary margin={"0 4px 0 0"}>{answer.name}</Typography.Tertiary>}
                         <Typography.Small>{answer.value}</Typography.Small>
                     </Container.Flex>
                 ))}

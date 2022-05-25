@@ -45,6 +45,9 @@ const orderSlice = createSlice({
                 state.currentItem.status = payload;
             }
         },
+        setQrCode(state: OrderState, { payload } : PayloadAction<string | undefined>) {
+            state.qrCode = payload;
+        },
         restoreOrderState(state: OrderState) {state = Object.assign(state, initialState)},
     },
     extraReducers: {
@@ -163,12 +166,18 @@ export const getOrderSendPhotosStatus = createSelector(
     orderData => orderData.sendPhoto.status,
 )
 
+export const getQrCode = createSelector(
+    (state: RootState) => state.order,
+    order => order.qrCode
+)
+
 export const {
     setOrderNumber,
     setItemNumber,
     setCurrentItem,
     setCurrentItemStatus,
-    restoreOrderState
+    restoreOrderState,
+    setQrCode
 } = orderSlice.actions
 
 export default orderSlice.reducer;

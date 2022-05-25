@@ -1,14 +1,23 @@
+import { useMemo } from "react";
 import { Box, Container, } from "../../ui";
 import QRCode from "react-qr-code";
 import useQuery from "../../../hooks/useQuery";
+import OfferLoader from "../OfferLoader";
 
-const OfferQR = () => {
+interface QrCodeProps {
+    combinationCode?: string
+    combinationId?: string
+}
 
-    const { makeStateData } = useQuery();
+const OfferQR = ({ combinationCode, combinationId } : QrCodeProps) => {
 
-    const link = makeStateData()
+    const { makePath } = useQuery();
 
-    const value = link + "?action=addPhoto"
+    const link = makePath();
+
+    const value = useMemo(() => link + "?qrcode=" + (combinationCode ?? combinationId), [link, combinationCode, combinationId]);
+
+    console.log(value)
 
     return (
         <Container.Flex fullWidth alignItems="start">
@@ -22,7 +31,7 @@ const OfferQR = () => {
                     lineHeight: "0"
                 }}
             >
-                <QRCode value={value} size={140} />
+                {(combinationCode || combinationId) ? <QRCode value={value} size={140} /> : <OfferLoader />}
             </Box>
         </Container.Flex>
     );

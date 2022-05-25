@@ -19,9 +19,9 @@ const getTreeQuestion = (
 
     if (!nextTree) return null;
 
-    const { combinationId, offerId, additionalAction } = nextTree;
+    const { combinationId, offerId, additionalAction, combinationCode } = nextTree;
 
-    setTreeData({ combinationId, offerId, additionalAction })
+    setTreeData({ combinationId, offerId, additionalAction, combinationCode })
 
     const nextQuestion = nextTree.questions.find(q => questionsAnswered.includes(q.questionId));
 
@@ -43,15 +43,16 @@ export const getFromTree = (tree: QuestionTree, answers: GivenAnswer[], setTreeP
         }
         return acc
     }, [] as string[]);
+
     const questionsAnswered = answers.reduce((acc, next) => {
         if (next.questionId) acc.push(next.questionId);
         if (next.questionKey) acc.push(next.questionKey);
         return acc;
     }, [] as string[]);
 
-    const { combinationId, offerId, additionalAction } = tree;
+    const { combinationId, offerId, additionalAction, combinationCode } = tree;
 
-    setTreeProps({ combinationId, offerId, additionalAction })
+    setTreeProps({ combinationId, offerId, additionalAction, combinationCode })
 
     const question = tree.questions.find(el => !questionsAnswered.includes(el.questionId));
 

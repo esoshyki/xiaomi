@@ -3,22 +3,11 @@ import { setAdditionalAction, setStep } from '../offerSlice';
 import { customErrors } from './../../helpers/getCustomError';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { CreateOrder, GetOrder, setItemNumber, setOrderNumber, SendPhoto, setCurrentItem, GetItemStatus } from './index';
-import {  call, put, select, takeEvery } from "redux-saga/effects";
+import {  call, put, select, takeLatest, takeLeading } from "redux-saga/effects";
 import { orderApi } from "../../api";
-import { GetOrderRequest, Order, CreateOrderResponse, OrderState } from "./types";
+import { GetOrderRequest, Order, CreateOrderResponse } from "./types";
 import { ResponseData } from "../../api/types";
 import { RootState } from "..";
-import { User } from '../userSlice/types';
-
-function* getOrderData() {
-    const state: RootState = yield select();
-    yield state.order;
-}
-
-function* getUserData() {
-    const state: RootState = yield select();
-    yield state.user.user
-}
 
 function* createOrderWorker() {
     const state: RootState = yield select();
@@ -48,6 +37,7 @@ function* getOrderWorker({ payload }: PayloadAction<GetOrderRequest | undefined>
     const state: RootState = yield select();
     const orderNumber = payload?.orderNumber ?? state.order.order.number;
     const itemNumber = payload?.itemNumber ?? state.order.order.itemNumber;
+    const qrCode = state.order.qrCode;
     const user = state.user.user;
     const errors = [];
     if (!orderNumber) errors.push(customErrors.noOrderId);
@@ -71,32 +61,11 @@ function* getOrderWorker({ payload }: PayloadAction<GetOrderRequest | undefined>
         yield put(GetOrder.fulfill());
         yield put(setAdditionalAction());
 
-        const currentItem = response.data?.items.find(item => item.itemNumber === itemNumber);
-        if (currentItem) {
-            if (currentItem.status === "F") {
-                yield put(setStep("summary"));
-                yield put(setCurrentItem(currentItem));
-            }
-            yield put(resetQuestions());
-            yield put(setGivenAnswers({
-                combinationId: currentItem.combinationId,
-                combinationCode: currentItem.combinationCode,
-                answers: []
-            }));
-            yield put(setCurrentItem(currentItem));
-        }
     }
-}
-
-function* createOrderSuccessWorker() {
-
 }
 
 function* sendPhotoWorker({ payload }: PayloadAction<File[] | undefined>) {
     const state: RootState = yield select();
-
-    
-
     const user = state.user.user;
 
     if (!state.order) return;
@@ -151,10 +120,30 @@ function* getItemStatusRequestWorker () {
     yield put(GetItemStatus.fulfill())
 }
 
+function* GetOrderSuccessWorker({ payload } : PayloadAction<Order>) {
+    const state : RootState = yield select();
+    const { qrCode, order } = state.order;
+    const { itemNumber } = order;
+    const currentItem = payload.items.find(item => item.itemNumber === itemNumber);
+    if (currentItem) {
+        if (currentItem.status === "F") {
+            yield put(setStep("summary"));
+            yield put(setCurrentItem(currentItem));
+        }
+        yield put(resetQuestions());
+        yield put(setGivenAnswers({
+            combinationId: qrCode ? undefined : currentItem.combinationId,
+            combinationCode: qrCode ?? currentItem.combinationCode,
+            answers: []
+        }));
+        yield put(setCurrentItem(currentItem));
+    }
+}
+
 export default function* orderSagas() {
-    yield takeEvery(CreateOrder.REQUEST, createOrderWorker);
-    yield takeEvery(GetOrder.REQUEST, getOrderWorker)
-    yield takeEvery(CreateOrder.fulfill, createOrderSuccessWorker);
-    yield takeEvery(SendPhoto.REQUEST, sendPhotoWorker);
-    yield takeEvery(GetItemStatus.REQUEST, getItemStatusRequestWorker)
+    yield takeLeading(CreateOrder.REQUEST, createOrderWorker);
+    yield takeLeading(GetOrder.REQUEST, getOrderWorker)
+    yield takeLeading(SendPhoto.REQUEST, sendPhotoWorker);
+    yield takeLeading(GetItemStatus.REQUEST, getItemStatusRequestWorker);
+    yield takeLatest(GetOrder.SUCCESS, GetOrderSuccessWorker)
 }

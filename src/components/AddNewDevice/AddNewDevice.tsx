@@ -7,8 +7,6 @@ const AddNewDevice = () => {
 
     const { orderNumber, redirect } = useQuery();
 
-    console.log(orderNumber);
-
     const redirectPath = "/create/" + orderNumber
 
     const theme = useTheme();

@@ -8,10 +8,16 @@ import { OfferQuestions } from ".";
 import OfferCard from "./OfferCard";
 
 const Offer = () => {
-    const { step, deviceInfo, givenAnswers, getQuestions, progress, question, isLoading, changeContent } =
-        useOfferData();
-
-    console.log(question)
+    const {
+        step,
+        deviceInfo,
+        givenAnswers,
+        getQuestions,
+        progress,
+        question,
+        isLoading,
+        changeContent,
+    } = useOfferData();
 
     const [hint, setHint] = useState(true);
     const [cardHeight, setCardHeight] = useState("auto");
@@ -54,7 +60,7 @@ const Offer = () => {
                     height: cardHeight,
                     width: cardWidth,
                     flexShrink: 0,
-                    maxWidth: "312px"
+                    maxWidth: "312px",
                 }}
             >
                 <Info>
@@ -74,7 +80,11 @@ const Offer = () => {
                 </Button>
             </Card>
 
-            <OfferCard isLoading={isLoading} progress={progress} setHint={() => setHint(false)}>
+            <OfferCard
+                isLoading={isLoading}
+                progress={progress}
+                setHint={() => setHint(false)}
+            >
                 {deviceInfo && (
                     <OfferDevice
                         deviceInfo={deviceInfo}
@@ -89,10 +99,9 @@ const Offer = () => {
                         changeContent={changeContent}
                     />
                 )}
-                {step === "createOrderFailure" && <Typography.Error>
-                        Ошибка создания заказа.
-                    </Typography.Error>}
-
+                {step === "createOrderFailure" && (
+                    <Typography.Error>Ошибка создания заказа.</Typography.Error>
+                )}
             </OfferCard>
 
             {step === "pending" && <AddNewDevice />}

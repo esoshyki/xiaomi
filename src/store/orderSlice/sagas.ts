@@ -1,14 +1,24 @@
-import { getGivenAnswers, GetQuestions, resetQuestions, setGivenAnswers } from './../offerSlice/index';
-import { setAdditionalAction, setQuestionsTree, setStep } from '../offerSlice';
+import { resetQuestions, setGivenAnswers } from './../offerSlice/index';
+import { setAdditionalAction, setStep } from '../offerSlice';
 import { customErrors } from './../../helpers/getCustomError';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { CreateOrder, GetOrder, setItemNumber, setOrderNumber, SendPhoto, setCurrentItem, GetItemStatus } from './index';
-import { takeLeading, call, put, select, takeEvery, takeLatest } from "redux-saga/effects";
+import {  call, put, select, takeEvery } from "redux-saga/effects";
 import { orderApi } from "../../api";
-import { GetOrderRequest, Order, CreateOrderResponse } from "./types";
+import { GetOrderRequest, Order, CreateOrderResponse, OrderState } from "./types";
 import { ResponseData } from "../../api/types";
 import { RootState } from "..";
-import { resetAdditionActions } from '../offerSlice/'
+import { User } from '../userSlice/types';
+
+function* getOrderData() {
+    const state: RootState = yield select();
+    yield state.order;
+}
+
+function* getUserData() {
+    const state: RootState = yield select();
+    yield state.user.user
+}
 
 function* createOrderWorker() {
     const state: RootState = yield select();
@@ -84,7 +94,14 @@ function* createOrderSuccessWorker() {
 
 function* sendPhotoWorker({ payload }: PayloadAction<File[] | undefined>) {
     const state: RootState = yield select();
+
+    
+
     const user = state.user.user;
+
+    if (!state.order) return;
+    if (!state.order.order) return;
+
     const { itemNumber, number } = state.order.order;
 
     if (!user) {
@@ -113,7 +130,13 @@ function* sendPhotoWorker({ payload }: PayloadAction<File[] | undefined>) {
 
 function* getItemStatusRequestWorker () {
     const state: RootState = yield select();
+
+    if (!state) return;
+    if (!state.order) return;
+    if (!state.order.order) return;
+
     const user = state.user.user;
+
     const { itemNumber, number: orderNumber } = state.order.order;
     if (!orderNumber || !itemNumber || !user) return;
     const response : ResponseData<{status: string}> = yield call(orderApi.getItemStatus, orderNumber, itemNumber, user);

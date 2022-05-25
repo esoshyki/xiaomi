@@ -6,10 +6,9 @@ const OfferQR = () => {
 
     const { makeStateData } = useQuery();
 
-    const basePath = process.env.REACT_APP_BASE_PATH;
-    const params = makeStateData()
+    const link = makeStateData()
 
-    const value = basePath + (params ? "?" : "") + params;
+    const value = link + "?action=addPhoto"
 
     return (
         <Container.Flex fullWidth alignItems="start">

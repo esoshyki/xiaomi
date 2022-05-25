@@ -35,6 +35,7 @@ const WithUrl = memo(() => {
             <Route path="/partner" element={<PartnerPage />} />
             <Route path="/help" element={<HelpPage />} />
             <Route path="/create" element={<CreateOfferPage />} />
+            <Route path="/create/:orderNumber" element={<CreateOfferPage />} />
             <Route path="/help" element={<HelpPage />} />
             <Route path="/order" element={<OrderPage />} />
             <Route path="/order/:orderNumber" element={<OrderPage />} />

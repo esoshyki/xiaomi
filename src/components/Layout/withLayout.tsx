@@ -1,4 +1,4 @@
-import { ComponentType, ReactElement, useEffect } from "react";
+import { ComponentType, ReactElement, useEffect, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Bearer from "./Bearer";
 import Header from "./Header";
@@ -37,10 +37,8 @@ export const withLayout =
                 dispatch(resetCheckout());
             }
         }, [
-            user.user,
+            user,
             dispatch,
-            user.checkAuth.pending,
-            user.checkAuth.result,
         ]);
 
         return (

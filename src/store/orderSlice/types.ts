@@ -1,5 +1,7 @@
-export type CreateOrderRequest = {
+import { SendPhoto } from './index';
+export type CreateOrChangeOrderRequest = {
     combinationId?: string
+    number?: string
     offerId?: string
     deviceId?: string
     questions: {[questionId: string] : string}
@@ -22,6 +24,7 @@ export type CreateOrderResponse = {
 export type GetOrderRequest = {
     orderNumber: string
     itemNumber: string
+    create?: true
 };
 
 
@@ -53,6 +56,12 @@ export type Order = {
     items: OrderItem[]
 }
 
+export type SendPhotoData = {
+    files: File[]
+    itemNumber?: string
+    orderNumber?: string
+}
+
 export type GetOrderResponse = ApiResponse<Order>
 
 export type OrderState = {
@@ -64,11 +73,9 @@ export type OrderState = {
         loading: boolean,
         errors: string[]
     },
-    currentItem: OrderItem | null,
     sendPhoto: {
         status: "success" | "error" | null
         loading: boolean
     }
-    orders: Order[],
     qrCode?: string
 }

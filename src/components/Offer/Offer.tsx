@@ -1,13 +1,19 @@
 import { useOfferData } from "../../hooks/useOfferData";
 import Container from "../ui/Container";
-import { Card, Info, Typography, Button } from "../ui";
-import { memo, useEffect, useRef, useState, useMemo } from "react";
+import { Typography, Button } from "../ui";
+import { memo, useEffect, useRef, useState, useCallback } from "react";
 import OfferDevice from "./OfferDevice";
-import AddNewDevice from "../AddNewDevice";
 import { OfferQuestions } from ".";
 import OfferCard from "./OfferCard";
+import OfferSummary from "./OfferSummary";
 
-const Offer = () => {
+const Offer = ({
+    orderNumber,
+    itemNumber,
+}: {
+    orderNumber?: string;
+    itemNumber?: string;
+}) => {
     const {
         step,
         deviceInfo,
@@ -16,8 +22,12 @@ const Offer = () => {
         progress,
         question,
         isLoading,
+        changeStep,
         changeContent,
-    } = useOfferData();
+        getItemStatus,
+        currentItem,
+        orderData,
+    } = useOfferData(orderNumber, itemNumber);
 
     const [hint, setHint] = useState(true);
     const [cardHeight, setCardHeight] = useState("auto");
@@ -35,6 +45,11 @@ const Offer = () => {
         }
     }, [setCardHeight, setCardWidth]);
 
+    const onClick = useCallback(() => {
+        setHint(false);
+        changeStep("questions");
+    }, [])
+
     return (
         <Container.Flex
             gap={36}
@@ -49,41 +64,43 @@ const Offer = () => {
                 },
             }}
         >
-            <Card
-                ref={hintRef}
-                fullWidth
-                isHidden={!hint || undefined}
-                padding="50px 30px"
-                animateHeight={cardHeight !== "auto"}
-                animateWidth={cardWidth !== "auto"}
-                styles={{
-                    height: cardHeight,
-                    width: cardWidth,
-                    flexShrink: 0,
-                    maxWidth: "312px",
-                }}
-            >
-                <Info>
-                    За 2 минуты рассчитайте скидку на покупку у 
-                    <Typography.Link href="/" target="_blank">
-                        партнёров
-                    </Typography.Link>
-                    , взамен на ваш старый смартфон
-                </Info>
-                <Button
-                    variant="outline"
+            {/* {step === "start" && (
+                <Card
+                    ref={hintRef}
                     fullWidth
-                    uppercase
-                    styles={{ marginTop: "16px" }}
+                    isHidden={!hint || undefined}
+                    padding="50px 30px"
+                    animateHeight={cardHeight !== "auto"}
+                    animateWidth={cardWidth !== "auto"}
+                    styles={{
+                        height: cardHeight,
+                        width: cardWidth,
+                        flexShrink: 0,
+                        maxWidth: "312px",
+                    }}
                 >
-                    Подробнее
-                </Button>
-            </Card>
+                    <Info>
+                        За 2 минуты рассчитайте скидку на покупку у 
+                        <Typography.Link href="/" target="_blank">
+                            партнёров
+                        </Typography.Link>
+                        , взамен на ваш старый смартфон
+                    </Info>
+                    <Button
+                        variant="outline"
+                        fullWidth
+                        uppercase
+                        styles={{ marginTop: "16px" }}
+                    >
+                        Подробнее
+                    </Button>
+                </Card>
+            )} */}
 
             <OfferCard
                 isLoading={isLoading}
                 progress={progress}
-                setHint={() => setHint(false)}
+                onClick={onClick}
             >
                 {deviceInfo && (
                     <OfferDevice
@@ -102,9 +119,16 @@ const Offer = () => {
                 {step === "createOrderFailure" && (
                     <Typography.Error>Ошибка создания заказа.</Typography.Error>
                 )}
+
+                {step === "summary" && !!currentItem && (
+                    <OfferSummary
+                        item={currentItem}
+                        getItemStatus={getItemStatus}
+                        isLoading={!!orderData}
+                    />
+                )}
             </OfferCard>
 
-            {step === "pending" && <AddNewDevice />}
         </Container.Flex>
     );
 };

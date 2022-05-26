@@ -1,19 +1,20 @@
 import { useRef, useEffect } from "react";
 import { useTheme } from "styled-components";
 import { OrderItem } from "../../store/orderSlice/types";
-import OfferLoader from "../Offer/OfferLoader";
 import { Container, Typography } from "../ui";
+import OrderDevice from "./OrderDevice";
 
-interface OrderItemSummaryProps {
-    data: OrderItem
+interface OfferItemSummaryProps {
     getItemStatus: () => void
     isLoading: boolean
+    item: OrderItem
 }
 
-const OrderItemSummary = (props: OrderItemSummaryProps) => {
+const OfferSummary = (props: OfferItemSummaryProps) => {
     const theme = useTheme();
-    const { data, getItemStatus, isLoading } = props;
-    const { status } = data;
+    const { getItemStatus, isLoading, item } = props;
+
+    const { status } = item;
 
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -28,6 +29,9 @@ const OrderItemSummary = (props: OrderItemSummaryProps) => {
 
     return (
         <Container.Flex>
+
+            <OrderDevice data={item} />
+
             {status !== "complete" && (
                 <Typography.Title color={theme.colors.text.secondary}>
                     Подтверждение стоимости
@@ -54,4 +58,4 @@ const OrderItemSummary = (props: OrderItemSummaryProps) => {
     );
 };
 
-export default OrderItemSummary;
+export default OfferSummary;

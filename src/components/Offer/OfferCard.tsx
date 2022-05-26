@@ -1,16 +1,16 @@
 import { Card, Container, Progress, Typography } from "../ui";
 import OfferLoader from "./OfferLoader";
-import { ReactNode, useMemo, useRef } from "react";
+import { ReactNode, useCallback, useMemo, useRef } from "react";
 
 interface OfferCardProps {
     children: ReactNode;
-    setHint?: (value: boolean) => void;
+    onClick?: () => void;
     progress: number;
     isLoading: boolean;
 }
 
 const OfferCard = ({
-    setHint,
+    onClick,
     children,
     progress,
     isLoading,
@@ -22,16 +22,18 @@ const OfferCard = ({
         if (cardRef.current) {
             return cardRef.current.offsetHeight
         }
-    }, [children])
+    }, [children]);
+
+    const _onClick = useCallback(() => {
+        onClick && onClick()
+    }, [])
    
     return (
         <Card
             ref={cardRef}
             padding="28px"
             fullWidth
-            onClick={() => {
-                setHint && setHint(false);
-            }}
+            onClick={_onClick}
             isQuestion={true}
             styles={{
                 height: height ? `${height}px` : "auto"

@@ -1,9 +1,7 @@
-import { OfferState } from './../offerSlice/types';
 import { RootState } from '..';
-import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { OrderState, CreateOrderResponse, GetOrderRequest, Order, OrderItem } from './types';
+import { createSlice, createSelector, PayloadAction } from '@reduxjs/toolkit';
+import { OrderState, CreateOrderResponse, GetOrderRequest, Order, OrderItem, SendPhotoData } from './types';
 import { createRoutine } from 'redux-saga-routines';
-import { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState : OrderState = {
     order: {
@@ -14,18 +12,16 @@ const initialState : OrderState = {
         loading: false,
         errors: []
     },
-    currentItem: null,
     sendPhoto: {
         status: null,
         loading: false
     },
-    orders: [],
 }
 
 export const GetOrder = createRoutine("order/Get-Order");
-export const CreateOrder = createRoutine("order/Create-Order");
+export const CreateOrChangeOrder = createRoutine("order/Create-Or-Change-Order");
 export const SendPhoto = createRoutine("order/Send-Photo");
-export const GetItemStatus = createRoutine("order/Get-Item-Status")
+export const GetItemStatus = createRoutine("order/Get-Item-Status");
 
 const orderSlice = createSlice({
     name: "order",
@@ -37,13 +33,8 @@ const orderSlice = createSlice({
         setItemNumber(state: OrderState, { payload } : PayloadAction<string>) {
             state.order.itemNumber = payload
         },
-        setCurrentItem(state: OrderState, { payload } : PayloadAction<OrderItem | null>) {
-            state.currentItem = payload
-        },
-        setCurrentItemStatus(state: OrderState, { payload } : PayloadAction<string>) {
-            if (state.currentItem) {
-                state.currentItem.status = payload;
-            }
+        setOrderStatus(state: OrderState, { payload } : PayloadAction<"success" | "error" | null>) {
+            state.order.status = payload
         },
         setQrCode(state: OrderState, { payload } : PayloadAction<string | undefined>) {
             state.qrCode = payload;
@@ -51,17 +42,17 @@ const orderSlice = createSlice({
         restoreOrderState(state: OrderState) {state = Object.assign(state, initialState)},
     },
     extraReducers: {
-        [CreateOrder.REQUEST](state) {
+        [CreateOrChangeOrder.REQUEST](state) {
             state.order.loading = true;
         },
-        [CreateOrder.FAILURE](state, { payload }: PayloadAction<string[]>) {
+        [CreateOrChangeOrder.FAILURE](state, { payload }: PayloadAction<string[]>) {
             state.order.status = "error";
             state.order.errors = payload;
         },
-        [CreateOrder.SUCCESS](state, { payload }: PayloadAction<CreateOrderResponse>) {
+        [CreateOrChangeOrder.SUCCESS](state, { payload }: PayloadAction<CreateOrderResponse>) {
             state.order.status = "success";
         },
-        [CreateOrder.FULFILL](state) {
+        [CreateOrChangeOrder.FULFILL](state) {
             state.order.loading = false;
         },
         [GetOrder.REQUEST](state, { payload } : PayloadAction<GetOrderRequest | undefined>) {
@@ -71,13 +62,13 @@ const orderSlice = createSlice({
             state.order.status = "error";
             state.order.errors = payload;
         },
-        [GetOrder.SUCCESS](state, { payload }: PayloadAction<Order>) {
-            state.order.data = payload;
+        [GetOrder.SUCCESS](state, { payload }: PayloadAction<{data: Order, create?: true}>) {
+            state.order.data = payload.data;
         },
         [GetOrder.FULFILL](state) {
             state.order.loading = false
         },
-        [SendPhoto.REQUEST](state, { payload } : PayloadAction<File[] | undefined>) {
+        [SendPhoto.REQUEST](state, { payload } : PayloadAction<SendPhotoData>) {
             state.sendPhoto.loading = true
         },
         [SendPhoto.FAILURE](state, { payload } : PayloadAction<string[]>) {
@@ -103,13 +94,13 @@ const orderSlice = createSlice({
         },
         [GetItemStatus.FULFILL](state) {
             state.order.loading = false;
-        }
+        },
     }
 });
 
 export const getOrderData = createSelector(
     (state: RootState) => state.order,
-    orderData => orderData.order
+    orderData => orderData
 )
 
 export const getOrderErrors = createSelector(
@@ -132,20 +123,10 @@ export const getItemNumber = createSelector(
     orderData => orderData.order.itemNumber
 )
 
-export const getOrdersData = createSelector(
-    (state: RootState) => state.order,
-    orderData => orderData.orders
-);
-
 export const getOrderPending = createSelector(
     (state: RootState) => state.order,
     order => order.order.loading
 );
-
-export const getCurrentItem = createSelector(
-    (state: RootState) => state.order,
-    order => order.currentItem
-)
 
 export const getCreateOrderResult = createSelector(
     (state: RootState) => state.order,
@@ -174,10 +155,9 @@ export const getQrCode = createSelector(
 export const {
     setOrderNumber,
     setItemNumber,
-    setCurrentItem,
-    setCurrentItemStatus,
     restoreOrderState,
-    setQrCode
+    setQrCode,
+    setOrderStatus
 } = orderSlice.actions
 
 export default orderSlice.reducer;

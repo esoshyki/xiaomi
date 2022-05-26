@@ -1,12 +1,13 @@
 import { RootState } from './../../../store/index';
-import { CreateOrderRequest } from '../../../store/orderSlice/types';
+import { CreateOrChangeOrderRequest } from '../../../store/orderSlice/types';
 import { collectAnswers } from './collectAnswers';
 
-export const formatCreateOrderRequest = (state: RootState) : CreateOrderRequest => {
+export const formatCreateOrChangeOrderRequest = (state: RootState) : CreateOrChangeOrderRequest => {
     const { givenAnswers, deviceInfo } = state.offer;
     const { combinationId, offerId } = givenAnswers;
+    const orderNumber = state.order.order.number;
 
-    const obj: CreateOrderRequest = {
+    const obj: CreateOrChangeOrderRequest = {
         questions: {}
     };
 
@@ -21,6 +22,10 @@ export const formatCreateOrderRequest = (state: RootState) : CreateOrderRequest 
     if (deviceInfo?.deviceID && !offerId) {
         obj.productId = deviceInfo.deviceID
     };
+
+    if (orderNumber) {
+        obj.number = orderNumber
+    }
 
     obj.questions = collectAnswers(givenAnswers.answers.filter(ans => !ans.answerId))
     

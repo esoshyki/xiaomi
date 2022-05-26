@@ -17,10 +17,11 @@ import {
     CreateOfferPage,
     OrderPage,
 } from ".";
-import useURL from "../hooks/useUrl";
+import { useRedirect } from "../hooks/useRedirect";
 
 const WithUrl = memo(() => {
-    useURL();
+
+    useRedirect();
 
     return (
         <Routes>
@@ -32,11 +33,9 @@ const WithUrl = memo(() => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/partner" element={<PartnerPage />} />
             <Route path="/help" element={<HelpPage />} />
-            <Route path="/create" element={<CreateOfferPage />} />
-            <Route path="/create/:orderNumber" element={<CreateOfferPage />} />
+            <Route path="/create" element={<OrderPage />} />
+            <Route path="/create/:orderNumber" element={<OrderPage />} />
             <Route path="/help" element={<HelpPage />} />
-            <Route path="/order" element={<OrderPage />} />
-            <Route path="/order/:orderNumber" element={<OrderPage />} />
             <Route
                 path="/order/:orderNumber/:itemNumber"
                 element={<OrderPage />}

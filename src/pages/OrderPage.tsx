@@ -1,17 +1,20 @@
-import React, { Fragment, useEffect, useMemo } from "react";
-import Offer from "../components/Offer";
+import { memo } from "react";
 import { withLayout } from "../components/Layout/withLayout";
-import { useLocation, useParams } from "react-router-dom";
-import useOrderData from "../hooks/useOrderData";
 import Order from "../components/Order";
+import useURL from "../hooks/useUrl";
 
 const OrderPage = () => {
+    const { orderNumber, itemNumber, qrCode } = useURL("order");
+
+    console.log(orderNumber, itemNumber, qrCode);
 
     return (
-        <Fragment>
-            <Order />
-        </Fragment>
+        <Order
+            orderNumber={orderNumber}
+            itemNumber={itemNumber}
+            qrCode={qrCode}
+        />
     );
 };
 
-export default withLayout(OrderPage, "Заказ");
+export default memo(withLayout(OrderPage, "Заказ"));

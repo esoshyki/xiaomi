@@ -76,6 +76,7 @@ const offerSlice = createSlice({
         resetQuestions(state: OfferState) {
             state.questionsData = null;
             state.questionsTree = null;
+            state.getQuestions.result = null;
         } ,
         setCombinationsId(state: OfferState, { payload }: PayloadAction<string | undefined>) {
             state.givenAnswers.combinationId = payload;
@@ -101,6 +102,10 @@ const offerSlice = createSlice({
         }
     },
     extraReducers: {
+        [GetQuestions.REQUEST](state) {
+            state.getQuestions.result = null;
+            state.getQuestions.loading = true
+        },
         [GetQuestions.FAILURE](state, { payload }: PayloadAction<ServerError[]>) {
             state.getQuestions.result = "error";
             state.getQuestions.errors = payload
@@ -131,8 +136,12 @@ export const getQuestionsResult = createSelector(
 )
 
 export const getOfferData = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer
+    (state: RootState) => ({offer: state.offer, view: state.view, order: state.order}),
+    data => ({
+        offer: data.offer,
+        orderData: data.order.order.data,
+        redirectTo: data.view.redirectTo
+    })
 )
 
 export const getChangeContent = createSelector(

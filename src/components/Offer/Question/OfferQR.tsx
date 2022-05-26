@@ -17,8 +17,6 @@ const OfferQR = ({ combinationCode, combinationId } : QrCodeProps) => {
 
     const value = useMemo(() => link + "?qrcode=" + (combinationCode ?? combinationId), [link, combinationCode, combinationId]);
 
-    console.log(value)
-
     return (
         <Container.Flex fullWidth alignItems="start">
             <Box

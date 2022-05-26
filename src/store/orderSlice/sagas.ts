@@ -1,57 +1,64 @@
-import { resetQuestions, setGivenAnswers } from './../offerSlice/index';
+import { resetQuestions, setGivenAnswers, GetQuestions, restoreOffer } from './../offerSlice/index';
 import { setAdditionalAction, setStep } from '../offerSlice';
 import { customErrors } from './../../helpers/getCustomError';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { CreateOrder, GetOrder, setItemNumber, setOrderNumber, SendPhoto, setCurrentItem, GetItemStatus } from './index';
+import { CreateOrChangeOrder, GetOrder, setItemNumber, setOrderNumber, SendPhoto, GetItemStatus } from './index';
 import {  call, put, select, takeLatest, takeLeading } from "redux-saga/effects";
 import { orderApi } from "../../api";
-import { GetOrderRequest, Order, CreateOrderResponse } from "./types";
+import { GetOrderRequest, Order, CreateOrderResponse, SendPhotoData } from "./types";
 import { ResponseData } from "../../api/types";
 import { RootState } from "..";
+import { redirectTo } from '../viewSlice';
 
 function* createOrderWorker() {
     const state: RootState = yield select();
-    const response: CreateOrderResponse = yield call(orderApi.createOrder, state);
-    yield put(setStep("createOrder"));
+    const orderNumber = state.order.order.number;
+    const createOrderStatus = state.order.order.status;
+
+    if (createOrderStatus === "success") {
+        return;
+    }
+    
+    const response: CreateOrderResponse = yield call((orderNumber ? orderApi.addItemToOrder : orderApi.createOrder), state);
 
     if (response.status === "success") {
-        yield put(CreateOrder.success(response.data));
+        yield put(CreateOrChangeOrder.success(response.data));
         const itemNumber = response.data?.itemNumber;
         const orderNumber = response.data?.number;
-
         if (itemNumber && orderNumber) {
-            yield put(setOrderNumber(orderNumber));
-            yield put(setItemNumber(itemNumber));
+            yield put(CreateOrChangeOrder.fulfill())
+            yield put(restoreOffer());
+            yield put(redirectTo(`/order/${orderNumber}/${itemNumber}`));
+            return
         }
         yield put(setStep("questions"));
     }
     if (response.status === "error") {
-        yield put(CreateOrder.failure(response.errors));
+        yield put(CreateOrChangeOrder.failure(response.errors));
         yield put(setStep("createOrderFailure"))
     };
 
-    yield put(CreateOrder.fulfill())
+    yield put(CreateOrChangeOrder.fulfill())
 };
 
 function* getOrderWorker({ payload }: PayloadAction<GetOrderRequest | undefined>) {
     const state: RootState = yield select();
     const orderNumber = payload?.orderNumber ?? state.order.order.number;
     const itemNumber = payload?.itemNumber ?? state.order.order.itemNumber;
-    const qrCode = state.order.qrCode;
     const user = state.user.user;
     const errors = [];
     if (!orderNumber) errors.push(customErrors.noOrderId);
-    if (!itemNumber) errors.push(customErrors.noItemHash);
     if (!user) errors.push(customErrors.noUser);
 
     if (errors.length) {
         yield put(GetOrder.failure(errors))
     } else {
-        if (!orderNumber || !itemNumber || !user) return;
-        const response: ResponseData<Order> = yield call(orderApi.getOrderData, orderNumber, itemNumber, user);
+        if (!orderNumber || !user) return;
+        const response: ResponseData<Order> = yield call(orderApi.getOrderData, orderNumber, user, itemNumber);
 
         if (response.status === "success") {
-            yield put(GetOrder.success(response.data));
+            yield put(restoreOffer());
+            yield put(GetOrder.success({ data: response.data, itemNumber }));
         }
 
         if (response.status === "error") {
@@ -64,30 +71,28 @@ function* getOrderWorker({ payload }: PayloadAction<GetOrderRequest | undefined>
     }
 }
 
-function* sendPhotoWorker({ payload }: PayloadAction<File[] | undefined>) {
+function* sendPhotoWorker({ payload }: PayloadAction<SendPhotoData>) {
     const state: RootState = yield select();
     const user = state.user.user;
 
-    if (!state.order) return;
-    if (!state.order.order) return;
-
-    const { itemNumber, number } = state.order.order;
+    const { itemNumber, orderNumber, files } = payload
 
     if (!user) {
         yield put(SendPhoto.failure([customErrors.noUser]));
         return;
     }
 
-    if (!payload) {
+    if (!files || !itemNumber || !orderNumber) {
         yield put(SendPhoto.failure(["Ошибка загрузки картинок"]));
         return;
     }
 
-    const response: ResponseData<any> = yield call(orderApi.sendPhoto, payload, number, itemNumber, user);
+    const response: ResponseData<any> = yield call(orderApi.sendPhoto, files, orderNumber, itemNumber, user);
 
     if (response.status === "success") {
         yield put(setAdditionalAction());
         yield put(SendPhoto.success(response.data));
+        yield put(GetQuestions.request())
      };
 
     if (response.status === "error") {
@@ -108,7 +113,7 @@ function* getItemStatusRequestWorker () {
 
     const { itemNumber, number: orderNumber } = state.order.order;
     if (!orderNumber || !itemNumber || !user) return;
-    const response : ResponseData<{status: string}> = yield call(orderApi.getItemStatus, orderNumber, itemNumber, user);
+    const response : ResponseData<{status: string}> = yield call(orderApi.getItemStatus, orderNumber, user, itemNumber);
 
     if (response.status === "success") {
         yield put(GetItemStatus.success(response.data));
@@ -120,15 +125,14 @@ function* getItemStatusRequestWorker () {
     yield put(GetItemStatus.fulfill())
 }
 
-function* GetOrderSuccessWorker({ payload } : PayloadAction<Order>) {
+function* getOrderSuccessWorker({ payload } : PayloadAction<{data: Order, itemNumber?: string}>) {
     const state : RootState = yield select();
     const { qrCode, order } = state.order;
-    const { itemNumber } = order;
-    const currentItem = payload.items.find(item => item.itemNumber === itemNumber);
+    const orderData = payload.data;
+    const currentItem = orderData.items.find(item => item.itemNumber === payload.itemNumber);
     if (currentItem) {
         if (currentItem.status === "F") {
             yield put(setStep("summary"));
-            yield put(setCurrentItem(currentItem));
         }
         yield put(resetQuestions());
         yield put(setGivenAnswers({
@@ -136,14 +140,13 @@ function* GetOrderSuccessWorker({ payload } : PayloadAction<Order>) {
             combinationCode: qrCode ?? currentItem.combinationCode,
             answers: []
         }));
-        yield put(setCurrentItem(currentItem));
-    }
+    };
 }
 
 export default function* orderSagas() {
-    yield takeLeading(CreateOrder.REQUEST, createOrderWorker);
-    yield takeLeading(GetOrder.REQUEST, getOrderWorker)
+    yield takeLeading(CreateOrChangeOrder.REQUEST, createOrderWorker);
+    yield takeLatest(GetOrder.REQUEST, getOrderWorker)
     yield takeLeading(SendPhoto.REQUEST, sendPhotoWorker);
     yield takeLeading(GetItemStatus.REQUEST, getItemStatusRequestWorker);
-    yield takeLatest(GetOrder.SUCCESS, GetOrderSuccessWorker)
+    yield takeLatest(GetOrder.SUCCESS, getOrderSuccessWorker)
 }

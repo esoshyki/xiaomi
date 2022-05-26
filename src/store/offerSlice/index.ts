@@ -144,44 +144,9 @@ export const getOfferData = createSelector(
     })
 )
 
-export const getChangeContent = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer.changeQuestionsContent
-)
-
-export const getQuestionTree = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer.questionsTree
-)
-
-export const getQuestionData = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer.questionsData
-)
-
-export const getQuestionsPending = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer.getQuestions.loading
-)
-
-export const getGivenAnswers = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer.givenAnswers
-)
-
-export const getOfferStep = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer.step
-)
-
-export const getAdditionAction = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer.givenAnswers.additionalAction
-)
-
-export const getCombinationCode = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer.givenAnswers.combinationCode
+export const getSendPhotoStatus = createSelector(
+    (state: RootState) => state.order,
+    order => order.sendPhoto.status
 )
 
 export const {

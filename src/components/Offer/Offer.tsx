@@ -45,10 +45,12 @@ const Offer = ({
         }
     }, [setCardHeight, setCardWidth]);
 
+    console.log(currentItem);
+
     const onClick = useCallback(() => {
         setHint(false);
         changeStep("questions");
-    }, [])
+    }, []);
 
     return (
         <Container.Flex
@@ -64,39 +66,6 @@ const Offer = ({
                 },
             }}
         >
-            {/* {step === "start" && (
-                <Card
-                    ref={hintRef}
-                    fullWidth
-                    isHidden={!hint || undefined}
-                    padding="50px 30px"
-                    animateHeight={cardHeight !== "auto"}
-                    animateWidth={cardWidth !== "auto"}
-                    styles={{
-                        height: cardHeight,
-                        width: cardWidth,
-                        flexShrink: 0,
-                        maxWidth: "312px",
-                    }}
-                >
-                    <Info>
-                        За 2 минуты рассчитайте скидку на покупку у 
-                        <Typography.Link href="/" target="_blank">
-                            партнёров
-                        </Typography.Link>
-                        , взамен на ваш старый смартфон
-                    </Info>
-                    <Button
-                        variant="outline"
-                        fullWidth
-                        uppercase
-                        styles={{ marginTop: "16px" }}
-                    >
-                        Подробнее
-                    </Button>
-                </Card>
-            )} */}
-
             <OfferCard
                 isLoading={isLoading}
                 progress={progress}
@@ -128,7 +97,6 @@ const Offer = ({
                     />
                 )}
             </OfferCard>
-
         </Container.Flex>
     );
 };

@@ -1,4 +1,4 @@
-import useOrderData from "../../hooks/useOrderData";
+import { useOfferData } from "../../hooks/useOfferData";
 import AddNewDevice from "../AddNewDevice";
 import Offer from "../Offer";
 import OfferLoader from "../Offer/OfferLoader";
@@ -14,7 +14,7 @@ const Order = ({
     itemNumber?: string
     qrCode: boolean
 }) => {
-    const { orderData } = useOrderData(orderNumber);
+    const { orderData } = useOfferData(orderNumber);
 
     console.log(orderData, orderNumber, itemNumber)
 

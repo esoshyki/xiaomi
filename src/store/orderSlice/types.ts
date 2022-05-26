@@ -27,6 +27,10 @@ export type GetOrderRequest = {
     create?: true
 };
 
+export type OrderRequest<T> = {
+    orderNumber?: string
+    itemNumber?: string
+} & T
 
 type ApiResponse<T> = {
     status: "success" | "error"

@@ -29,6 +29,8 @@ const Offer = ({
         orderData,
     } = useOfferData(orderNumber, itemNumber);
 
+    console.log(currentItem);
+
     const [hint, setHint] = useState(true);
     const [cardHeight, setCardHeight] = useState("auto");
     const [cardWidth, setCardWidth] = useState("auto");
@@ -49,7 +51,7 @@ const Offer = ({
 
     const onClick = useCallback(() => {
         setHint(false);
-        changeStep("questions");
+        // changeStep("questions");
     }, []);
 
     return (

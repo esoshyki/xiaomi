@@ -47,7 +47,6 @@ const OfferSummary = (props: OfferItemSummaryProps) => {
 
             {status !== "complete" && (
                 <Typography.Title color={theme.colors.info.error} styles={{
-                    opacity: isLoading ? "0" : "1",
                     transition: "opacity 100ms ease-in"
                 }}>
                     Ожидайте пожалуйста

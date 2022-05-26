@@ -5,7 +5,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { CreateOrChangeOrder, GetOrder, setItemNumber, setOrderNumber, SendPhoto, GetItemStatus } from './index';
 import {  call, put, select, takeLatest, takeLeading } from "redux-saga/effects";
 import { orderApi } from "../../api";
-import { GetOrderRequest, Order, CreateOrderResponse, SendPhotoData } from "./types";
+import { GetOrderRequest, Order, CreateOrderResponse, SendPhotoData, OrderRequest } from "./types";
 import { ResponseData } from "../../api/types";
 import { RootState } from "..";
 import { redirectTo } from '../viewSlice';
@@ -102,7 +102,7 @@ function* sendPhotoWorker({ payload }: PayloadAction<SendPhotoData>) {
     yield put(SendPhoto.fulfill())
 };
 
-function* getItemStatusRequestWorker () {
+function* getItemStatusRequestWorker ({ payload }: PayloadAction<OrderRequest<{}>>) {
     const state: RootState = yield select();
 
     if (!state) return;
@@ -111,7 +111,7 @@ function* getItemStatusRequestWorker () {
 
     const user = state.user.user;
 
-    const { itemNumber, number: orderNumber } = state.order.order;
+    const { itemNumber, orderNumber } = payload;
     if (!orderNumber || !itemNumber || !user) return;
     const response : ResponseData<{status: string}> = yield call(orderApi.getItemStatus, orderNumber, user, itemNumber);
 

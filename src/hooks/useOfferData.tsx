@@ -47,7 +47,7 @@ export const useOfferData = (orderNumber?: string, itemNumber?: string) => {
     );
 
     const getItemStatus = useCallback(() => {
-        dispatch(GetItemStatus.request());
+        dispatch(GetItemStatus.request({ orderNumber, itemNumber }));
     }, []);
 
     const currentItem = useMemo(() => {

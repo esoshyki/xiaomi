@@ -89,8 +89,10 @@ const orderSlice = createSlice({
         },
         [GetItemStatus.SUCCESS](state, { payload } : PayloadAction<{status: string}>) {
             if (state.order.data) {
-                state.order.data.status = payload.status
-            }
+                if (state.order.data.status !== payload.status) {
+                    state.order.data.status = payload.status
+                }
+             }
         },
         [GetItemStatus.FULFILL](state) {
             state.order.loading = false;

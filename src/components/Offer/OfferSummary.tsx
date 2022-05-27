@@ -1,26 +1,39 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useMemo, memo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { useTheme } from "styled-components";
+import { GetItemStatus, getOrderItemData } from "../../store/orderSlice";
 import { OrderItem } from "../../store/orderSlice/types";
 import { Container, Typography } from "../ui";
 import UploadProgress from "../ui/UploadProgress";
 import OrderDevice from "./OrderDevice";
 
-interface OfferItemSummaryProps {
-    getItemStatus: () => void;
-    isLoading: boolean;
-    item: OrderItem;
-    hidingChars?: boolean | undefined
-}
-
-const OfferSummary = (props: OfferItemSummaryProps) => {
+const OfferSummary = () => {
     const theme = useTheme();
-    const { getItemStatus, isLoading, item } = props;
-    const { status } = item;
+
+    const { itemNumber, orderNumber } = useParams();
+    const { orderData } = useSelector(getOrderItemData);
+
+    const item = useMemo(() => {
+        return orderData?.items.find(el => el.itemNumber === itemNumber)
+    }, []);
+
+    const dispatch = useDispatch();
 
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+    const status = useMemo(() => {
+        return item?.status
+    }, [item])
+
     useEffect(() => {
-        intervalRef.current = setInterval(getItemStatus, 10000);
+
+        intervalRef.current = setInterval(() => {
+            if (orderNumber) {
+                dispatch(GetItemStatus.request({ itemNumber, orderNumber }))
+            }
+        }, 10000);
+
         return () => {
             if (intervalRef.current) {
                 clearInterval(intervalRef.current);
@@ -30,7 +43,7 @@ const OfferSummary = (props: OfferItemSummaryProps) => {
 
     return (
         <Container.Flex verticalGap={16} alignItems="stretch">
-            <OrderDevice data={item} hidingChars={props.hidingChars} />
+            {item && <OrderDevice data={item} hidingChars={true} />}
 
             {status !== "complete" && (
                 <Typography.Title
@@ -80,4 +93,4 @@ const OfferSummary = (props: OfferItemSummaryProps) => {
     );
 };
 
-export default OfferSummary;
+export default memo(OfferSummary);

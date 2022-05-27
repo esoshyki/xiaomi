@@ -8,6 +8,7 @@ import {
     useState,
     useCallback,
     Fragment,
+    useMemo,
 } from "react";
 import OfferDevice from "./OfferDevice";
 import { OfferQuestions } from ".";
@@ -16,12 +17,7 @@ import OfferSummary from "./OfferSummary";
 import AddNewDevice from "../AddNewDevice";
 import { useParams } from "react-router-dom";
 
-const Offer = ({
-    hidingChars,
-}: {
-    hidingChars?: boolean | undefined;
-}) => {
-
+const Offer = ({ hidingChars }: { hidingChars?: boolean | undefined }) => {
     const { orderNumber, itemNumber } = useParams();
 
     const {
@@ -33,35 +29,11 @@ const Offer = ({
         question,
         isLoading,
         changeContent,
-        getItemStatus,
-        currentItem,
-        orderData,
         addNewDevice,
         giveAnswer,
     } = useOfferData({ orderNumber, itemNumber });
 
-    const [hint, setHint] = useState(true);
-    const [cardHeight, setCardHeight] = useState("auto");
-    const [cardWidth, setCardWidth] = useState("auto");
-
-    console.log(progress);
-
-    const hintRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (!!hintRef.current) {
-            if (window.innerWidth < 660) {
-                setCardHeight(hintRef.current.scrollHeight + "px");
-            } else {
-                setCardWidth(hintRef.current.scrollWidth + "px");
-            }
-        }
-    }, [setCardHeight, setCardWidth]);
-
-    const onClick = useCallback(() => {
-        setHint(false);
-        // changeStep("questions");
-    }, []);
+    console.log(step);
 
     return (
         <Container.Flex verticalGap={24} alignItems="start">
@@ -81,7 +53,6 @@ const Offer = ({
                 <OfferCard
                     isLoading={isLoading}
                     progress={progress}
-                    onClick={onClick}
                 >
                     {deviceInfo && (
                         <OfferDevice
@@ -104,13 +75,7 @@ const Offer = ({
                         </Typography.Error>
                     )}
 
-                    {step === "summary" && !!currentItem && (
-                        <OfferSummary
-                            item={currentItem}
-                            getItemStatus={getItemStatus}
-                            isLoading={!!orderData}
-                        />
-                    )}
+                    {step === "summary" && <OfferSummary />}
                 </OfferCard>
             </Container.Flex>
             {step === "summary" && <AddNewDevice onClick={addNewDevice} />}
@@ -118,4 +83,4 @@ const Offer = ({
     );
 };
 
-export default Offer;
+export default memo(Offer);

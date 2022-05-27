@@ -142,7 +142,7 @@ export const useOfferData = (props: UseOfferDataProps) => {
     const fetchQuestions = () => {
         if (order) return null;
         if (additionalAction) {
-            dispatch(resetAdditionActions());
+            // dispatch(resetAdditionActions());
             dispatch(
                 makeAdditionAction({
                     action: additionalAction,

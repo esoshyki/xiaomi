@@ -1,13 +1,16 @@
+import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getViewData, redirectTo } from './../store/viewSlice/index';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useEffect } from 'react';
-import { addNewDevice } from '../store/offerSlice';
+import { addNewDevice, restoreOffer } from '../store/offerSlice';
+import { restoreOrderState } from '../store/orderSlice';
 
 export const useRedirect = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
 
     const viewData = useSelector(getViewData);
 
@@ -25,6 +28,12 @@ export const useRedirect = () => {
         addNewDevice: _addNewDevice
     };
 
+    useEffect(() => {
+        if (location.pathname === "/") {
+            dispatch(restoreOffer());
+            dispatch(restoreOrderState());
+        }
+    }, [location])
 
     useEffect(() => {
         if (viewData.redirectTo) {

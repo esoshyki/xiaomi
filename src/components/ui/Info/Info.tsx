@@ -13,7 +13,7 @@ const Info = ({ children } : InfoProps) => {
     return (
         <Container.Grid cols="20px 1fr" rows="1fr" gap={8}>
             <Icon name="info" color={theme.colors.icon.secondary}/>
-            <Typography.Main styles={{margin: "0"}} textAlign="start">{children}</Typography.Main>
+            <Typography.Main fullWidth styles={{margin: "0"}} textAlign="start">{children}</Typography.Main>
         </Container.Grid>
     )
 }

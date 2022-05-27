@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { giveAnswer, giveAnswerRequest, hideQuestionContent, makeAdditionAction, setGetQuestionLoading } from './index';
+import { giveAnswer, giveAnswerRequest, hideQuestionContent, makeAdditionAction, setAdditionalAction, setGetQuestionLoading } from './index';
 import { call, put, select, takeEvery, delay, takeLatest } from "redux-saga/effects";
 import { GetQuestions, setDeviceInfo, setStep } from ".";
 import { deviceApi } from "../../api";
@@ -40,7 +40,8 @@ function* getQuestionsWorker({ payload } : PayloadAction<{ orderNumber?: string,
 
 function* makeAdditionActionWorker({ payload } : PayloadAction<MakeAdditionAction>) {
     const { itemNumber, orderNumber } = payload;
-    switch (payload.action) {
+    const { action } = payload;
+    switch (action) {
         case "createOrder":
             yield put(CreateOrChangeOrder.request({ orderNumber, itemNumber }))
             break
@@ -52,6 +53,7 @@ function* makeAdditionActionWorker({ payload } : PayloadAction<MakeAdditionActio
             }));
             break
     }
+    yield put(setAdditionalAction())
 }
 
 function* giveAnswerRequestWorker({ payload } : PayloadAction<GivenAnswer>) {

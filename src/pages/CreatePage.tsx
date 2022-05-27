@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { withLayout } from "../components/Layout/withLayout";
 import Offer from "../components/Offer";
+import { restoreOffer } from "../store/offerSlice";
 import { GetOrder, getOrderItemData } from "../store/orderSlice";
 
 function CreatePage() {
@@ -18,7 +19,13 @@ function CreatePage() {
         if (!isLoading && !orderData && !errors.length) {
             dispatch(GetOrder.request({itemNumber, orderNumber}))
         }
-    }, [orderData, isLoading, errors])
+    }, [orderData, isLoading, errors]);
+
+    useEffect(() => {
+        if (!itemNumber) {
+            dispatch(restoreOffer())
+        }
+    }, [itemNumber])
 
     const showOffer = useMemo(() => {
         if (!itemNumber) return true;

@@ -8,13 +8,12 @@ import OrderShortItem from "../components/Order/OrderShortItem";
 import PageLoading from "../components/Layout/PageLoading";
 import AddNewDevice from "../components/AddNewDevice";
 import OfferLoader from "../components/Offer/OfferLoader";
+import OfferOrdering from "../components/Offer/OfferOrdering";
 
 const OrderPage = () => {
     const { orderNumber } = useParams();
     const { isLoading, errors, orderData } = useSelector(getOrderItemData);
     const dispatch = useDispatch();
-
-    console.log(orderData);
 
     useEffect(() => {
         if (!isLoading) {
@@ -28,6 +27,12 @@ const OrderPage = () => {
         }
     }, [orderData, isLoading, errors]);
 
+    const showOfferOrdering = useMemo(() => {
+        if (!orderData) return false;
+
+        return orderData.items.every((item) => item.status === "D");
+    }, [orderData]);
+
     return (
         <Container.Flex verticalGap={24}>
             {isLoading && <OfferLoader />}
@@ -38,11 +43,18 @@ const OrderPage = () => {
                         key={item.itemNumber}
                         progress={1}
                         currency={orderData.currency}
-                        
                     />
                 ))}
 
             <AddNewDevice />
+
+            {showOfferOrdering && !!orderData && (
+                <OfferOrdering
+                    count={orderData.items.length}
+                    currency={orderData.currency}
+                    tradInAmount={orderData.amount}
+                />
+            )}
         </Container.Flex>
     );
 };

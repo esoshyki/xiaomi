@@ -48,7 +48,7 @@ const Home = () => {
                     margin="84px auto 0"
                     fullWidth
                     styles={{
-                        maxWidth: "none",
+                        maxWidth: "584px",
                         width: "auto",
                         position: "sticky",
                         bottom: "36px"
@@ -65,15 +65,31 @@ const Home = () => {
                         direction="row"
                         alignItems="stretch"
                         justify="center"
-                        styles={{}}
                         breakpoints={{
                             660: {
                                 flexDirection: "column"
                             }
                         }}
                     >
-                        <Button link="/" styles={{textTransform: "uppercase", minWidth: "256px"}} variant="outline">Магазины-партнеры</Button>
-                        <Button link="/create" styles={{textTransform: "uppercase", minWidth: "256px"}} onClick={() => { dispatch(setSlide(0));}}>Оценить устройство</Button>
+                        <Button link="/shops/"
+                            styles={{textTransform: "uppercase", minWidth: "256px"}}
+                            variant="outline"
+                            onClick={() => { dispatch(setSlide(0));}}
+                            breakpoints={{
+                                660: {
+                                    minWidth: 0
+                                }
+                            }}
+                        >Магазины-партнеры</Button>
+                        <Button link="/create"
+                            styles={{textTransform: "uppercase", minWidth: "256px"}}
+                            onClick={() => { dispatch(setSlide(0));}}
+                            breakpoints={{
+                                660: {
+                                    minWidth: 0
+                                }
+                            }}
+                        >Оценить устройство</Button>
                     </Container.Flex>
 
                 </Card>

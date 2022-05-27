@@ -15,6 +15,7 @@ import {
     PartnerPage,
     HelpPage,
     OrderPage,
+    ShopsPage,
 } from ".";
 
 import { useRedirect } from "../hooks/useRedirect";
@@ -39,6 +40,7 @@ const WithUrl = memo(() => {
             <Route path="/create/:orderNumber" element={<CreatePage />} />
             <Route path="/create/:orderNumber/:itemNumber" element={<CreatePage />} />
             <Route path="/help" element={<HelpPage />} />
+            <Route path="/shops" element={<ShopsPage />} />
             <Route
                 path="/order/:orderNumber"
                 element={<OrderPage />}

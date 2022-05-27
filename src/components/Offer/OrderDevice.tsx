@@ -30,7 +30,6 @@ const ToggleButton = styled.button`
 
 const OfferDevice = ({ data, hidingChars }: { data: OrderItem, hidingChars?: boolean | undefined }) => {
     const { image, name, answers } = data;
-
     const [visibleChars, setVisibleChars] = useState(false);
     const [initVisible, setInitVisible] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);

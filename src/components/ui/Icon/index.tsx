@@ -20,6 +20,7 @@ import BellIcon from './icons/bell';
 import EditIcon from "./icons/edit";
 import EyeClose from "./icons/eye-close";
 import Arrow from './icons/arrow';
+import Search from './icons/search';
 
 const Icon = (props: IconProps) => {
 
@@ -66,6 +67,8 @@ const Icon = (props: IconProps) => {
             return <BellIcon {...props} />
         case "edit":
             return <EditIcon {...props} />
+        case "search":
+            return <Search {...props} />
     };
 }
 

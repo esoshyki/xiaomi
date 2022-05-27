@@ -64,7 +64,7 @@ const Offer = ({
     }, []);
 
     return (
-        <Container.Flex verticalGap={24} alignItems="start">
+        <Container.Flex verticalGap={24} alignItems="start" padding="0 0 24px">
             <Container.Flex
                 gap={36}
                 fullWidth
@@ -109,6 +109,7 @@ const Offer = ({
                             item={currentItem}
                             getItemStatus={getItemStatus}
                             isLoading={!!orderData}
+                            hidingChars
                         />
                     )}
                 </OfferCard>

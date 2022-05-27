@@ -14,7 +14,7 @@ interface OfferItemSummaryProps {
 
 const OfferSummary = (props: OfferItemSummaryProps) => {
     const theme = useTheme();
-    const { getItemStatus, isLoading, item } = props;
+    const { getItemStatus, isLoading, item, hidingChars } = props;
     const { status } = item;
 
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -30,7 +30,7 @@ const OfferSummary = (props: OfferItemSummaryProps) => {
 
     return (
         <Container.Flex verticalGap={16} alignItems="stretch">
-            <OrderDevice data={item} hidingChars={props.hidingChars} />
+            <OrderDevice data={item} hidingChars={hidingChars} />
 
             {status !== "complete" && (
                 <Typography.Title

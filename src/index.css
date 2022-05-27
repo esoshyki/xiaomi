@@ -13,11 +13,11 @@ body {
 main {
     height: 100%;
 }
-@media (max-width: 660px) {
+/*@media (max-width: 660px) {
     html, #root {
         height: 100%;
     }
-}
+}*/
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
@@ -25,6 +25,10 @@ code {
 
 * {
     box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
 }
 
 .container {

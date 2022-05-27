@@ -14,6 +14,12 @@ export const typography = {
         lineHeight: "20px",
         color: colors.text.default
     },
+    big: {
+        fontSize: "24px",
+        fontWeight: "600",
+        lineHeight: "32px",
+        color: colors.text.default
+    },
     medium: {
         fontSize: "14px",
         fontWeight: "400",

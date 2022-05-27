@@ -33,12 +33,12 @@ const Wrapper = styled.div<CardProps>`
         height: ${(props) => (props.isHidden ? "0" : "auto")};
     }
 
-    @media (min-width: 660px) and (max-width: 768px) {
+    /*@media (min-width: 660px) and (max-width: 768px) {
         max-width: calc(50% - 18px);
     }
     @media (max-width: 660px) {
         max-width: 312px;
-    }
+    }*/
     ${(props) => {
         if (props.isHidden) {
             if (props.animateHeight) {

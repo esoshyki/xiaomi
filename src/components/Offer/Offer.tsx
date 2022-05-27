@@ -18,9 +18,11 @@ import AddNewDevice from "../AddNewDevice";
 const Offer = ({
     orderNumber,
     itemNumber,
+    hidingChars
 }: {
     orderNumber?: string;
     itemNumber?: string;
+    hidingChars?: boolean | undefined;
 }) => {
     const {
         step,

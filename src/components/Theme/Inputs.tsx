@@ -23,9 +23,9 @@ const ThemeInputs = () => {
     };
 
     return (
-        <Card padding={20}>
+        <Card padding={20} styles={{maxWidth: "none", width: "calc(50% - 20px)"}}>
             <Typography.Title>Инпуты</Typography.Title>
-            <Container.Flex direction="column" justify="start" wrapped gap={20}>
+            <Container.Flex direction="column" justify="start" wrapped gap={20} >
                 <Input value={text} onChange={onChange} breakpoints={{"600" : mobileProps}} placeholder={"Плейсхолдер"}/>
                 <Input
                     value={text}

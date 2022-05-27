@@ -6,9 +6,9 @@ import Container from "../ui/Container";
 
 const ThemeButtons = () => {
     return (
-        <Card fullWidth padding={20}>
-            <Typography.Title styles={{ marginTop: 0 }}>Кнопки</Typography.Title>
-            <Container.Flex direction="column" justify="start" wrapped gap={20} fullWidth >
+        <Card padding={20} styles={{maxWidth: "none", width: "calc(50% - 20px)"}}>
+            <Typography.Title>Кнопки</Typography.Title>
+            <Container.Flex justify="start" gap={16} fullWidth >
                 <Button styles={{ minWidth: "200px" }} onClick={() => { }}>
                     Обычная
                 </Button>

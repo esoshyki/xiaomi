@@ -1,4 +1,7 @@
 import styled from "styled-components/macro";
+import { select } from "../../store/selector";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 const BackgroundWrapper = styled.div`
     width: 100%;
@@ -12,14 +15,21 @@ const BackgroundWrapper = styled.div`
     overflow: hidden;
 `;
 
-const FirstCircle = styled.div`
-    width: 410px;
-    height: 410px;
+const FirstCircle = styled.div<{position: number, isHomePage: boolean}>`
+    width: ${(props) => props.isHomePage ? "319px": "410px"};
+    height: ${(props) => props.isHomePage ? "319px": "410px"};
     position: absolute;
     border-radius: 50%;
     background-color: ${(props) => props.theme.colors.background.first};
-    top: -119px;
-    right: -251px;
+    top: ${(props) => props.isHomePage ? "-62px": "-119px"};
+    right: ${(props) => props.isHomePage ? "-69px": "-251px"};
+    transition: transform 1200ms 250ms linear;
+    will-change: transform;
+    
+    transform: ${(props) => 
+            props.position === 1 ? "translateX(-240px)" :
+            props.position === 2 ? "translateX(140px)" : "translateX(0)"
+    };
     
     @media (min-width: 660px) and (max-width: 1103.9px) {
         top: -154px;
@@ -54,9 +64,13 @@ const SecondCircle = styled.div`
 `;
 
 const Background = () => {
+    const view = useSelector(select.view),
+        current = view.currentSlide;
+    const { pathname } = useLocation()
+    console.log(pathname);
     return (
         <BackgroundWrapper>
-            <FirstCircle />
+            <FirstCircle position={current} isHomePage={pathname === "/"}/>
             <SecondCircle />
         </BackgroundWrapper>
     );

@@ -44,7 +44,7 @@ export const withLayout =
         ]);
 
         return (
-            <Container.Flex alignItems="stretch" styles={{ position: "relative" }}>
+            <Container.Flex alignItems="stretch" fullHeight styles={{ position: "relative" }}>
                 <Background />
                 <Header />
                 <Main>

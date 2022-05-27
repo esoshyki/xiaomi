@@ -39,7 +39,6 @@ const Offer = () => {
         <Container.Flex
             gap={36}
             fullWidth
-            fullHeight
             direction="row"
             alignItems="stretch"
             breakpoints={{
@@ -60,7 +59,6 @@ const Offer = () => {
                     height: cardHeight,
                     width: cardWidth,
                     flexShrink: 0,
-                    maxWidth: "312px",
                 }}
             >
                 <Info>

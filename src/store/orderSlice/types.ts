@@ -25,6 +25,7 @@ export type GetOrderRequest = {
     orderNumber: string
     itemNumber: string
     create?: true
+    qrCode?: string
 };
 
 export type OrderRequest<T> = {

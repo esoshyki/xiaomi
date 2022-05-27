@@ -1,16 +1,33 @@
 import { Fragment, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { withLayout } from "../components/Layout/withLayout";
 import Offer from "../components/Offer";
-import { GetOrder, getOrderItemData } from "../store/orderSlice";
+import useQuery from "../hooks/useQuery";
+import { setCombinationCode } from "../store/offerSlice";
+import { GetOrder, getOrderItemData, setQrCode } from "../store/orderSlice";
 
 const OrderPage = () => {
 
     const { itemNumber, orderNumber } = useParams();
+    const { search } = useLocation();
+
     const navigate = useNavigate();
     const { isLoading, errors, orderData } = useSelector(getOrderItemData);
     const dispatch = useDispatch();
+
+    const qrCode = useMemo(() => {
+        const params = new URLSearchParams(search);
+
+        return params.get("qrcode");
+    }, [search]);
+
+    useEffect(() => {
+        if (qrCode) {
+            dispatch(setQrCode(qrCode));
+            navigate(`/order/${orderNumber}/${itemNumber}`)
+        }
+    }, [qrCode])
 
     const currentItem = useMemo(() => {
         return orderData?.items.find((item) => item.itemNumber === itemNumber);

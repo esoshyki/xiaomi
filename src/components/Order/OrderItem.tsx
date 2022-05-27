@@ -26,9 +26,6 @@ const OrderItem = ({}: {}) => {
     );
     const status = useMemo(() => currentItem?.status, [currentItem]);
 
-    console.log(currentItem);
-    console.log(status);
-
     return (
         <OfferLayout isLoading={isLoading} onClick={() => {}} progress={0.5}>
             <Container.Flex

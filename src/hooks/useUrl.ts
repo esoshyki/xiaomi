@@ -6,7 +6,7 @@ import { restoreOrderState, GetOrder } from './../store/orderSlice/index';
 import { useLocation } from 'react-router-dom';
 import { GetQuestions, restoreOffer, setStep } from '../store/offerSlice';
 
-export default function useURL(action: "create" | "order") {
+export default function useURL() {
 
     const location = useLocation();
     const dispatch = useDispatch();

@@ -98,6 +98,15 @@ const orderSlice = createSlice({
     }
 });
 
+export const getOrderItemData = createSelector(
+    (state: RootState) => state.order,
+    order => ({
+        orderData: order.order.data,
+        isLoading: order.order.loading,
+        errors: order.order.errors
+    })
+)
+
 export const getOrderData = createSelector(
     (state: RootState) => state.order,
     orderData => orderData

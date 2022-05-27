@@ -40,8 +40,6 @@ function* getQuestionsWorker({ payload } : PayloadAction<{ orderNumber?: string,
 
 function* makeAdditionActionWorker({ payload } : PayloadAction<MakeAdditionAction>) {
     const { itemNumber, orderNumber } = payload;
-    console.log(itemNumber, orderNumber);
-    console.log(payload.action);
     switch (payload.action) {
         case "createOrder":
             yield put(CreateOrChangeOrder.request({ orderNumber, itemNumber }))

@@ -17,6 +17,7 @@ import { N } from '../types'
             loading: false,
             errors: [],
         },
+        questionOrder: 0,
         questionsData: null,
         questionsTree: null,
         hint: "",
@@ -108,6 +109,9 @@ const offerSlice = createSlice({
             state.questionsData = null;
             state.questionsTree = null;
             state.deviceInfo = null;
+        },
+        setQuestionOrder(state: OfferState, { payload } : PayloadAction<number>) {
+            state.questionOrder = payload
         }
     },
     extraReducers: {
@@ -177,7 +181,8 @@ export const {
     resetQuestions,
     setGetQuestionLoading,
     setCombinationCode,
-    addNewDevice
+    addNewDevice,
+    setQuestionOrder
 } = offerSlice.actions
 
 export default offerSlice.reducer;

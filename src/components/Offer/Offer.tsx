@@ -14,16 +14,16 @@ import { OfferQuestions } from ".";
 import OfferCard from "./OfferCard";
 import OfferSummary from "./OfferSummary";
 import AddNewDevice from "../AddNewDevice";
+import { useParams } from "react-router-dom";
 
 const Offer = ({
-    orderNumber,
-    itemNumber,
-    hidingChars
+    hidingChars,
 }: {
-    orderNumber?: string;
-    itemNumber?: string;
     hidingChars?: boolean | undefined;
 }) => {
+
+    const { orderNumber, itemNumber } = useParams();
+
     const {
         step,
         deviceInfo,
@@ -44,10 +44,9 @@ const Offer = ({
     const [cardHeight, setCardHeight] = useState("auto");
     const [cardWidth, setCardWidth] = useState("auto");
 
-    const hintRef = useRef<HTMLDivElement>(null);
+    console.log(progress);
 
-    console.log(currentItem);
-    console.log(orderNumber, itemNumber)
+    const hintRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (!!hintRef.current) {
@@ -65,7 +64,7 @@ const Offer = ({
     }, []);
 
     return (
-        <Fragment>
+        <Container.Flex verticalGap={24} alignItems="start">
             <Container.Flex
                 gap={36}
                 fullWidth
@@ -115,7 +114,7 @@ const Offer = ({
                 </OfferCard>
             </Container.Flex>
             {step === "summary" && <AddNewDevice onClick={addNewDevice} />}
-        </Fragment>
+        </Container.Flex>
     );
 };
 

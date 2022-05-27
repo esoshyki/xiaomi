@@ -14,6 +14,7 @@ interface OfferDeviceProps {
     price?: number;
     currency?: string;
     hideChars?: true
+    status?: string
 }
 
 const ImgWrapper = styled.div`
@@ -129,7 +130,7 @@ const OfferDevice = (props: OfferDeviceProps) => {
                     <Typography.Small>
                         {`${price} ${currency}`}
                     </Typography.Small>
-                )}u
+                )}
 
                 </Container.Flex>
 

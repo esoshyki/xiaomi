@@ -4,7 +4,7 @@ import { Card, Container, Typography } from "../ui"
 import Icon from "../ui/Icon";
 
 interface AddNewDeviceProps {
-    onClick: () => void
+    onClick?: () => void
 }
 
 const AddNewDevice = ({ onClick } : AddNewDeviceProps) => {
@@ -17,12 +17,12 @@ const AddNewDevice = ({ onClick } : AddNewDeviceProps) => {
     const color = theme.colors.link.default;
 
     const _onClick = () => {
-        onClick();
+        onClick && onClick();
         redirect(redirectPath)
     }
 
     return (
-        <Card onClick={_onClick} fullWidth padding="28px" hoverStyles={{
+        <Card onClick={_onClick} fullWidth padding="0" hoverStyles={{
             cursor: "pointer"
         }}>
             <Container.Flex
@@ -31,7 +31,7 @@ const AddNewDevice = ({ onClick } : AddNewDeviceProps) => {
                 alignItems="center"
                 justify="center"
                 styles={{
-                minHeight: "220px"
+                height: "76px"
             }} breakpoints={{
                 660: {
                     minHeight: "0"

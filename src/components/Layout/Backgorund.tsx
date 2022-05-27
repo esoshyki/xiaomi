@@ -67,7 +67,6 @@ const Background = () => {
     const view = useSelector(select.view),
         current = view.currentSlide;
     const { pathname } = useLocation()
-    console.log(pathname);
     return (
         <BackgroundWrapper>
             <FirstCircle position={current} isHomePage={pathname === "/"}/>

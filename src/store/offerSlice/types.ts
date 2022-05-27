@@ -87,6 +87,7 @@ export type QuestionTree = {
     questions: Array<{
         questionId: string
         answers: QuestionTree[]
+        questionOrder?: number
     }>
 }
 
@@ -150,6 +151,7 @@ export type OfferState = {
     createOrder: ApiProps
     questionsData: QuestionsData | null
     questionsTree: QuestionTree | null
+    questionOrder: number;
     hint: string,
     images: ImageFile[]
     givenAnswers: GivenAnswers

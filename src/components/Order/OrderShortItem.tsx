@@ -26,6 +26,7 @@ const OrderShortItem = ({
                 answers={answers}
                 price={price}
                 currency={currency}
+                hideChars
             />
         </OfferCard>
     );

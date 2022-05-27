@@ -12,6 +12,7 @@ import {
     giveAnswerRequest,
     setAdditionalAction,
     addNewDevice,
+    setQuestionOrder,
 } from "../store/offerSlice";
 import {
     GivenAnswer,
@@ -21,7 +22,7 @@ import {
 } from "../store/offerSlice/types";
 import { getFromTree } from "../components/Offer/helpers/getFromTree";
 import { useUploadFiles } from "../contexts/uploadFiles";
-import { GetItemStatus } from "../store/orderSlice";
+import { GetItemStatus, GetOrder } from "../store/orderSlice";
 
 interface UseOfferDataProps {
     orderNumber?: string
@@ -35,7 +36,7 @@ export const useOfferData = (props: UseOfferDataProps) => {
 
     const { offer, redirectTo, orderData } = data;
 
-    const { questionsTree, questionsData, givenAnswers, step } = offer;
+    const { questionsTree, questionsData, givenAnswers, step, questionOrder } = offer;
     const _getQuestionsResult = offer.getQuestions.result;
     const changeContent = offer.changeQuestionsContent;
     const additionalAction = offer.givenAnswers.additionalAction;
@@ -59,7 +60,6 @@ export const useOfferData = (props: UseOfferDataProps) => {
     }, [orderNumber, itemNumber]);
 
     const currentItem = useMemo(() => {
-        console.log(orderData, itemNumber);
         if (orderData) {
             return orderData.items.find(item => item.itemNumber === itemNumber)
         };
@@ -83,7 +83,9 @@ export const useOfferData = (props: UseOfferDataProps) => {
 
         if (!questionsTree || !questionsData) return null;
 
-        const question = getFromTree(questionsTree, answers, _setTreeProps);
+        const _setQuestionOrder = (order: number) => dispatch(setQuestionOrder(order)); 
+
+        const question = getFromTree(questionsTree, answers, _setTreeProps, _setQuestionOrder);
 
         if (!question) return null;
         const { questionId } = question;
@@ -177,13 +179,13 @@ export const useOfferData = (props: UseOfferDataProps) => {
             if (!questionsCount) return 0;
             return (
                 base +
-                (0.5 * (question.answerOrder || 0)) /
+                (0.5 * (questionOrder || 0)) /
                     Object.keys(questionsData).length
             );
         } else {
             return 0;
         }
-    }, [question, itemNumber]);
+    }, [question, itemNumber, questionsData, questionOrder]);
 
 
     const _uploadImage = (image: ImageFile) => {
@@ -204,9 +206,15 @@ export const useOfferData = (props: UseOfferDataProps) => {
 
     useEffect(() => {
         if (orderNumber && step !== "questions" && step !== "summary") {
-            changeStep("questions");
+            // changeStep("questions");
         }
     }, [step, orderNumber]);
+
+    useEffect(() => {
+        if (!orderData) {
+            dispatch(GetOrder.request({ orderNumber }))
+        }
+    }, [orderData])
 
     const returned = {
         ...offer,

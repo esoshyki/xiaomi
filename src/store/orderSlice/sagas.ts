@@ -12,16 +12,9 @@ import { redirectTo } from '../viewSlice';
 
 function* createOrderWorker({ payload } : PayloadAction<OrderRequest<{}>>) {
     const state: RootState = yield select();
-    const createOrderStatus = state.order.order.status;
 
     const { orderNumber } = payload;
 
-    console.log(orderNumber);
-
-    if (createOrderStatus === "success") {
-        return;
-    }
-    
     const response: CreateOrderResponse = yield call((orderNumber ? orderApi.addItemToOrder : orderApi.createOrder), state, orderNumber);
 
     if (response.status === "success") {
@@ -29,7 +22,6 @@ function* createOrderWorker({ payload } : PayloadAction<OrderRequest<{}>>) {
 
         const responseItemNumber = response.data?.itemNumber;
         const responseOrderNumber = response.data?.number;
-        console.log(responseOrderNumber, responseItemNumber)
         if (responseItemNumber && responseOrderNumber) {
             yield put(CreateOrChangeOrder.fulfill())
             yield put(redirectTo(`/order/${responseOrderNumber}/${responseItemNumber}`));

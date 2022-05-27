@@ -32,7 +32,11 @@ const getTreeQuestion = (
     return getTreeQuestion(nextQuestion, givenAnswers, questionsAnswered, setTreeData)
 }
 
-export const getFromTree = (tree: QuestionTree, answers: GivenAnswer[], setTreeProps: (props: SetTreeDataProps) => void): TreeQuestion | null => {
+export const getFromTree = (
+    tree: QuestionTree, 
+    answers: GivenAnswer[], 
+    setTreeProps: (props: SetTreeDataProps) => void, 
+    setQuestionOrder: (order: number) => void): TreeQuestion | null => {
     const givenAnswers = answers.reduce((acc, next) => {
         if (next.answerId) {
             acc.push(next.answerId)
@@ -57,6 +61,9 @@ export const getFromTree = (tree: QuestionTree, answers: GivenAnswer[], setTreeP
     const question = tree.questions.find(el => !questionsAnswered.includes(el.questionId));
 
     if (question) {
+        if (question.questionOrder) {
+            setQuestionOrder(question.questionOrder)
+        }
         return question
     }
 
@@ -71,7 +78,7 @@ export const getFromTree = (tree: QuestionTree, answers: GivenAnswer[], setTreeP
         const nextTree = question.answers.find(ans => givenAnswers.includes(ans.answerId || ""));
 
         if (nextTree) {
-            const found = getFromTree(nextTree, answers, setTreeProps)
+            const found = getFromTree(nextTree, answers, setTreeProps, setQuestionOrder)
             if (found) nextQuestion = found;
         }
     })

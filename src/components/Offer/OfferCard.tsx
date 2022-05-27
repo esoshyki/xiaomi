@@ -7,6 +7,7 @@ interface OfferCardProps {
     onClick?: () => void;
     progress: number;
     isLoading: boolean;
+    isQuestion?: boolean;
 }
 
 const OfferCard = ({
@@ -14,6 +15,7 @@ const OfferCard = ({
     children,
     progress,
     isLoading,
+    isQuestion
 }: OfferCardProps) => {
 
     const cardRef = useRef<HTMLDivElement>(null);
@@ -34,7 +36,7 @@ const OfferCard = ({
             padding="28px"
             fullWidth
             onClick={_onClick}
-            isQuestion={true}
+            isQuestion={isQuestion}
             styles={{
                 height: height ? `${height}px` : "auto"
             }}

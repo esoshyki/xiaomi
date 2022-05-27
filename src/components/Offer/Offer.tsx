@@ -10,9 +10,11 @@ import OfferSummary from "./OfferSummary";
 const Offer = ({
     orderNumber,
     itemNumber,
+    hidingChars
 }: {
     orderNumber?: string;
     itemNumber?: string;
+    hidingChars?: boolean | undefined;
 }) => {
     const {
         step,
@@ -55,10 +57,9 @@ const Offer = ({
     }, []);
 
     return (
-        <Container.Flex
+        /*<Container.Flex
             gap={36}
             fullWidth
-            fullHeight
             direction="row"
             alignItems="stretch"
             breakpoints={{
@@ -68,10 +69,41 @@ const Offer = ({
                 },
             }}
         >
+            <Card
+                ref={hintRef}
+                fullWidth
+                isHidden={!hint || undefined}
+                padding="50px 30px"
+                animateHeight={cardHeight !== "auto"}
+                animateWidth={cardWidth !== "auto"}
+                styles={{
+                    height: cardHeight,
+                    width: cardWidth,
+                    flexShrink: 0,
+                }}
+            >
+                <Info>
+                    За 2 минуты рассчитайте скидку на покупку у 
+                    <Typography.Link href="/" target="_blank">
+                        партнёров
+                    </Typography.Link>
+                    , взамен на ваш старый смартфон
+                </Info>
+                <Button
+                    variant="outline"
+                    fullWidth
+                    uppercase
+                    styles={{ marginTop: "16px" }}
+                >
+                    Подробнее
+                </Button>
+            </Card>*/
+
             <OfferCard
                 isLoading={isLoading}
                 progress={progress}
                 onClick={onClick}
+                isQuestion={false}
             >
                 {deviceInfo && (
                     <OfferDevice
@@ -96,10 +128,11 @@ const Offer = ({
                         item={currentItem}
                         getItemStatus={getItemStatus}
                         isLoading={!!orderData}
+                        hidingChars={true}
                     />
                 )}
             </OfferCard>
-        </Container.Flex>
+        /*</Container.Flex>*/
     );
 };
 

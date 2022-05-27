@@ -1,4 +1,4 @@
-import { createSelector, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import { ViewState } from './types';
@@ -7,7 +7,8 @@ const initialState: ViewState = {
     showMenu: false,
     animationOpen: false,
     animationClose: false,
-    redirectTo: null
+    currentSlide: 0,
+    redirectTo: null,
 }
 
 const viewSlice = createSlice({
@@ -30,6 +31,11 @@ const viewSlice = createSlice({
             state.animationClose = false;
             state.animationOpen = false;
         },
+
+        setSlide(state: ViewState, { payload } : PayloadAction<number>) {
+            state.currentSlide = payload;
+        },
+
         redirectTo(state: ViewState, { payload } : PayloadAction<string | null>) {
             state.redirectTo = payload;
         }
@@ -47,6 +53,7 @@ export const {
     animationOpen,
     animationClose,
     animationClear,
+    setSlide,
     redirectTo
 } = viewSlice.actions;
 

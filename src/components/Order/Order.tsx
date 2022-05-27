@@ -20,10 +20,20 @@ const Order = ({
 
     return (
         <Container.Flex
-            verticalGap={15}
+            gap={36}
             alignItems="start"
+            direction="row"
+            wrapped
             styles={{
                 minHeight: "324px",
+
+            }}
+            breakpoints={{
+                660: {
+                    alignItems: "center",
+                    flexDirection: "column",
+                    gap: "24px"
+                }
             }}
         >
             {!!orderData?.items &&
@@ -37,7 +47,7 @@ const Order = ({
                             currency={orderData.currency}
                         />
                     ))}
-            {(orderData || (!orderNumber)) && <Offer orderNumber={orderNumber} itemNumber={itemNumber} />}
+            {(orderData || (!orderNumber)) && <Offer orderNumber={orderNumber} itemNumber={itemNumber} hidingChars={true}/>}
 
             {(!orderData && orderNumber) &&  <OfferLoader />}
 

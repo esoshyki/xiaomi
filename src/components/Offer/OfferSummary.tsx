@@ -9,12 +9,12 @@ interface OfferItemSummaryProps {
     getItemStatus: () => void;
     isLoading: boolean;
     item: OrderItem;
+    hidingChars?: boolean | undefined
 }
 
 const OfferSummary = (props: OfferItemSummaryProps) => {
     const theme = useTheme();
     const { getItemStatus, isLoading, item } = props;
-
     const { status } = item;
 
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -29,8 +29,8 @@ const OfferSummary = (props: OfferItemSummaryProps) => {
     }, []);
 
     return (
-        <Container.Flex>
-            <OrderDevice data={item} />
+        <Container.Flex verticalGap={16} alignItems="stretch">
+            <OrderDevice data={item} hidingChars={props.hidingChars} />
 
             {status !== "complete" && (
                 <Typography.Title
@@ -65,6 +65,7 @@ const OfferSummary = (props: OfferItemSummaryProps) => {
 
             {status !== "complete" && (
                 <Typography.Title
+                    margin="0"
                     color={theme.colors.info.error}
                     styles={{
                         transition: "opacity 100ms ease-in",

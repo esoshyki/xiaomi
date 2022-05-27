@@ -1,6 +1,6 @@
 import { createContext, useContext, ReactNode, useState, useEffect } from "react";
-import { useOfferData } from "../hooks/useOfferData";
-import useOrderData from "../hooks/useOrderData";
+import { useSelector } from "react-redux";
+import { getSendPhotoStatus } from "../store/offerSlice";
 
 interface InputContextState {
     files: File[],
@@ -20,7 +20,7 @@ export default function UploadFiles ({ children } : { children : ReactNode } ) {
 
     const [files, setFiles] = useState<File[]>([]);
 
-    const { sendPhotoStatus } = useOrderData()
+    const sendPhotoStatus = useSelector(getSendPhotoStatus)
 
     useEffect(() => {
         if (sendPhotoStatus === "success") {

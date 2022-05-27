@@ -1,61 +1,55 @@
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useEffect, useMemo, useCallback } from 'react';
-import { getCreateOrderResult, restoreOrderState, setItemNumber, setOrderNumber, setQrCode, getQrCode, getCurrentItem } from './../store/orderSlice/index';
-import { useSelector } from 'react-redux';
-import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
-import { restoreOffer } from '../store/offerSlice';
-import qs from 'qs'
+import { useEffect, useMemo } from 'react';
+import { restoreOrderState, GetOrder } from './../store/orderSlice/index';
+import { useLocation } from 'react-router-dom';
+import { GetQuestions, restoreOffer, setStep } from '../store/offerSlice';
 
-export default function useURL() {
-
-    const [searchParams, setSearchParams] = useSearchParams();
+export default function useURL(action: "create" | "order") {
 
     const location = useLocation();
-    const navigate = useNavigate();
     const dispatch = useDispatch();
+    const params = useParams();
 
-    const qrCodeParam = useMemo(() => {return searchParams.get("qrcode")}, [searchParams]);
+    const [once, setOnce] = useState(false);
 
-    const currentItem = useSelector(getCurrentItem);
-    const qrCode = useSelector(getQrCode);
+    const { pathname, search } = useMemo(() => location, [location]);
 
-    const { pathname, search } = location;
+    const itemNumber = useMemo(() => params.itemNumber, [location]);
+    const orderNumber = useMemo(() => params.orderNumber, [location]);
+    const qrCode = useMemo(() => search.search("qrcode") >= 0, [location]);
 
     useEffect(() => {
+
+        if (once) return;
+
         if (pathname === "/create")  {
             dispatch(restoreOffer());
-            dispatch(restoreOrderState())
+            dispatch(restoreOrderState());
+            return;
         }
-    }, [pathname, dispatch]);
 
-    useEffect(() => {
-        dispatch(setQrCode(qrCodeParam || undefined))
-    }, [qrCodeParam, dispatch]);
-
-    const removeQrCodeParam = useCallback(() => {
-        searchParams.delete("qrcode");
-        setSearchParams(searchParams)
-    }, [currentItem?.status]);
-
-    useEffect(() => {
-        if (currentItem?.status === "questions" && qrCode) {
-            removeQrCodeParam()
+        if (/^\/create\/.+/.test(pathname)) {
+            dispatch(setStep("start"))
         }
-    }, [currentItem, qrCode])
 
+        if (orderNumber) {
+            dispatch(GetOrder.request({
+                orderNumber,
+                itemNumber
+            }))
+        };
 
-    const createOrderResult = useSelector(getCreateOrderResult);
+        setOnce(true)
 
-    useEffect(() => {
-        const { status, itemNumber, orderNumber } = createOrderResult;
-        if (status === "success") {
-            navigate(`/order/${orderNumber}/${itemNumber}`);
-
-        }
-    }, [createOrderResult]);
+    }, [location])
 
     return ({
         pathname,
+        itemNumber,
+        orderNumber,
+        qrCode
     })
 
 }

@@ -1,13 +1,21 @@
 import { useOfferData } from "../../hooks/useOfferData";
 import Container from "../ui/Container";
-import { Card, Info, Typography, Button } from "../ui";
-import { memo, useEffect, useRef, useState, useMemo } from "react";
+import { Typography, Button } from "../ui";
+import { memo, useEffect, useRef, useState, useCallback } from "react";
 import OfferDevice from "./OfferDevice";
-import AddNewDevice from "../AddNewDevice";
 import { OfferQuestions } from ".";
 import OfferCard from "./OfferCard";
+import OfferSummary from "./OfferSummary";
 
-const Offer = () => {
+const Offer = ({
+    orderNumber,
+    itemNumber,
+    hidingChars
+}: {
+    orderNumber?: string;
+    itemNumber?: string;
+    hidingChars?: boolean | undefined;
+}) => {
     const {
         step,
         deviceInfo,
@@ -16,8 +24,14 @@ const Offer = () => {
         progress,
         question,
         isLoading,
+        changeStep,
         changeContent,
-    } = useOfferData();
+        getItemStatus,
+        currentItem,
+        orderData,
+    } = useOfferData(orderNumber, itemNumber);
+
+    console.log(currentItem);
 
     const [hint, setHint] = useState(true);
     const [cardHeight, setCardHeight] = useState("auto");
@@ -35,8 +49,15 @@ const Offer = () => {
         }
     }, [setCardHeight, setCardWidth]);
 
+    console.log(currentItem);
+
+    const onClick = useCallback(() => {
+        setHint(false);
+        // changeStep("questions");
+    }, []);
+
     return (
-        <Container.Flex
+        /*<Container.Flex
             gap={36}
             fullWidth
             direction="row"
@@ -76,12 +97,13 @@ const Offer = () => {
                 >
                     Подробнее
                 </Button>
-            </Card>
+            </Card>*/
 
             <OfferCard
                 isLoading={isLoading}
                 progress={progress}
-                setHint={() => setHint(false)}
+                onClick={onClick}
+                isQuestion={false}
             >
                 {deviceInfo && (
                     <OfferDevice
@@ -100,10 +122,17 @@ const Offer = () => {
                 {step === "createOrderFailure" && (
                     <Typography.Error>Ошибка создания заказа.</Typography.Error>
                 )}
-            </OfferCard>
 
-            {step === "pending" && <AddNewDevice />}
-        </Container.Flex>
+                {step === "summary" && !!currentItem && (
+                    <OfferSummary
+                        item={currentItem}
+                        getItemStatus={getItemStatus}
+                        isLoading={!!orderData}
+                        hidingChars={true}
+                    />
+                )}
+            </OfferCard>
+        /*</Container.Flex>*/
     );
 };
 

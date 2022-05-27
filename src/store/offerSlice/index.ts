@@ -76,6 +76,7 @@ const offerSlice = createSlice({
         resetQuestions(state: OfferState) {
             state.questionsData = null;
             state.questionsTree = null;
+            state.getQuestions.result = null;
         } ,
         setCombinationsId(state: OfferState, { payload }: PayloadAction<string | undefined>) {
             state.givenAnswers.combinationId = payload;
@@ -101,6 +102,10 @@ const offerSlice = createSlice({
         }
     },
     extraReducers: {
+        [GetQuestions.REQUEST](state) {
+            state.getQuestions.result = null;
+            state.getQuestions.loading = true
+        },
         [GetQuestions.FAILURE](state, { payload }: PayloadAction<ServerError[]>) {
             state.getQuestions.result = "error";
             state.getQuestions.errors = payload
@@ -131,48 +136,17 @@ export const getQuestionsResult = createSelector(
 )
 
 export const getOfferData = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer
+    (state: RootState) => ({offer: state.offer, view: state.view, order: state.order}),
+    data => ({
+        offer: data.offer,
+        orderData: data.order.order.data,
+        redirectTo: data.view.redirectTo
+    })
 )
 
-export const getChangeContent = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer.changeQuestionsContent
-)
-
-export const getQuestionTree = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer.questionsTree
-)
-
-export const getQuestionData = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer.questionsData
-)
-
-export const getQuestionsPending = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer.getQuestions.loading
-)
-
-export const getGivenAnswers = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer.givenAnswers
-)
-
-export const getOfferStep = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer.step
-)
-
-export const getAdditionAction = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer.givenAnswers.additionalAction
-)
-
-export const getCombinationCode = createSelector(
-    (state: RootState) => state.offer,
-    offer => offer.givenAnswers.combinationCode
+export const getSendPhotoStatus = createSelector(
+    (state: RootState) => state.order,
+    order => order.sendPhoto.status
 )
 
 export const {

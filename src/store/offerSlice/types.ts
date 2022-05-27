@@ -27,6 +27,8 @@ export type AdditionActions = "createOrder" | "addPhoto";
 export type MakeAdditionAction = {
     action: AdditionActions,
     images?: File[]
+    itemNumber?: string
+    orderNumber?: string
 }
 //API 
 

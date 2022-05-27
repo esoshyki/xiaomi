@@ -1,11 +1,14 @@
-import Offer from "../components/Offer"
+import { memo } from "react";
 import { withLayout } from "../components/Layout/withLayout"
+import Order from "../components/Order"
+import useURL from "../hooks/useUrl"
 
 const CreateOffer = () => {
+    useURL("create");
 
     return (
-        <Offer />
+        <Order qrCode={false} />
     )
 }
 
-export default withLayout(CreateOffer, "Главная")
+export default memo(withLayout(CreateOffer, "Главная"))

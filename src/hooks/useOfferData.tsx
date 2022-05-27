@@ -10,17 +10,7 @@ import {
     resetAdditionActions,
     uploadImage,
     giveAnswerRequest,
-    getChangeContent,
-    getQuestionsResult,
-    getQuestionTree,
-    getQuestionData,
-    getGivenAnswers,
-    getOfferStep,
-    getAdditionAction,
-    getQuestionsPending,
     setAdditionalAction,
-    getCombinationCode,
-    setCombinationCode,
 } from "../store/offerSlice";
 import {
     GivenAnswer,
@@ -29,55 +19,53 @@ import {
     SetTreeDataProps,
 } from "../store/offerSlice/types";
 import { getFromTree } from "../components/Offer/helpers/getFromTree";
-import { getOrderPending, getOrderData, getOrderErrors, getCurrentItem, getSendPhotoStatus, getQrCode, setQrCode } from "../store/orderSlice";
 import { useUploadFiles } from "../contexts/uploadFiles";
+import { GetItemStatus } from "../store/orderSlice";
 
-export const useOfferData = (isOrder?: true) => {
-    const offer = useSelector(getOfferData);
-    const questionsTree = useSelector(getQuestionTree);
-    const questionsData = useSelector(getQuestionData);
-    const givenAnswers = useSelector(getGivenAnswers);
-    const step = useSelector(getOfferStep);
-    const _getQuestionsResult = useSelector(getQuestionsResult);
-    const changeContent = useSelector(getChangeContent);
-    const orderLoading = useSelector(getOrderPending);
-    const additionalAction = useSelector(getAdditionAction);
-    const getQuestionsLoading = useSelector(getQuestionsPending);
-    const orderErrors = useSelector(getOrderErrors);
-    const currentItem = useSelector(getCurrentItem);
-    const sendPhotoStatus = useSelector(getSendPhotoStatus);
-    const combinationCode = useSelector(getCombinationCode);
-    const qrCode = useSelector(getQrCode);
+export const useOfferData = (orderNumber?: string, itemNumber?: string) => {
+    const data = useSelector(getOfferData);
+
+    const { offer, redirectTo, orderData } = data;
+
+    const { questionsTree, questionsData, givenAnswers, step } = offer;
+    const _getQuestionsResult = offer.getQuestions.result;
+    const changeContent = offer.changeQuestionsContent;
+    const additionalAction = offer.givenAnswers.additionalAction;
+    const combinationCode = offer.givenAnswers.combinationCode
+    const getQuestionsLoading = offer.getQuestions.loading;
 
     const dispatch = useDispatch();
     const { files } = useUploadFiles();
 
-    const changeStep = (step: OfferSteps) => {
+    const changeStep = useCallback((step: OfferSteps) => {
         dispatch(setStep(step));
-    };
+    }, []);
 
     const isLoading = useMemo(
-        () =>
-        orderLoading || getQuestionsLoading,
-        [getQuestionsLoading, orderLoading]
+        () => getQuestionsLoading,
+        [getQuestionsLoading]
     );
 
-    const getQuestion = useCallback((_isOrder?: true) => {
+    const getItemStatus = useCallback(() => {
+        dispatch(GetItemStatus.request({ orderNumber, itemNumber }));
+    }, []);
 
-        if (isLoading ) {
-            return null;
-        }
+    const currentItem = useMemo(() => {
+        if (orderData) {
+            return orderData.items.find(item => item.itemNumber === itemNumber)
+        };
+    }, [orderData])
 
-        if (isOrder && !_isOrder) {
-            return null
-        }
-
+    const getQuestion = () => {
+        if (redirectTo) return null;
+        if (orderNumber && !orderData) return null;
+        if (isLoading) return null;
         if (_getQuestionsResult === "error") {
             return null;
         }
 
         if (!questionsTree) {
-            fetchQuestions()
+            fetchQuestions();
             return null;
         }
 
@@ -102,7 +90,7 @@ export const useOfferData = (isOrder?: true) => {
             ..._question,
             questionKey,
         };
-    }, [isLoading, givenAnswers]);
+    };
 
     const _setTreeProps = (props: SetTreeDataProps) => {
         const { combinationId, offerId, combinationCode } = props;
@@ -110,7 +98,10 @@ export const useOfferData = (isOrder?: true) => {
         if (combinationId && combinationId !== givenAnswers.combinationId) {
             dispatch(setTreeProps({ combinationId }));
         }
-        if (combinationCode && combinationCode !== givenAnswers.combinationCode) {
+        if (
+            combinationCode &&
+            combinationCode !== givenAnswers.combinationCode
+        ) {
             dispatch(setTreeProps({ combinationCode }));
         }
         if (offerId && offerId !== givenAnswers.offerId) {
@@ -120,9 +111,6 @@ export const useOfferData = (isOrder?: true) => {
             props.additionalAction &&
             props.additionalAction !== additionalAction
         ) {
-            if (props.additionalAction === "addPhoto" && sendPhotoStatus === "success") {
-                return;
-            }
             dispatch(setAdditionalAction(props.additionalAction));
         }
     };
@@ -146,10 +134,13 @@ export const useOfferData = (isOrder?: true) => {
                 makeAdditionAction({
                     action: additionalAction,
                     images: files,
+                    itemNumber,
+                    orderNumber
                 })
             );
             return;
         }
+
         if (!getQuestionsLoading) {
             dispatch(GetQuestions.request());
         }
@@ -157,80 +148,50 @@ export const useOfferData = (isOrder?: true) => {
 
     const question = useMemo(getQuestion, [
         givenAnswers,
-        questionsData,
-        _getQuestionsResult,
-        isLoading,
-        currentItem,
-        sendPhotoStatus
+        offer.getQuestions.result,
+        step
     ]);
 
     const progress = useMemo(() => {
-        const base = isOrder ? 0.5 : 0;
+        const base = !!orderNumber ? 0.5 : 0;
         const questionsCount = questionsData
             ? Object.keys(questionsData).length
             : 0;
         if (question && questionsData) {
             if (!questionsCount) return 0;
             return (
-                base + (0.5 * (question.answerOrder || 0)) /
-                Object.keys(questionsData).length
+                base +
+                (0.5 * (question.answerOrder || 0)) /
+                    Object.keys(questionsData).length
             );
         } else {
             return 0;
         }
-    }, [question, isOrder]);
+    }, [question, orderNumber]);
 
-    /** |||||||||||||||||||||||||||||||||||||||
-     *     EFFECTS
-     *  |||||||||||||||||||||||||||||||||||||||
-     */
 
     const _uploadImage = (image: ImageFile) => {
         dispatch(uploadImage(image));
     };
 
     useEffect(() => {
-        if (isOrder) return;
-        if (step !== "questions" || _getQuestionsResult === "error" || isLoading) return;
-        if (
-            !question &&
-            !getQuestionsLoading &&
-            !orderLoading &&
-            !orderErrors.length
-        ) {
-            fetchQuestions();
-        }
-    }, [
-        question,
-        getQuestionsLoading,
-        orderLoading,
-        _getQuestionsResult,
-        isOrder
-    ]);
+        console.log(offer.step);
+    }, [offer.step])
 
     useEffect(() => {
-        if (qrCode) {
-            dispatch(setCombinationCode(qrCode));
-        } else {
-            if (combinationCode === "qrFollowed") {
-                dispatch(setCombinationCode())
-            }
+        console.log(question, getQuestionsLoading);
+        if (!question && !getQuestionsLoading) {
+            fetchQuestions()
         }
-    }, [qrCode, combinationCode])
+    }, [question])
 
     useEffect(() => {
-        if (step === "start" && !isOrder) {
-            fetchQuestions();
+        if (orderNumber && step !== "questions" && step !== "summary") {
+            changeStep("questions");
         }
-    }, [step, isOrder, getQuestionsLoading]);
+    }, [step, orderNumber]);
 
-    useEffect(() => {
-        if (isOrder && step !== "questions" && step !== "summary") {
-            changeStep("questions")
-        }
-    }, [isOrder, step]);
-
-    return {
+    const returned = {
         ...offer,
         question,
         changeStep,
@@ -243,6 +204,11 @@ export const useOfferData = (isOrder?: true) => {
         getQuestion,
         uploadImage: _uploadImage,
         changeContent,
-        combinationCode
+        combinationCode,
+        getItemStatus,
+        currentItem,
+        orderData
     };
+
+    return returned
 };

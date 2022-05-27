@@ -1,31 +1,20 @@
+import { Fragment, memo, useEffect, useMemo, useRef, useState } from "react";
 import { Container, Image, Typography } from "../ui";
 import styled from "styled-components/macro";
-import { useEffect, useRef, useState } from "react";
-
-interface Answer {
-    name: string;
-    value: string;
-}
-
-interface OfferDeviceProps {
-    deviceImage: string;
-    deviceName: string;
-    answers: Answer[];
-    price?: number;
-    currency?: string;
-    hideChars?: true
-}
+import { DeviceInfo, GivenAnswer } from "../../store/offerSlice/types";
+import { getDeviceData } from "./helpers/getDeviceData";
+import { OrderItem } from "../../store/orderSlice/types";
 
 const ImgWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-	width: 87px;
-	height: 87px;
-	border-radius: 12px;
+    width: 87px;
+    height: 87px;
+    border-radius: 12px;
     background-color: white;
 `;
+
 const ToggleButton = styled.button`
     width: 100%;
     cursor: pointer;
@@ -39,8 +28,9 @@ const ToggleButton = styled.button`
     border: none;
 `;
 
-const OfferDevice = (props: OfferDeviceProps) => {
-    const { deviceImage, deviceName, answers, price, currency, hideChars } = props;
+const OfferDevice = ({ data, hidingChars }: { data: OrderItem, hidingChars?: boolean | undefined }) => {
+    const { image, name, answers } = data;
+
     const [visibleChars, setVisibleChars] = useState(false);
     const [initVisible, setInitVisible] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
@@ -87,13 +77,15 @@ const OfferDevice = (props: OfferDeviceProps) => {
             alignItems="start"
             horizontalGap={16}
             justify="start"
-            margin={"0 0 16px"}
         >
             <ImgWrapper>
                 <Image
                     noBasePath
-                    src={deviceImage}
-                    alt={deviceName}
+                    src={
+                        image ||
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBfmJ3BEREy2MsQ6xLonMfa49OMmYlqFCLEg&usqp=CAU"
+                    }
+                    alt={name}
                     height={75}
                     styles={{
                         maxWidth: "75px",
@@ -102,55 +94,44 @@ const OfferDevice = (props: OfferDeviceProps) => {
                 />
             </ImgWrapper>
 
-            <Container.Flex verticalGap={4} alignItems="stretch" styles={{flexGrow: "1"}}>
+            <Container.Flex verticalGap={4} alignItems="stretch" styles={{flexGrow: 1}}>
                 <Typography.Title
                     textAlign="start"
                     styles={{ order: 0, margin: "0" }}
                 >
-                    {deviceName}
+                    {name}
                 </Typography.Title>
-
                 <Container.Flex
                     ref={cardRef}
                     verticalGap={4}
                     alignItems="stretch"
                     styles={{overflow: "hidden", transition: "height 250ms"}}>
-
-                {answers.map((answer, key) => (
-                    <Container.Flex direction="row" key={key}>
-                        <Typography.Tertiary margin={"0 4px 0 0"}>
-                            {answer.name}
-                        </Typography.Tertiary>
-                        <Typography.Small>{answer.value}</Typography.Small>
-                    </Container.Flex>
-                ))}
-
-                {!!price && !!currency && (
-                    <Typography.Small>
-                        {`${price} ${currency}`}
-                    </Typography.Small>
-                )}u
-
+                    {answers.map((ans, key) => (
+                        <Container.Flex direction="row" key={key}>
+                            {ans.name && <Typography.Tertiary margin={"0 4px 0 0"}>
+                                {ans.name}
+                            </Typography.Tertiary>}
+                            <Typography.Small>{ans.value}</Typography.Small>
+                        </Container.Flex>
+                    ))}
                 </Container.Flex>
-
                 {
-                    hideChars &&
-                        <ToggleButton type="button" onClick={() => {
-                            if (visibleChars) {
-                                hideChar()
-                            } else {
-                                showChar()
-                            }
-                        }}>
-                            {visibleChars && "Свернуть"}
-                            {!visibleChars && "Развернуть"}
+                    hidingChars &&
+                    <ToggleButton type="button" onClick={() => {
+                        if (visibleChars) {
+                            hideChar()
+                        } else {
+                            showChar()
+                        }
+                    }}>
+                        {visibleChars && "Свернуть"}
+                        {!visibleChars && "Развернуть"}
 
-                        </ToggleButton>
+                    </ToggleButton>
                 }
-
             </Container.Flex>
-            
-        </Container.Flex>)
+        </Container.Flex>
+    );
 };
 
-export default OfferDevice;
+export default memo(OfferDevice);

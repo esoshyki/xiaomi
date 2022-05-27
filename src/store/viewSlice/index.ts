@@ -7,7 +7,8 @@ const initialState: ViewState = {
     showMenu: false,
     animationOpen: false,
     animationClose: false,
-    currentSlide: 0
+    currentSlide: 0,
+    redirectTo: null,
 }
 
 const viewSlice = createSlice({
@@ -30,8 +31,13 @@ const viewSlice = createSlice({
             state.animationClose = false;
             state.animationOpen = false;
         },
+
         setSlide(state: ViewState, { payload } : PayloadAction<number>) {
-            state.currentSlide = payload
+            state.currentSlide = payload;
+        },
+
+        redirectTo(state: ViewState, { payload } : PayloadAction<string | null>) {
+            state.redirectTo = payload;
         }
     }
 });
@@ -47,7 +53,8 @@ export const {
     animationOpen,
     animationClose,
     animationClear,
-    setSlide
+    setSlide,
+    redirectTo
 } = viewSlice.actions;
 
 export default viewSlice.reducer;

@@ -1,23 +1,18 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { getOfferData, giveAnswer, giveAnswerRequest, hideQuestionContent, makeAdditionAction, setGetQuestionLoading } from './index';
-import { takeLatest, call, put, select, takeEvery, delay } from "redux-saga/effects";
+import { giveAnswer, giveAnswerRequest, hideQuestionContent, makeAdditionAction, setGetQuestionLoading } from './index';
+import { call, put, select, takeEvery, delay, takeLatest } from "redux-saga/effects";
 import { GetQuestions, setDeviceInfo, setStep } from ".";
 import { deviceApi } from "../../api";
 import { GivenAnswer, MakeAdditionAction, OfferState, QuestionsResponse, RequestAnswers } from "./types";
 import { ResponseData } from "../../api/types";
 import { RootState } from '..';
 import { formatRequestAnswer } from "../../components/Offer/helpers/formatRequestAnswer";
-import { CreateOrder, SendPhoto, setCurrentItemStatus, setQrCode } from '../orderSlice';
+import { CreateOrChangeOrder, SendPhoto, setQrCode } from '../orderSlice';
 
 function* getQuestionsWorker() {
     const state: RootState = yield select();
     const answers: RequestAnswers = yield call(formatRequestAnswer, state);
     const qrCode = state.order.qrCode;
-    const { loading } = state.offer.getQuestions;
-    if (loading) {
-        return;
-    }
-    yield put(setGetQuestionLoading(true));
     const response: ResponseData<QuestionsResponse> = yield call(deviceApi.getQuestions, state.user.user, answers);
     if (response?.data?.complete) {
         yield put(setStep("summary"));
@@ -37,17 +32,20 @@ function* getQuestionsWorker() {
 
     if (qrCode) {
         yield put(setStep("questions"));
-        yield put(setCurrentItemStatus("questions"));
     }
 }
 
 function* makeAdditionActionWorker({ payload } : PayloadAction<MakeAdditionAction>) {
     switch (payload.action) {
         case "createOrder":
-            yield put(CreateOrder.request());
+            yield put(CreateOrChangeOrder.request())
             break
         case "addPhoto":
-            yield put(SendPhoto.request(payload.images));
+            yield put(SendPhoto.request({
+                files: payload.images,
+                itemNumber: payload.itemNumber,
+                orderNumber: payload.orderNumber
+            }));
             break
     }
 }
@@ -59,7 +57,7 @@ function* giveAnswerRequestWorker({ payload } : PayloadAction<GivenAnswer>) {
 }
 
 export default function* offerSagas() {
-    yield takeEvery(GetQuestions.REQUEST, getQuestionsWorker);
+    yield takeLatest(GetQuestions.REQUEST, getQuestionsWorker);
     yield takeEvery(makeAdditionAction, makeAdditionActionWorker);
     yield takeEvery(giveAnswerRequest, giveAnswerRequestWorker)
 }

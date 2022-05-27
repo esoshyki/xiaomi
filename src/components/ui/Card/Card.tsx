@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { getCommonProps, Props } from "../../types";
 import styled, { keyframes } from "styled-components/macro";
 import { bounceInUp, fadeIn, merge } from 'react-animations'
@@ -103,9 +103,9 @@ const Card = forwardRef<HTMLDivElement, CardProps>((props: CardProps, ref) => {
 
     useLayoutEffect(resize);
 
-    const onTransitionEnd = () => {
+    const onTransitionEnd = useCallback(() => {
         setIsTransition(false);
-    };
+    }, []);
 
     useEffect(() => {
         setIsTransition(false);

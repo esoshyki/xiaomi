@@ -17,9 +17,9 @@ const useQuery = () => {
         return url
     }
 
-    const redirect = useCallback((path?: string) => path ? () => {
-        navigate(path)
-    } : undefined, [])
+    const redirect = useCallback((path?: string) => {
+        !!path && navigate(path)
+    }, [])
 
     return ({
         getParams,

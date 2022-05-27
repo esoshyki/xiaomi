@@ -8,13 +8,16 @@ import { ResponseData } from "../../api/types";
 import { RootState } from '..';
 import { formatRequestAnswer } from "../../components/Offer/helpers/formatRequestAnswer";
 import { CreateOrChangeOrder, SendPhoto, setQrCode } from '../orderSlice';
+import { redirectTo } from '../viewSlice';
 
-function* getQuestionsWorker() {
+function* getQuestionsWorker({ payload } : PayloadAction<{ orderNumber?: string, itemNumber?: string }>) {
+    const { orderNumber, itemNumber } = payload;
     const state: RootState = yield select();
     const answers: RequestAnswers = yield call(formatRequestAnswer, state);
     const qrCode = state.order.qrCode;
     const response: ResponseData<QuestionsResponse> = yield call(deviceApi.getQuestions, state.user.user, answers);
     if (response?.data?.complete) {
+        yield put(redirectTo("/order/" + orderNumber + "/" + (itemNumber)));
         yield put(setStep("summary"));
     }
     if (response?.status === "success") {
@@ -36,9 +39,12 @@ function* getQuestionsWorker() {
 }
 
 function* makeAdditionActionWorker({ payload } : PayloadAction<MakeAdditionAction>) {
+    const { itemNumber, orderNumber } = payload;
+    console.log(itemNumber, orderNumber);
+    console.log(payload.action);
     switch (payload.action) {
         case "createOrder":
-            yield put(CreateOrChangeOrder.request())
+            yield put(CreateOrChangeOrder.request({ orderNumber, itemNumber }))
             break
         case "addPhoto":
             yield put(SendPhoto.request({

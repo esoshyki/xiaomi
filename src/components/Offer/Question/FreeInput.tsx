@@ -11,7 +11,7 @@ const IMEIvalidateError = "Неправильный формат IMEI";
 
 const FreeInput = (props: OfferQuestionProps ) => {
 
-    const { giveAnswer } = useOfferData();
+    const { giveAnswer } = props;
 
     const [value, setValue] = useState("350320523229662");
     const [failure, setFailure] = useState("");

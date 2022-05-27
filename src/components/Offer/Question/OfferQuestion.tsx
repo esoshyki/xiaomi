@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { useTheme } from "styled-components";
-import { GivenAnswers, Question } from "../../../store/offerSlice/types";
+import { GivenAnswer, GivenAnswers, Question } from "../../../store/offerSlice/types";
 import { Box, Button, Info } from "../../ui";
 import Container from "../../ui/Container";
 import Typography from "../../ui/Typography";
@@ -14,6 +14,7 @@ export interface OfferQuestionProps {
     questionData: Question;
     combinationId?: string;
     givenAnswers: GivenAnswers;
+    giveAnswer: (answer: GivenAnswer) => void;
 }
 
 const OfferQuestion = (props: OfferQuestionProps) => {

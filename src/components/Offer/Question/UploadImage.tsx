@@ -15,8 +15,7 @@ const UploadProgressText = styled.span`
 `;
 
 const UploadImage = (props: OfferQuestionProps) => {
-    const { questionData } = props;
-    const { giveAnswer } = useOfferData();
+    const { questionData, giveAnswer } = props;
 
     const onFileInput = (file: File) => {
         if (typeof window !== "undefined") {

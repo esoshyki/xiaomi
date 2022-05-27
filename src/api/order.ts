@@ -21,10 +21,10 @@ const createOrder = async (state: RootState): Promise<ResponseData<GetOrderReque
     }
 }
 
-const addItemToOrder = async (state: RootState): Promise<ResponseData<GetOrderRequest>> => {
+const addItemToOrder = async (state: RootState, orderNumber?: string): Promise<ResponseData<GetOrderRequest>> => {
 
     try {
-        const response: AxiosResponse<ResponseData<GetOrderRequest>> = await api.post("/orderrequest/additem/", collectCreateOrChangeOrderData(state), {
+        const response: AxiosResponse<ResponseData<GetOrderRequest>> = await api.post("/orderrequest/additem/", collectCreateOrChangeOrderData(state, orderNumber), {
         })
         return response.data
     } catch (error: any) {

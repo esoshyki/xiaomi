@@ -11,6 +11,7 @@ import {
     uploadImage,
     giveAnswerRequest,
     setAdditionalAction,
+    addNewDevice,
 } from "../store/offerSlice";
 import {
     GivenAnswer,
@@ -22,7 +23,14 @@ import { getFromTree } from "../components/Offer/helpers/getFromTree";
 import { useUploadFiles } from "../contexts/uploadFiles";
 import { GetItemStatus } from "../store/orderSlice";
 
-export const useOfferData = (orderNumber?: string, itemNumber?: string) => {
+interface UseOfferDataProps {
+    orderNumber?: string
+    itemNumber?: string
+    order?: true
+}
+
+export const useOfferData = (props: UseOfferDataProps) => {
+    const { orderNumber, itemNumber, order } = props;
     const data = useSelector(getOfferData);
 
     const { offer, redirectTo, orderData } = data;
@@ -48,15 +56,17 @@ export const useOfferData = (orderNumber?: string, itemNumber?: string) => {
 
     const getItemStatus = useCallback(() => {
         dispatch(GetItemStatus.request({ orderNumber, itemNumber }));
-    }, []);
+    }, [orderNumber, itemNumber]);
 
     const currentItem = useMemo(() => {
+        console.log(orderData, itemNumber);
         if (orderData) {
             return orderData.items.find(item => item.itemNumber === itemNumber)
         };
-    }, [orderData])
+    }, [orderData, itemNumber])
 
     const getQuestion = () => {
+        if (order) return null
         if (redirectTo) return null;
         if (orderNumber && !orderData) return null;
         if (isLoading) return null;
@@ -128,6 +138,7 @@ export const useOfferData = (orderNumber?: string, itemNumber?: string) => {
     };
 
     const fetchQuestions = () => {
+        if (order) return null;
         if (additionalAction) {
             dispatch(resetAdditionActions());
             dispatch(
@@ -142,18 +153,23 @@ export const useOfferData = (orderNumber?: string, itemNumber?: string) => {
         }
 
         if (!getQuestionsLoading) {
-            dispatch(GetQuestions.request());
+            dispatch(GetQuestions.request({ orderNumber, itemNumber }));
         }
     };
+
+    const _addNewDevice = useCallback(() => {
+        dispatch(addNewDevice());
+    }, [])
 
     const question = useMemo(getQuestion, [
         givenAnswers,
         offer.getQuestions.result,
-        step
+        step,
+        itemNumber
     ]);
 
     const progress = useMemo(() => {
-        const base = !!orderNumber ? 0.5 : 0;
+        const base = !!itemNumber ? 0.5 : 0;
         const questionsCount = questionsData
             ? Object.keys(questionsData).length
             : 0;
@@ -167,7 +183,7 @@ export const useOfferData = (orderNumber?: string, itemNumber?: string) => {
         } else {
             return 0;
         }
-    }, [question, orderNumber]);
+    }, [question, itemNumber]);
 
 
     const _uploadImage = (image: ImageFile) => {
@@ -175,11 +191,12 @@ export const useOfferData = (orderNumber?: string, itemNumber?: string) => {
     };
 
     useEffect(() => {
-        console.log(offer.step);
-    }, [offer.step])
+        if (itemNumber) {
+
+        }
+    }, [itemNumber])
 
     useEffect(() => {
-        console.log(question, getQuestionsLoading);
         if (!question && !getQuestionsLoading) {
             fetchQuestions()
         }
@@ -207,7 +224,8 @@ export const useOfferData = (orderNumber?: string, itemNumber?: string) => {
         combinationCode,
         getItemStatus,
         currentItem,
-        orderData
+        orderData,
+        addNewDevice: _addNewDevice
     };
 
     return returned

@@ -99,6 +99,15 @@ const offerSlice = createSlice({
         },
         uploadImage(state: OfferState, { payload } : PayloadAction<ImageFile>) {
             state.images.push(payload)
+        },
+        addNewDevice(state: OfferState) {
+            state.step = "start";
+            state.givenAnswers = {
+                answers: []
+            };
+            state.questionsData = null;
+            state.questionsTree = null;
+            state.deviceInfo = null;
         }
     },
     extraReducers: {
@@ -167,7 +176,8 @@ export const {
     setGivenAnswers,
     resetQuestions,
     setGetQuestionLoading,
-    setCombinationCode
+    setCombinationCode,
+    addNewDevice
 } = offerSlice.actions
 
 export default offerSlice.reducer;

@@ -2,10 +2,9 @@ import { RootState } from './../../../store/index';
 import { CreateOrChangeOrderRequest } from '../../../store/orderSlice/types';
 import { collectAnswers } from './collectAnswers';
 
-export const formatCreateOrChangeOrderRequest = (state: RootState) : CreateOrChangeOrderRequest => {
+export const formatCreateOrChangeOrderRequest = (state: RootState, orderNumber?: string) : CreateOrChangeOrderRequest => {
     const { givenAnswers, deviceInfo } = state.offer;
     const { combinationId, offerId } = givenAnswers;
-    const orderNumber = state.order.order.number;
 
     const obj: CreateOrChangeOrderRequest = {
         questions: {}

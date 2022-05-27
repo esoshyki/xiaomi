@@ -10,35 +10,39 @@ import { ResponseData } from "../../api/types";
 import { RootState } from "..";
 import { redirectTo } from '../viewSlice';
 
-function* createOrderWorker() {
+function* createOrderWorker({ payload } : PayloadAction<OrderRequest<{}>>) {
     const state: RootState = yield select();
-    const orderNumber = state.order.order.number;
     const createOrderStatus = state.order.order.status;
+
+    const { orderNumber } = payload;
+
+    console.log(orderNumber);
 
     if (createOrderStatus === "success") {
         return;
     }
     
-    const response: CreateOrderResponse = yield call((orderNumber ? orderApi.addItemToOrder : orderApi.createOrder), state);
+    const response: CreateOrderResponse = yield call((orderNumber ? orderApi.addItemToOrder : orderApi.createOrder), state, orderNumber);
 
     if (response.status === "success") {
         yield put(CreateOrChangeOrder.success(response.data));
-        const itemNumber = response.data?.itemNumber;
-        const orderNumber = response.data?.number;
-        if (itemNumber && orderNumber) {
+
+        const responseItemNumber = response.data?.itemNumber;
+        const responseOrderNumber = response.data?.number;
+        console.log(responseOrderNumber, responseItemNumber)
+        if (responseItemNumber && responseOrderNumber) {
             yield put(CreateOrChangeOrder.fulfill())
-            yield put(restoreOffer());
-            yield put(redirectTo(`/order/${orderNumber}/${itemNumber}`));
+            yield put(redirectTo(`/order/${responseOrderNumber}/${responseItemNumber}`));
             return
         }
         yield put(setStep("questions"));
     }
     if (response.status === "error") {
         yield put(CreateOrChangeOrder.failure(response.errors));
-        yield put(setStep("createOrderFailure"))
+        yield put(setStep("createOrderFailure"));
     };
 
-    yield put(CreateOrChangeOrder.fulfill())
+    yield put(CreateOrChangeOrder.fulfill());
 };
 
 function* getOrderWorker({ payload }: PayloadAction<GetOrderRequest | undefined>) {
@@ -92,7 +96,7 @@ function* sendPhotoWorker({ payload }: PayloadAction<SendPhotoData>) {
     if (response.status === "success") {
         yield put(setAdditionalAction());
         yield put(SendPhoto.success(response.data));
-        yield put(GetQuestions.request())
+        yield put(GetQuestions.request({ orderNumber, itemNumber }))
      };
 
     if (response.status === "error") {

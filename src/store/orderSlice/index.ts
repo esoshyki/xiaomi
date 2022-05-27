@@ -1,6 +1,6 @@
 import { RootState } from '..';
 import { createSlice, createSelector, PayloadAction } from '@reduxjs/toolkit';
-import { OrderState, CreateOrderResponse, GetOrderRequest, Order, OrderItem, SendPhotoData } from './types';
+import { OrderState, CreateOrderResponse, GetOrderRequest, Order, OrderItem, SendPhotoData, OrderRequest } from './types';
 import { createRoutine } from 'redux-saga-routines';
 
 const initialState : OrderState = {
@@ -42,7 +42,7 @@ const orderSlice = createSlice({
         restoreOrderState(state: OrderState) {state = Object.assign(state, initialState)},
     },
     extraReducers: {
-        [CreateOrChangeOrder.REQUEST](state) {
+        [CreateOrChangeOrder.REQUEST](state, { payload } : PayloadAction<OrderRequest<{}>>) {
             state.order.loading = true;
         },
         [CreateOrChangeOrder.FAILURE](state, { payload }: PayloadAction<string[]>) {

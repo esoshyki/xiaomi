@@ -3,6 +3,7 @@ import { getViewData, redirectTo } from './../store/viewSlice/index';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useEffect } from 'react';
+import { addNewDevice } from '../store/offerSlice';
 
 export const useRedirect = () => {
     const navigate = useNavigate();
@@ -14,9 +15,16 @@ export const useRedirect = () => {
         navigate(`/order/${orderNumber}/${itemNumber ?? ""}`);
     }, []);
 
+    const _addNewDevice = useCallback((orderNumber: string) => {
+        dispatch(addNewDevice());
+        navigate("/create/" + orderNumber)
+    }, [])
+
     const returned = {
-        redirectToOrder
-    }
+        redirectToOrder,
+        addNewDevice: _addNewDevice
+    };
+
 
     useEffect(() => {
         if (viewData.redirectTo) {

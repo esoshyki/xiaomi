@@ -1,22 +1,24 @@
-import { useOfferData } from "../../hooks/useOfferData";
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
+import { useRedirect } from "../../hooks/useRedirect";
+import { getOrderData } from "../../store/orderSlice";
 import AddNewDevice from "../AddNewDevice";
-import Offer from "../Offer";
 import OfferLoader from "../Offer/OfferLoader";
 import { Container } from "../ui";
 import OrderShortItem from "./OrderShortItem";
 
 const Order = ({
     orderNumber,
-    itemNumber,
-    qrCode
 }: {
     orderNumber?: string
-    itemNumber?: string
-    qrCode: boolean
 }) => {
-    const { orderData } = useOfferData(orderNumber);
 
-    console.log(orderData, orderNumber, itemNumber)
+    const _orderData = useSelector(getOrderData);
+    const { addNewDevice } = useRedirect()
+
+    const orderData = useMemo(() => {
+        return _orderData.order.data;
+    }, [_orderData])
 
     return (
         <Container.Flex
@@ -26,22 +28,13 @@ const Order = ({
                 minHeight: "324px",
             }}
         >
-            {!!orderData?.items &&
-                orderData.items
-                    .filter((el) => el.itemNumber !== itemNumber)
-                    .map((item) => (
-                        <OrderShortItem
-                            key={item.itemNumber}
-                            progress={1}
-                            itemData={item}
-                            currency={orderData.currency}
-                        />
-                    ))}
-            {(orderData || (!orderNumber)) && <Offer orderNumber={orderNumber} itemNumber={itemNumber} />}
+            {orderData?.items.map((item) => (
+                <OrderShortItem itemData={item} key={item.itemNumber} currency={orderData.currency} progress={1}/>
+            ))}
 
             {(!orderData && orderNumber) &&  <OfferLoader />}
 
-            {orderNumber && <AddNewDevice />}
+            {!!orderNumber && <AddNewDevice onClick={() => {addNewDevice(orderNumber)}}/>}
         </Container.Flex>
     );
 };

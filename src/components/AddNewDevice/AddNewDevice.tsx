@@ -1,9 +1,13 @@
 import { useTheme } from "styled-components"
 import useQuery from "../../hooks/useQuery"
 import { Card, Container, Typography } from "../ui"
-import Icon from "../ui/Icon"
+import Icon from "../ui/Icon";
 
-const AddNewDevice = () => {
+interface AddNewDeviceProps {
+    onClick: () => void
+}
+
+const AddNewDevice = ({ onClick } : AddNewDeviceProps) => {
 
     const { orderNumber, redirect } = useQuery();
 
@@ -12,8 +16,13 @@ const AddNewDevice = () => {
     const theme = useTheme();
     const color = theme.colors.link.default;
 
+    const _onClick = () => {
+        onClick();
+        redirect(redirectPath)
+    }
+
     return (
-        <Card onClick={redirect(redirectPath)} fullWidth padding="28px" hoverStyles={{
+        <Card onClick={_onClick} fullWidth padding="28px" hoverStyles={{
             cursor: "pointer"
         }}>
             <Container.Flex

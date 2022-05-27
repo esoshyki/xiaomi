@@ -4,16 +4,18 @@ import Container from "../ui/Container";
 import OfferQuestion from "./Question/OfferQuestion";
 import { Button, Typography } from "../ui";
 import {
+    GivenAnswer,
     GivenAnswers,
     Question,
     ServerError,
 } from "../../store/offerSlice/types";
 
 interface OfferQuestionsProps {
-    question: Question | null;
-    errors: ServerError[];
-    changeContent: boolean;
-    givenAnswers: GivenAnswers;
+    question: Question | null
+    errors: ServerError[]
+    changeContent: boolean
+    givenAnswers: GivenAnswers
+    giveAnswer: (answer: GivenAnswer) => void
 }
 
 const OfferQuestions = ({
@@ -21,6 +23,7 @@ const OfferQuestions = ({
     errors,
     changeContent,
     givenAnswers,
+    giveAnswer
 }: OfferQuestionsProps) => {
 
     return (
@@ -36,6 +39,7 @@ const OfferQuestions = ({
                 <OfferQuestion
                     questionData={question}
                     givenAnswers={givenAnswers}
+                    giveAnswer={giveAnswer}
                 />
             )}
             {!!errors.length && (

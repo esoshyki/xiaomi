@@ -4,9 +4,8 @@ import { OfferQuestionProps } from "./OfferQuestion";
 import { collectAnswerData } from "../helpers/collectAnswerData";
 
 const FromList = (props: OfferQuestionProps) => {
-    const { giveAnswer } = useOfferData();
 
-    const { questionData } = props;
+    const { questionData, giveAnswer } = props;
     const { answers, validator } = questionData;
 
     const onClick = (answerName: string, answerId: string) => {

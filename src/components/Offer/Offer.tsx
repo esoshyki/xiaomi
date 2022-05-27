@@ -1,11 +1,19 @@
 import { useOfferData } from "../../hooks/useOfferData";
 import Container from "../ui/Container";
 import { Typography, Button } from "../ui";
-import { memo, useEffect, useRef, useState, useCallback } from "react";
+import {
+    memo,
+    useEffect,
+    useRef,
+    useState,
+    useCallback,
+    Fragment,
+} from "react";
 import OfferDevice from "./OfferDevice";
 import { OfferQuestions } from ".";
 import OfferCard from "./OfferCard";
 import OfferSummary from "./OfferSummary";
+import AddNewDevice from "../AddNewDevice";
 
 const Offer = ({
     orderNumber,
@@ -22,20 +30,22 @@ const Offer = ({
         progress,
         question,
         isLoading,
-        changeStep,
         changeContent,
         getItemStatus,
         currentItem,
         orderData,
-    } = useOfferData(orderNumber, itemNumber);
-
-    console.log(currentItem);
+        addNewDevice,
+        giveAnswer,
+    } = useOfferData({ orderNumber, itemNumber });
 
     const [hint, setHint] = useState(true);
     const [cardHeight, setCardHeight] = useState("auto");
     const [cardWidth, setCardWidth] = useState("auto");
 
     const hintRef = useRef<HTMLDivElement>(null);
+
+    console.log(currentItem);
+    console.log(orderNumber, itemNumber)
 
     useEffect(() => {
         if (!!hintRef.current) {
@@ -47,60 +57,64 @@ const Offer = ({
         }
     }, [setCardHeight, setCardWidth]);
 
-    console.log(currentItem);
-
     const onClick = useCallback(() => {
         setHint(false);
         // changeStep("questions");
     }, []);
 
     return (
-        <Container.Flex
-            gap={36}
-            fullWidth
-            fullHeight
-            direction="row"
-            alignItems="stretch"
-            breakpoints={{
-                659.9: {
-                    flexDirection: "column",
-                    alignItems: "center",
-                },
-            }}
-        >
-            <OfferCard
-                isLoading={isLoading}
-                progress={progress}
-                onClick={onClick}
+        <Fragment>
+            <Container.Flex
+                gap={36}
+                fullWidth
+                fullHeight
+                direction="row"
+                alignItems="stretch"
+                breakpoints={{
+                    659.9: {
+                        flexDirection: "column",
+                        alignItems: "center",
+                    },
+                }}
             >
-                {deviceInfo && (
-                    <OfferDevice
-                        deviceInfo={deviceInfo}
-                        givenAnswers={givenAnswers.answers}
-                    />
-                )}
-                {step === "questions" && (
-                    <OfferQuestions
-                        question={question}
-                        errors={getQuestions.errors}
-                        givenAnswers={givenAnswers}
-                        changeContent={changeContent}
-                    />
-                )}
-                {step === "createOrderFailure" && (
-                    <Typography.Error>Ошибка создания заказа.</Typography.Error>
-                )}
+                <OfferCard
+                    isLoading={isLoading}
+                    progress={progress}
+                    onClick={onClick}
+                >
+                    {deviceInfo && (
+                        <OfferDevice
+                            deviceInfo={deviceInfo}
+                            givenAnswers={givenAnswers.answers}
+                        />
+                    )}
+                    {step === "questions" && (
+                        <OfferQuestions
+                            question={question}
+                            errors={getQuestions.errors}
+                            givenAnswers={givenAnswers}
+                            changeContent={changeContent}
+                            giveAnswer={giveAnswer}
+                        />
+                    )}
+                    {step === "createOrderFailure" && (
+                        <Typography.Error>
+                            Ошибка создания заказа.
+                        </Typography.Error>
+                    )}
 
-                {step === "summary" && !!currentItem && (
-                    <OfferSummary
-                        item={currentItem}
-                        getItemStatus={getItemStatus}
-                        isLoading={!!orderData}
-                    />
-                )}
-            </OfferCard>
-        </Container.Flex>
+                    {step === "summary" && !!currentItem && (
+                        <OfferSummary
+                            item={currentItem}
+                            getItemStatus={getItemStatus}
+                            isLoading={!!orderData}
+                        />
+                    )}
+                </OfferCard>
+            </Container.Flex>
+            {step === "summary" && <AddNewDevice onClick={addNewDevice} />}
+        </Fragment>
     );
 };
 
-export default memo(Offer);
+export default Offer;

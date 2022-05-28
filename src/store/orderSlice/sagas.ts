@@ -27,7 +27,7 @@ function* createOrderWorker({ payload } : PayloadAction<OrderRequest<{}>>) {
             yield put(redirectTo(`/order/${responseOrderNumber}/${responseItemNumber}`));
             return
         }
-        yield put(setStep("questions"));
+        yield put(setStep("summary"));
     }
     if (response.status === "error") {
         yield put(CreateOrChangeOrder.failure(response.errors));
@@ -129,6 +129,9 @@ function* getOrderSuccessWorker({ payload } : PayloadAction<{data: Order, itemNu
     if (currentItem) {
         if (currentItem.status === "F") {
             yield put(setStep("summary"));
+        };
+        if (currentItem.status === "N") {
+            yield put(setStep("prePrice"))
         }
         yield put(resetQuestions());
         yield put(setGivenAnswers({
@@ -141,7 +144,7 @@ function* getOrderSuccessWorker({ payload } : PayloadAction<{data: Order, itemNu
 
 export default function* orderSagas() {
     yield takeLeading(CreateOrChangeOrder.REQUEST, createOrderWorker);
-    yield takeLatest(GetOrder.REQUEST, getOrderWorker)
+    yield takeLeading(GetOrder.REQUEST, getOrderWorker)
     yield takeLeading(SendPhoto.REQUEST, sendPhotoWorker);
     yield takeLeading(GetItemStatus.REQUEST, getItemStatusRequestWorker);
     yield takeLatest(GetOrder.SUCCESS, getOrderSuccessWorker)

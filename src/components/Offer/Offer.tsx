@@ -16,6 +16,7 @@ import OfferCard from "./OfferCard";
 import OfferSummary from "./OfferSummary";
 import AddNewDevice from "../AddNewDevice";
 import { useParams } from "react-router-dom";
+import OfferPrePrice from "./OfferPrePrice";
 
 const Offer = ({ hidingChars }: { hidingChars?: boolean | undefined }) => {
     const { orderNumber, itemNumber } = useParams();
@@ -31,9 +32,10 @@ const Offer = ({ hidingChars }: { hidingChars?: boolean | undefined }) => {
         changeContent,
         addNewDevice,
         giveAnswer,
+        currentItem,
+        orderData,
+        changeStep,
     } = useOfferData({ orderNumber, itemNumber });
-
-    console.log(step);
 
     return (
         <Container.Flex verticalGap={24} alignItems="start">
@@ -50,10 +52,7 @@ const Offer = ({ hidingChars }: { hidingChars?: boolean | undefined }) => {
                     },
                 }}
             >
-                <OfferCard
-                    isLoading={isLoading}
-                    progress={progress}
-                >
+                <OfferCard isLoading={isLoading} progress={progress}>
                     {deviceInfo && (
                         <OfferDevice
                             deviceInfo={deviceInfo}
@@ -76,6 +75,16 @@ const Offer = ({ hidingChars }: { hidingChars?: boolean | undefined }) => {
                     )}
 
                     {step === "summary" && <OfferSummary />}
+
+                    {step === "prePrice" && (
+                        <OfferPrePrice
+                            currency={orderData?.currency}
+                            itemData={currentItem}
+                            onClick={() => {
+                                changeStep("questions");
+                            }}
+                        />
+                    )}
                 </OfferCard>
             </Container.Flex>
             {step === "summary" && <AddNewDevice onClick={addNewDevice} />}

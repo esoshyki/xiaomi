@@ -2,7 +2,7 @@ import { isString, isNumber, N } from './../types';
 
 export type OfferSteps =
     | "start"
-    | "imei"
+    | "prePrice"
     | "isYourPhone"
     | "questions"
     | "summary"

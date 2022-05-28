@@ -210,12 +210,6 @@ export const useOfferData = (props: UseOfferDataProps) => {
         }
     }, [step, orderNumber]);
 
-    useEffect(() => {
-        if (!orderData) {
-            dispatch(GetOrder.request({ orderNumber }))
-        }
-    }, [orderData])
-
     const returned = {
         ...offer,
         question,

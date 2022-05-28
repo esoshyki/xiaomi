@@ -1,6 +1,7 @@
 import { Container, Image, Typography } from "../ui";
 import styled from "styled-components/macro";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import StatusImage from "../ui/Image/StatusImage";
 
 interface Answer {
     name: string;
@@ -41,7 +42,7 @@ const ToggleButton = styled.button`
 `;
 
 const OfferDevice = (props: OfferDeviceProps) => {
-    const { deviceImage, deviceName, answers, price, currency, hideChars } = props;
+    const { deviceImage, deviceName, answers, price, currency, hideChars, status } = props;
     const [visibleChars, setVisibleChars] = useState(false);
     const [initVisible, setInitVisible] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
@@ -126,13 +127,16 @@ const OfferDevice = (props: OfferDeviceProps) => {
                     </Container.Flex>
                 ))}
 
-                {!!price && !!currency && (
-                    <Typography.Small>
-                        {`${price} ${currency}`}
-                    </Typography.Small>
-                )}
-
                 </Container.Flex>
+
+                {!!price && !!currency && (
+                    <Container.Flex direction={"row"} >
+                        <StatusImage status={status === "D" ? "done" : "attention"}/>
+                        <Typography.Small>
+                            {`${price} ${currency}`}
+                        </Typography.Small>
+                    </Container.Flex>
+                )}
 
                 {
                     hideChars &&

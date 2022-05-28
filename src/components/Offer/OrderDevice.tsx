@@ -29,7 +29,7 @@ const ToggleButton = styled.button`
 `;
 
 const OfferDevice = ({ data, hidingChars }: { data: OrderItem, hidingChars?: boolean | undefined }) => {
-    const { image, name, answers } = data;
+    const { image, name, answers, status } = data;
 
     const [visibleChars, setVisibleChars] = useState(false);
     const [initVisible, setInitVisible] = useState(false);
@@ -68,7 +68,7 @@ const OfferDevice = ({ data, hidingChars }: { data: OrderItem, hidingChars?: boo
             cardRef.current.style.height = visibleHeight + "px";
             setVisibleChars(false);
         }
-    }
+    };
 
     return (
         <Container.Flex

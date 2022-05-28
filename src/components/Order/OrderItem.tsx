@@ -11,7 +11,7 @@ import Offer from "../Offer";
 import OfferLayout from "../Offer/OfferLayout";
 import OfferLoader from "../Offer/OfferLoader";
 import { Container } from "../ui";
-import OrderPrePrice from "./OrderPrePrice";
+import OrderPrePrice from "../Offer/OfferPrePrice";
 
 const OrderItem = ({}: {}) => {
     const { itemNumber, orderNumber } = useURL();

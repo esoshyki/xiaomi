@@ -13,7 +13,7 @@ const OrderShortItem = ({
     itemData,
     currency,
 }: OrderShortItemProps) => {
-    const { name, answers, price, image } = itemData;
+    const { name, answers, price, image, status } = itemData;
 
     return (
         <OfferCard isLoading={false} progress={progress}>
@@ -27,6 +27,7 @@ const OrderShortItem = ({
                 price={price}
                 currency={currency}
                 hideChars
+                status={status}
             />
         </OfferCard>
     );

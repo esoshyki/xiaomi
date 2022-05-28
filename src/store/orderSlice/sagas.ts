@@ -1,8 +1,8 @@
-import { resetQuestions, setGivenAnswers, GetQuestions, restoreOffer } from './../offerSlice/index';
+import { resetQuestions, setGivenAnswers, GetQuestions, restoreOffer, setCombinationCode } from './../offerSlice/index';
 import { setAdditionalAction, setStep } from '../offerSlice';
 import { customErrors } from './../../helpers/getCustomError';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { CreateOrChangeOrder, GetOrder, setItemNumber, setOrderNumber, SendPhoto, GetItemStatus } from './index';
+import { CreateOrChangeOrder, GetOrder, setItemNumber, setOrderNumber, SendPhoto, GetItemStatus, setQrCode } from './index';
 import {  call, put, select, takeLatest, takeLeading } from "redux-saga/effects";
 import { orderApi } from "../../api";
 import { GetOrderRequest, Order, CreateOrderResponse, SendPhotoData, OrderRequest } from "./types";
@@ -88,6 +88,7 @@ function* sendPhotoWorker({ payload }: PayloadAction<SendPhotoData>) {
     if (response.status === "success") {
         yield put(setAdditionalAction());
         yield put(SendPhoto.success(response.data));
+        yield put(setCombinationCode())
         yield put(GetQuestions.request({ orderNumber, itemNumber }))
      };
 
@@ -139,6 +140,10 @@ function* getOrderSuccessWorker({ payload } : PayloadAction<{data: Order, itemNu
             combinationCode: qrCode ?? currentItem.combinationCode,
             answers: []
         }));
+
+        if (qrCode) {
+            yield put(setQrCode())
+        }
     };
 }
 

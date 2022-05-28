@@ -2,6 +2,7 @@ import { useRef, useEffect, useMemo, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useTheme } from "styled-components";
+import { useRedirect } from "../../hooks/useRedirect";
 import { GetItemStatus, getOrderItemData } from "../../store/orderSlice";
 import { OrderItem } from "../../store/orderSlice/types";
 import { Container, Typography } from "../ui";
@@ -24,7 +25,8 @@ const OfferSummary = () => {
 
     const status = useMemo(() => {
         return item?.status
-    }, [item])
+    }, [item]);
+
 
     useEffect(() => {
 

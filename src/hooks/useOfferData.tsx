@@ -172,7 +172,7 @@ export const useOfferData = (props: UseOfferDataProps) => {
     ]);
 
     const progress = useMemo(() => {
-        const base = !!itemNumber ? 0.5 : 0;
+        const base = (!!itemNumber  || step === "summary")? 0.5 : 0;
         const questionsCount = questionsData
             ? Object.keys(questionsData).length
             : 0;
@@ -184,9 +184,9 @@ export const useOfferData = (props: UseOfferDataProps) => {
                     Object.keys(questionsData).length
             );
         } else {
-            return 0;
+            return base;
         }
-    }, [question, itemNumber, questionsData, questionOrder]);
+    }, [question, itemNumber, questionsData, questionOrder, step]);
 
 
     const _uploadImage = (image: ImageFile) => {

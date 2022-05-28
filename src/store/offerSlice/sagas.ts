@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { giveAnswer, giveAnswerRequest, hideQuestionContent, makeAdditionAction, setAdditionalAction, setGetQuestionLoading } from './index';
+import { giveAnswer, giveAnswerRequest, hideQuestionContent, makeAdditionAction, setAdditionalAction, setCombinationCode, setGetQuestionLoading } from './index';
 import { call, put, select, takeEvery, delay, takeLatest } from "redux-saga/effects";
 import { GetQuestions, setDeviceInfo, setStep } from ".";
 import { deviceApi } from "../../api";
@@ -34,6 +34,7 @@ function* getQuestionsWorker({ payload } : PayloadAction<{ orderNumber?: string,
     yield put(GetQuestions.fulfill());
 
     if (qrCode) {
+        yield put(setCombinationCode(""))
         yield put(setStep("questions"));
     }
 }

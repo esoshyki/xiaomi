@@ -17,7 +17,7 @@ export const useAuth = () => {
 
     const checkAuth = () => dispatch(CheckAuth.request());
 
-    return ({
+    const _user = {
         userData: user,
         user: user.user,
         isAuth: userData.user?.isAuthorised,
@@ -27,5 +27,7 @@ export const useAuth = () => {
         checkAuth,
         showLoginForm,
         hideLoginForm,
-    })
+    }
+
+    return _user
 };

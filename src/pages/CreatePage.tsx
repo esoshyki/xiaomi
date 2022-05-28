@@ -11,21 +11,26 @@ function CreatePage() {
     const { isLoading, errors, orderData } = useSelector(getOrderItemData);
     const dispatch = useDispatch();
 
+    if (!itemNumber) {
+        dispatch(restoreOffer())
+    }
+
     const currentItem = useMemo(() => {
         return orderData?.items.find((item) => item.itemNumber === itemNumber);
     }, [orderData]);
 
     useEffect(() => {
+        if (!orderNumber) return;
         if (!isLoading && !orderData && !errors.length) {
             dispatch(GetOrder.request({itemNumber, orderNumber}))
         }
-    }, [orderData, isLoading, errors]);
+    }, [orderData, isLoading, errors, orderNumber]);
 
-    useEffect(() => {
-        if (!itemNumber) {
-            dispatch(restoreOffer())
-        }
-    }, [itemNumber])
+    // useEffect(() => {
+    //     if (!itemNumber) {
+    //         dispatch(restoreOffer())
+    //     }
+    // }, [itemNumber])
 
     const showOffer = useMemo(() => {
         if (!itemNumber) return true;

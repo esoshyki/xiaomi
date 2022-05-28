@@ -140,6 +140,7 @@ export const useOfferData = (props: UseOfferDataProps) => {
     };
 
     const fetchQuestions = () => {
+        if (offer.getQuestions.loading) return null;
         if (order) return null;
         if (additionalAction) {
             // dispatch(resetAdditionActions());
@@ -191,12 +192,6 @@ export const useOfferData = (props: UseOfferDataProps) => {
     const _uploadImage = (image: ImageFile) => {
         dispatch(uploadImage(image));
     };
-
-    useEffect(() => {
-        if (itemNumber) {
-
-        }
-    }, [itemNumber])
 
     useEffect(() => {
         if (!question && !getQuestionsLoading) {

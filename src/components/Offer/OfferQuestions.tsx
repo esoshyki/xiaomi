@@ -33,6 +33,7 @@ const OfferQuestions = ({
             styles={{
                 transition: "opacity 200ms ease-in",
                 opacity: changeContent ? 0 : 1,
+                marginTop: "16px"
             }}
         >
             {!!question && (

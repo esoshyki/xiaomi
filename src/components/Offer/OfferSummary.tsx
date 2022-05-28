@@ -43,7 +43,6 @@ const OfferSummary = () => {
 
     return (
         <Container.Flex verticalGap={16} alignItems="stretch">
-            {item && <OrderDevice data={item} hidingChars={true} />}
 
             {status !== "complete" && (
                 <Typography.Title

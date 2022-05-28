@@ -18,7 +18,7 @@ type UploadProps = Props<{
 
 const UploadProgress = (props: UploadProps) => {
     return (
-        <Container.Flex direction="row" horizontalGap={4} styles={{marginBottom: "6px", order: "-1"}}>
+        <Container.Flex direction="row" horizontalGap={4} styles={{margin: "16px 0 6px 0", order: "-1"}}>
             <Img image={checkPNG} />
             <UploadProgressText>
                 {props.loadedLength === 1 && "Первое фото загружено"}

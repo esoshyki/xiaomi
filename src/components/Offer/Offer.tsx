@@ -17,6 +17,7 @@ import OfferSummary from "./OfferSummary";
 import AddNewDevice from "../AddNewDevice";
 import { useParams } from "react-router-dom";
 import OfferPrePrice from "./OfferPrePrice";
+import OrderDevice from "./OrderDevice";
 
 const Offer = ({ hidingChars }: { hidingChars?: boolean | undefined }) => {
     const { orderNumber, itemNumber } = useParams();
@@ -59,6 +60,8 @@ const Offer = ({ hidingChars }: { hidingChars?: boolean | undefined }) => {
                             givenAnswers={givenAnswers.answers}
                         />
                     )}
+
+                    {!deviceInfo && !!currentItem && <OrderDevice data={currentItem} hidingChars/> }
                     {step === "questions" && (
                         <OfferQuestions
                             question={question}

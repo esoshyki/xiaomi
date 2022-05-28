@@ -22,8 +22,7 @@ export const withLayout =
             if (typeof document !== "undefined") {
                 document.title = pageTitle;
             }
-            dispatch(resetCheckout());
-        }, [dispatch]);
+        }, []);
 
         useEffect(() => {
             if (
@@ -38,7 +37,6 @@ export const withLayout =
             }
         }, [
             user,
-            dispatch,
         ]);
 
         return (

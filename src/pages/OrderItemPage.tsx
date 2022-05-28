@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { withLayout } from "../components/Layout/withLayout";
@@ -7,7 +7,7 @@ import useQuery from "../hooks/useQuery";
 import { setCombinationCode } from "../store/offerSlice";
 import { GetOrder, getOrderItemData, setQrCode } from "../store/orderSlice";
 
-const OrderPage = () => {
+const OrderItemPage = () => {
 
     const { itemNumber, orderNumber } = useParams();
     const { search } = useLocation();
@@ -15,6 +15,12 @@ const OrderPage = () => {
     const navigate = useNavigate();
     const { isLoading, errors, orderData } = useSelector(getOrderItemData);
     const dispatch = useDispatch();
+
+    const getOrder = useCallback(() => {
+        if (!isLoading) {
+            dispatch(GetOrder.request({itemNumber, orderNumber}));
+        }
+    }, [])
 
     const qrCode = useMemo(() => {
         const params = new URLSearchParams(search);
@@ -33,22 +39,15 @@ const OrderPage = () => {
         return orderData?.items.find((item) => item.itemNumber === itemNumber);
     }, [itemNumber, orderData]);
 
-    useEffect(() => {
-        if (!isLoading) {
-            dispatch(GetOrder.request({ itemNumber, orderNumber }))
-        }
-    }, [itemNumber]);
+    useEffect(getOrder, []);
 
 
     useEffect(() => {
-        if (!isLoading && !orderData && !errors.length) {
-            dispatch(GetOrder.request({itemNumber, orderNumber}))
-        };
 
         if (orderData?.items.every(el => el.status === "D") || orderData?.status === "D") {
             navigate("/order/" + orderNumber)
         }
-    }, [orderData, isLoading, errors]);
+    }, [orderData]);
 
     const showOffer = useMemo(() => {
         if (isLoading) return false;
@@ -62,4 +61,4 @@ const OrderPage = () => {
         </Fragment>;
 };
 
-export default withLayout(OrderPage, "Заказ");
+export default withLayout(OrderItemPage, "Заказ");

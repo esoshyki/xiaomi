@@ -1,7 +1,5 @@
 import { useTheme } from "styled-components";
 import { OrderItem } from "../../store/orderSlice/types";
-import OfferCard from "./OfferCard";
-import OfferLayout from "./OfferLayout";
 import OrderDevice from "./OrderDevice";
 import { Button, Container, Typography } from "../ui";
 import { Fragment } from "react";
@@ -19,8 +17,6 @@ const OfferPrePrice = (props: PrePriceProps) => {
 
     return (
             <Container.Flex fullWidth alignItems="stretch" verticalGap={12}>
-
-                {itemData && <OrderDevice data={itemData} hidingChars/>}
 
                 {itemData && currency && (
                     <Fragment>

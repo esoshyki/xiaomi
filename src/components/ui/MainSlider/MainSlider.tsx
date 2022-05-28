@@ -52,6 +52,7 @@ const DesktopWrapper = styled.div`
 `
 
 const MobileWrapper = styled.div`
+    position: relative;
     display: none;
     width: 100%;
     @media (max-width: 660px) {
@@ -74,6 +75,7 @@ const AnimateWrapper = (props: {children: ReactNode, styles?: {}}) => {
             </Container.Flex>
 
         </Container.Flex>
+
     )
 }
 
@@ -123,7 +125,7 @@ const MainSlider = (props: SliderProps) => {
                                     width: "100vw",
                                     flexShrink: 0
                                 }}>
-                                    <Image src={slide.img} height={228} alt={slide.title} noBasePath/>
+                                    <Image src={slide.img} height={228} alt={slide.title} noBasePath styles={{objectFit: "contain"}}/>
                                 </div>
                             )
                         })
@@ -145,7 +147,12 @@ const MainSlider = (props: SliderProps) => {
                                 flexShrink: 0,
                                 willChange: "margin"
                             }}>
-                                <Typography.Big margin={"32px 22px 24px"}>{slide.title}</Typography.Big>
+                                <Typography.Big margin={"32px 22px 24px"} breakpoints={{
+                                    359.9: {
+                                        marginLeft: "0",
+                                        marginRight: "0"
+                                    }
+                                }}>{slide.title}</Typography.Big>
                             </div>
                         )
                     })

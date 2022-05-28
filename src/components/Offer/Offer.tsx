@@ -38,7 +38,7 @@ const Offer = ({ hidingChars }: { hidingChars?: boolean | undefined }) => {
     } = useOfferData({ orderNumber, itemNumber });
 
     return (
-        <Container.Flex verticalGap={24} alignItems="start">
+        <Container.Flex verticalGap={24} alignItems="start" padding="0 0 24px">
             <Container.Flex
                 gap={36}
                 fullWidth

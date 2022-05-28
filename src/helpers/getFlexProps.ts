@@ -23,6 +23,8 @@ export const getFlexAligns = (value: Aligns) => {
             return "flex-end"
         case "stretch":
             return "stretch"
+        case "baseline":
+            return "baseline"
         default:
             return "center"
     }   

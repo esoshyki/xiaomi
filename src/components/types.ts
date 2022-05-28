@@ -36,7 +36,7 @@ export type Props<T> = {
 } & T
 
 export type Justifies = "start" | "end" | "center" | "around" | "between"
-export type Aligns = "start" | "end" | "center" | "stretch";
+export type Aligns = "start" | "end" | "center" | "stretch" | "baseline";
 
 export const getCommonProps = (props: Props<any>) => {
     const { padding, margin, fullWidth, fullHeight } = props;

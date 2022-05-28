@@ -26,12 +26,6 @@ function CreatePage() {
         }
     }, [orderData, isLoading, errors, orderNumber]);
 
-    // useEffect(() => {
-    //     if (!itemNumber) {
-    //         dispatch(restoreOffer())
-    //     }
-    // }, [itemNumber])
-
     const showOffer = useMemo(() => {
         if (!itemNumber) return true;
         if (isLoading) return false;

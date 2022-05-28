@@ -50,6 +50,8 @@ export type ButtonProps = Props<{
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     (props: ButtonProps, ref) => {
         const { children, withLoader, pending, icon, fileInput, onFileInput, link } = props;
+        const buttonProps = {...props};
+        delete buttonProps.onFileInput
 
         const navigate = useNavigate()
 
@@ -87,7 +89,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             <Fragment>
                 <Root
                     ref={ref ?? buttonRef}
-                    {...props}
+                    {...buttonProps}
                     onClick={onClick}
                     type={props.sumbit ? "submit" : "button"}
                 >

@@ -85,10 +85,6 @@ const OfferDevice = ({
         }
     };
 
-    const deleteOrder = () => {
-        console.log("delete", data.itemNumber);
-    };
-
     return (
         <>
             <Container.Flex

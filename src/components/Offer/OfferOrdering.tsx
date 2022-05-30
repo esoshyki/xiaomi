@@ -54,7 +54,7 @@ const OfferOrdering = ({
                     Оформление
                 </Typography.Title>
 
-                <Container.Flex>
+                <Container.Flex verticalGap={8}>
                     <Line
                         label="Количество: "
                         text={count ? ` ${count} шт` : " не указана"}

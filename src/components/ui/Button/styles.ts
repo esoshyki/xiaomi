@@ -6,7 +6,7 @@ export const collectButtonStyles = (props: ButtonProps & { theme: DefaultTheme }
     const theme = props.theme;
 
     const defaultProps = css`
-        padding: 8px 10px 8px;
+        padding: 9px 10px;
         transition: background-color 200ms, color 200ms, border-color 200ms;
         border-radius: 12px;
         position: relative;
@@ -15,7 +15,7 @@ export const collectButtonStyles = (props: ButtonProps & { theme: DefaultTheme }
         width: ${props.fullWidth ? "100%" : "auto"};
         height: ${props.fullHeight ? "100%" : "auto"};
         text-transform: ${props.uppercase ? "uppercase" : "none"};
-        border: none;
+        border: 1px solid;
 		font-weight: 500;
 		font-size: 16px;
 		line-height: 20px;
@@ -30,6 +30,7 @@ export const collectButtonStyles = (props: ButtonProps & { theme: DefaultTheme }
             return css`
                 ${defaultProps};
                 background-color: ${theme.colors.button.disable};
+                border-color: ${theme.colors.button.disable};
                 color: #fff;
                 &:hover {
                     background-color: ${theme.colors.button.disable};
@@ -58,6 +59,7 @@ export const collectButtonStyles = (props: ButtonProps & { theme: DefaultTheme }
             return css`
                 ${defaultProps};
                 background-color: ${theme.colors.info.error};
+				border-color: ${theme.colors.info.error};
                 color: ${theme.colors.button.contrast};
                 &:hover {
                     background-color: ${theme.colors.info.error};
@@ -70,6 +72,7 @@ export const collectButtonStyles = (props: ButtonProps & { theme: DefaultTheme }
             return css`
                 ${defaultProps};
                 background-color: ${theme.colors.button.default};
+                border-color: ${theme.colors.button.default};
                 color: #fff;
                 &:hover {
                     background-color: ${theme.colors.button.hover}

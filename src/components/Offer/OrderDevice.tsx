@@ -135,13 +135,13 @@ const OfferDevice = ({
                         }}
                     >
                         {answers.map((ans, key) => (
-                            <Container.Flex direction="row" key={key}>
+                            <Container.Flex direction="row" key={key} alignItems="start">
                                 {ans.name && (
                                     <Typography.Tertiary margin={"0 4px 0 0"}>
                                         {ans.name}
                                     </Typography.Tertiary>
                                 )}
-                                <Typography.Small>{ans.value}</Typography.Small>
+                                <Typography.Small textAlign="start">{ans.value}</Typography.Small>
                             </Container.Flex>
                         ))}
                     </Container.Flex>

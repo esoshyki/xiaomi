@@ -38,6 +38,7 @@ const Offer = ({ hidingChars }: { hidingChars?: boolean | undefined }) => {
         changeStep,
     } = useOfferData({ orderNumber, itemNumber });
 
+    console.log(step);
     return (
         <Container.Flex verticalGap={24} alignItems="start" padding="0 0 24px">
             <Container.Flex

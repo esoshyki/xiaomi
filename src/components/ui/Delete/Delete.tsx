@@ -12,7 +12,7 @@ const Delete = ({ onDelete, onCancel } : DeleteProps) => {
 
     return (
         <Overlay padding={"156px 24px"} >
-            <Card padding={28} styles={{maxWidth: "312px", background: theme.colors.background.contrast}}>
+            <Card padding={28} styles={{maxWidth: "312px", backgroundColor: theme.colors.background.contrast}}>
                 <Container.Flex>
                     <Typography.Title>Удаление</Typography.Title>
                     <Typography.Main>Вы точно хотите произвести удаление?</Typography.Main>

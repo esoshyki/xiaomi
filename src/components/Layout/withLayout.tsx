@@ -7,6 +7,8 @@ import PageLoading from "./PageLoading";
 import { CheckAuth, getUserData, resetCheckout } from "../../store/userSlice";
 import Container from "../ui/Container";
 import Background from "./Backgorund";
+import useDeleteData from "../../hooks/useDeleteData";
+import { Delete } from "../ui";
 
 export const withLayout =
     <T extends object>(
@@ -17,6 +19,8 @@ export const withLayout =
     (props: T): ReactElement => {
         const user = useSelector(getUserData);
         const dispatch = useDispatch();
+
+        const { showDelete, toggleDelete } = useDeleteData()
 
         useEffect(() => {
             if (typeof document !== "undefined") {
@@ -55,6 +59,8 @@ export const withLayout =
                         <Bearer />
                     )}
                     {needAuth && !user.checkAuth.pending && !user.checkAuth.result && <Bearer />}
+
+                    {showDelete && <Delete onDelete={() => console.log("delete")} onCancel={toggleDelete}/>}
                 </Main>
             </Container.Flex>
         );

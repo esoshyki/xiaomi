@@ -16,6 +16,7 @@ import {
     HelpPage,
     OrderPage,
     ShopsPage,
+    NotFound,
 } from ".";
 
 import { useRedirect } from "../hooks/useRedirect";
@@ -49,6 +50,7 @@ const WithUrl = memo(() => {
                 path="/order/:orderNumber/:itemNumber"
                 element={<OrderItemPage />}
             />
+            <Route path="*" element={<NotFound />} />
         </Routes>
     );
 });

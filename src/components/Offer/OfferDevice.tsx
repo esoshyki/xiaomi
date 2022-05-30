@@ -39,9 +39,9 @@ const OfferDevice = ({ deviceInfo, givenAnswers }: { deviceInfo: DeviceInfo, giv
             <Container.Flex verticalGap={4} alignItems="stretch" styles={{flexGrow: 1}}>
                 <Typography.Title textAlign="start" styles={{ order: 0, margin: "0" }}>{deviceName}</Typography.Title>
                 {Object.entries(categories).map(([groupName, value], key) => (
-                    <Container.Flex direction="row" key={key}>
+                    <Container.Flex direction="row" key={key} alignItems="start">
                         <Typography.Tertiary margin={"0 4px 0 0"}>{groupName}</Typography.Tertiary>
-                        <Typography.Small>{value}</Typography.Small>
+                        <Typography.Small textAlign="start">{value}</Typography.Small>
                     </Container.Flex>
                 ))}
             </Container.Flex>

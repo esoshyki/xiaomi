@@ -9,6 +9,7 @@ import FreeInput from "./FreeInput";
 import FromList from "./FromList";
 import QrCode from "./OfferQR";
 import UploadImage from "./UploadImage";
+import { useParams } from "react-router-dom";
 
 export interface OfferQuestionProps {
     questionData: Question;
@@ -29,6 +30,10 @@ const OfferQuestion = (props: OfferQuestionProps) => {
         questionDescriptionUrl,
         questionDescriptionUrlName,
     } = questionData;
+
+    const { orderNumber, itemNumber } = useParams();
+
+    const { step, changeStep } = useOfferData({ orderNumber, itemNumber });
 
     return (
         <Container.Flex fullWidth alignItems="start" verticalGap={16}>
@@ -104,7 +109,7 @@ const OfferQuestion = (props: OfferQuestionProps) => {
             )}
 
             {answerType === "show_qr_link" && (
-                <Button fullWidth variant="outline">
+                <Button fullWidth variant="outline" onClick={() => {changeStep("prePrice")}}>
                     Назад
                 </Button>
             )}

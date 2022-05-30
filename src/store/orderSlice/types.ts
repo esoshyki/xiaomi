@@ -1,4 +1,3 @@
-import { SendPhoto } from './index';
 export type CreateOrChangeOrderRequest = {
     combinationId?: string
     number?: string
@@ -61,11 +60,7 @@ export type Order = {
     items: OrderItem[]
 }
 
-export type SendPhotoData = {
-    files: File[]
-    itemNumber?: string
-    orderNumber?: string
-}
+
 
 export type GetOrderResponse = ApiResponse<Order>
 

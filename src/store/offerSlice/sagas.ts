@@ -1,14 +1,24 @@
+import { orderApi } from './../../api/order';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { giveAnswer, giveAnswerRequest, hideQuestionContent, makeAdditionAction, setAdditionalAction, setCombinationCode, setGetQuestionLoading } from './index';
-import { call, put, select, takeEvery, delay, takeLatest } from "redux-saga/effects";
+import { giveAnswer, 
+    giveAnswerRequest, 
+    hideQuestionContent, 
+    makeAdditionAction, 
+    setAdditionalAction, 
+    setCombinationCode, 
+    setGetQuestionLoading,
+    SendPhoto
+} from './index';
+import { call, put, select, takeEvery, delay, takeLatest, takeLeading } from "redux-saga/effects";
 import { GetQuestions, setDeviceInfo, setStep } from ".";
 import { deviceApi } from "../../api";
-import { GivenAnswer, MakeAdditionAction, OfferState, QuestionsResponse, RequestAnswers } from "./types";
+import { GivenAnswer, MakeAdditionAction, OfferState, QuestionsResponse, RequestAnswers, SendPhotoData } from "./types";
 import { ResponseData } from "../../api/types";
 import { RootState } from '..';
 import { formatRequestAnswer } from "../../components/Offer/helpers/formatRequestAnswer";
-import { CreateOrChangeOrder, SendPhoto, setQrCode } from '../orderSlice';
+import { CreateOrChangeOrder } from '../orderSlice';
 import { redirectTo } from '../viewSlice';
+import { customErrors } from '../../helpers/getCustomError';
 
 function* getQuestionsWorker({ payload } : PayloadAction<{ orderNumber?: string, itemNumber?: string }>) {
     const { orderNumber, itemNumber } = payload;
@@ -39,6 +49,38 @@ function* getQuestionsWorker({ payload } : PayloadAction<{ orderNumber?: string,
     }
 }
 
+function* sendPhotoWorker({ payload }: PayloadAction<SendPhotoData>) {
+    const state: RootState = yield select();
+    const user = state.user.user;
+
+    const { itemNumber, orderNumber, files } = payload
+
+    if (!user) {
+        yield put(SendPhoto.failure([customErrors.noUser]));
+        return;
+    }
+
+    if (!files || !itemNumber || !orderNumber) {
+        yield put(SendPhoto.failure(["Ошибка загрузки картинок"]));
+        return;
+    }
+
+    const response: ResponseData<any> = yield call(orderApi.sendPhoto, files, orderNumber, itemNumber, user);
+
+    if (response.status === "success") {
+        yield put(setAdditionalAction());
+        yield put(SendPhoto.success(response.data));
+        yield put(setCombinationCode())
+        yield put(GetQuestions.request({ orderNumber, itemNumber }))
+     };
+
+    if (response.status === "error") {
+        yield put(SendPhoto.failure(response.errors))
+    };
+
+    yield put(SendPhoto.fulfill())
+};
+
 function* makeAdditionActionWorker({ payload } : PayloadAction<MakeAdditionAction>) {
     const { itemNumber, orderNumber } = payload;
     const { action } = payload;
@@ -66,5 +108,6 @@ function* giveAnswerRequestWorker({ payload } : PayloadAction<GivenAnswer>) {
 export default function* offerSagas() {
     yield takeLatest(GetQuestions.REQUEST, getQuestionsWorker);
     yield takeEvery(makeAdditionAction, makeAdditionActionWorker);
-    yield takeEvery(giveAnswerRequest, giveAnswerRequestWorker)
+    yield takeEvery(giveAnswerRequest, giveAnswerRequestWorker);
+    yield takeLeading(SendPhoto.REQUEST, sendPhotoWorker);
 }

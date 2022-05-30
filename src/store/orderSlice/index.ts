@@ -1,6 +1,6 @@
 import { RootState } from '..';
 import { createSlice, createSelector, PayloadAction } from '@reduxjs/toolkit';
-import { OrderState, CreateOrderResponse, GetOrderRequest, Order, OrderItem, SendPhotoData, OrderRequest } from './types';
+import { OrderState, CreateOrderResponse, GetOrderRequest, Order, OrderRequest } from './types';
 import { createRoutine } from 'redux-saga-routines';
 
 const initialState : OrderState = {
@@ -20,7 +20,6 @@ const initialState : OrderState = {
 
 export const GetOrder = createRoutine("order/Get-Order");
 export const CreateOrChangeOrder = createRoutine("order/Create-Or-Change-Order");
-export const SendPhoto = createRoutine("order/Send-Photo");
 export const GetItemStatus = createRoutine("order/Get-Item-Status");
 
 const orderSlice = createSlice({
@@ -67,19 +66,6 @@ const orderSlice = createSlice({
         },
         [GetOrder.FULFILL](state) {
             state.order.loading = false
-        },
-        [SendPhoto.REQUEST](state, { payload } : PayloadAction<SendPhotoData>) {
-            state.sendPhoto.loading = true
-        },
-        [SendPhoto.FAILURE](state, { payload } : PayloadAction<string[]>) {
-            state.order.errors = payload;
-            state.sendPhoto.status = "error"
-        },
-        [SendPhoto.SUCCESS](state) {
-            state.sendPhoto.status = "success";
-        },
-        [SendPhoto.FULFILL](state) {
-            state.sendPhoto.loading = false
         },
         [GetItemStatus.REQUEST](state) {
             state.order.loading = true

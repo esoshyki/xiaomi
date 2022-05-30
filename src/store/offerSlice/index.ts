@@ -1,37 +1,54 @@
 import { RootState } from '..';
 import { createAction, createSelector, PayloadAction } from '@reduxjs/toolkit';
-import { AdditionActions, DeviceInfo, GivenAnswer, ImageFile, OfferState, OfferSteps, QuestionsResponse, QuestionTree, ServerError, SetTreeDataProps, MakeAdditionAction, GivenAnswers } from './types';
+import { AdditionActions, 
+    DeviceInfo, 
+    GivenAnswer, 
+    ImageFile, 
+    OfferState, 
+    OfferSteps, 
+    QuestionsResponse, 
+    QuestionTree, 
+    ServerError, 
+    SetTreeDataProps, 
+    MakeAdditionAction, 
+    GivenAnswers,
+    SendPhotoData
+} from './types';
 import { createSlice } from '@reduxjs/toolkit';
 import { createRoutine } from 'redux-saga-routines';
 import { N } from '../types'
 
-    const initialState: OfferState = {
-        step: "start",
-        getQuestions: {
-            result: null,
-            loading: false,
-            errors: []
-        },
-        createOrder: {
-            result: null,
-            loading: false,
-            errors: [],
-        },
-        questionOrder: 0,
-        questionsData: null,
-        questionsTree: null,
-        hint: "",
-        images: [],
-        givenAnswers: {
-            answers: []
-        },
-        deviceInfo: null,
-        changeQuestionsContent: false
-    };
+const initialState: OfferState = {
+    step: "start",
+    getQuestions: {
+        result: null,
+        errors: []
+    },
+    createOrder: {
+        result: null,
+        errors: [],
+    },
+    sendPhoto: {
+        result: null,
+        errors: []
+    },
+    pending: false,
+    questionOrder: 0,
+    questionsData: null,
+    questionsTree: null,
+    hint: "",
+    images: [],
+    givenAnswers: {
+        answers: []
+    },
+    deviceInfo: null,
+    changeQuestionsContent: false
+};
 
 export const GetQuestions = createRoutine("offer/Get-Questions");
+export const SendPhoto = createRoutine("offer/Send-Photo")
 
-export const giveAnswerRequest = createAction<GivenAnswer>("offer/Get-Question-Request")
+export const giveAnswerRequest = createAction<GivenAnswer>("offer/Get-Question-Request");
 
 const offerSlice = createSlice({
     name: "offer",
@@ -52,7 +69,7 @@ const offerSlice = createSlice({
             }
             state.changeQuestionsContent = false
         },
-        setGivenAnswers(state: OfferState, { payload } : PayloadAction<GivenAnswers>) {
+        setGivenAnswers(state: OfferState, { payload }: PayloadAction<GivenAnswers>) {
             state.givenAnswers = payload;
         },
         setTreeProps(state: OfferState, { payload }: PayloadAction<SetTreeDataProps>) {
@@ -62,8 +79,8 @@ const offerSlice = createSlice({
             if (offerId) state.givenAnswers.offerId = offerId;
             if (additionalAction) state.givenAnswers.additionalAction = additionalAction;
         },
-        setGetQuestionLoading(state: OfferState, { payload } : PayloadAction<boolean>) {
-            state.getQuestions.loading = payload;
+        setGetQuestionLoading(state: OfferState, { payload }: PayloadAction<boolean>) {
+            state.pending = payload;
         },
         resetAdditionActions(state: OfferState) {
             state.givenAnswers.additionalAction = undefined
@@ -78,11 +95,11 @@ const offerSlice = createSlice({
             state.questionsData = null;
             state.questionsTree = null;
             state.getQuestions.result = null;
-        } ,
+        },
         setCombinationsId(state: OfferState, { payload }: PayloadAction<string | undefined>) {
             state.givenAnswers.combinationId = payload;
         },
-        setCombinationCode(state: OfferState, { payload } : PayloadAction<string | undefined>) {
+        setCombinationCode(state: OfferState, { payload }: PayloadAction<string | undefined>) {
             state.givenAnswers.combinationCode = payload
         },
         setOfferId(state: OfferState, { payload }: PayloadAction<string | undefined>) {
@@ -94,11 +111,11 @@ const offerSlice = createSlice({
         setDeviceInfo(state: OfferState, { payload }: PayloadAction<DeviceInfo>) {
             state.deviceInfo = payload
         },
-        restoreOffer(state: OfferState) {state = Object.assign(state, initialState)},
-        makeAdditionAction(state: OfferState, { payload } : PayloadAction<MakeAdditionAction>) {
+        restoreOffer(state: OfferState) { state = Object.assign(state, initialState) },
+        makeAdditionAction(state: OfferState, { payload }: PayloadAction<MakeAdditionAction>) {
             state.givenAnswers.additionalAction = undefined;
         },
-        uploadImage(state: OfferState, { payload } : PayloadAction<ImageFile>) {
+        uploadImage(state: OfferState, { payload }: PayloadAction<ImageFile>) {
             state.images.push(payload)
         },
         addNewDevice(state: OfferState) {
@@ -110,14 +127,14 @@ const offerSlice = createSlice({
             state.questionsTree = null;
             state.deviceInfo = null;
         },
-        setQuestionOrder(state: OfferState, { payload } : PayloadAction<number>) {
+        setQuestionOrder(state: OfferState, { payload }: PayloadAction<number>) {
             state.questionOrder = payload
         }
     },
     extraReducers: {
         [GetQuestions.REQUEST](state) {
             state.getQuestions.result = null;
-            state.getQuestions.loading = true
+            state.pending = true
         },
         [GetQuestions.FAILURE](state, { payload }: PayloadAction<ServerError[]>) {
             state.getQuestions.result = "error";
@@ -135,10 +152,23 @@ const offerSlice = createSlice({
             state.questionsTree = payload.questionsTree;
         },
         [GetQuestions.FULFILL](state) {
-            state.getQuestions.loading = false
+            state.pending = false
             if (state.step === "start") {
                 state.step = "questions"
             }
+        },
+        [SendPhoto.REQUEST](state, { payload }: PayloadAction<SendPhotoData>) {
+            state.pending = true
+        },
+        [SendPhoto.FAILURE](state, { payload }: PayloadAction<ServerError[]>) {
+            state.sendPhoto.errors = payload;
+            state.sendPhoto.result = "error"
+        },
+        [SendPhoto.SUCCESS](state) {
+            state.sendPhoto.result = "success";
+        },
+        [SendPhoto.FULFILL](state) {
+            state.pending = false
         },
     }
 });
@@ -149,10 +179,11 @@ export const getQuestionsResult = createSelector(
 )
 
 export const getOfferData = createSelector(
-    (state: RootState) => ({offer: state.offer, view: state.view, order: state.order}),
+    (state: RootState) => ({ offer: state.offer, view: state.view, order: state.order }),
     data => ({
         offer: data.offer,
         orderData: data.order.order.data,
+        isLoading: data.offer.pending || data.order.order.loading,
         redirectTo: data.view.redirectTo
     })
 )

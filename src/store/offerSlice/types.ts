@@ -35,7 +35,6 @@ export type MakeAdditionAction = {
 export type ApiResult = "success" | "error" | null
 
 export type ApiProps = {
-    loading: boolean
     result: ApiResult
     errors: ServerError[]
 }
@@ -91,8 +90,6 @@ export type QuestionTree = {
     }>
 }
 
-
-
 export type TreeQuestion = {
     questionId: string
     answers: QuestionTree[]
@@ -145,10 +142,18 @@ export type ImageFile = {
     type: string
 }
 
+export type SendPhotoData = {
+    files: File[]
+    itemNumber?: string
+    orderNumber?: string
+}
+
 export type OfferState = {
     step: OfferSteps
+    pending: boolean
     getQuestions: ApiProps
     createOrder: ApiProps
+    sendPhoto: ApiProps
     questionsData: QuestionsData | null
     questionsTree: QuestionTree | null
     questionOrder: number;

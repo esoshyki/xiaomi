@@ -2,10 +2,10 @@ import { resetQuestions, setGivenAnswers, GetQuestions, restoreOffer, setCombina
 import { setAdditionalAction, setStep } from '../offerSlice';
 import { customErrors } from './../../helpers/getCustomError';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { CreateOrChangeOrder, GetOrder, setItemNumber, setOrderNumber, SendPhoto, GetItemStatus, setQrCode } from './index';
+import { CreateOrChangeOrder, GetOrder, GetItemStatus, setQrCode } from './index';
 import {  call, put, select, takeLatest, takeLeading } from "redux-saga/effects";
 import { orderApi } from "../../api";
-import { GetOrderRequest, Order, CreateOrderResponse, SendPhotoData, OrderRequest } from "./types";
+import { GetOrderRequest, Order, CreateOrderResponse, OrderRequest } from "./types";
 import { ResponseData } from "../../api/types";
 import { RootState } from "..";
 import { redirectTo } from '../viewSlice';
@@ -67,37 +67,7 @@ function* getOrderWorker({ payload }: PayloadAction<GetOrderRequest | undefined>
     }
 }
 
-function* sendPhotoWorker({ payload }: PayloadAction<SendPhotoData>) {
-    const state: RootState = yield select();
-    const user = state.user.user;
 
-    const { itemNumber, orderNumber, files } = payload
-
-    if (!user) {
-        yield put(SendPhoto.failure([customErrors.noUser]));
-        return;
-    }
-
-    if (!files || !itemNumber || !orderNumber) {
-        yield put(SendPhoto.failure(["Ошибка загрузки картинок"]));
-        return;
-    }
-
-    const response: ResponseData<any> = yield call(orderApi.sendPhoto, files, orderNumber, itemNumber, user);
-
-    if (response.status === "success") {
-        yield put(setAdditionalAction());
-        yield put(SendPhoto.success(response.data));
-        yield put(setCombinationCode())
-        yield put(GetQuestions.request({ orderNumber, itemNumber }))
-     };
-
-    if (response.status === "error") {
-        yield put(SendPhoto.failure(response.errors))
-    };
-
-    yield put(SendPhoto.fulfill())
-};
 
 function* getItemStatusRequestWorker ({ payload }: PayloadAction<OrderRequest<{}>>) {
     const state: RootState = yield select();
@@ -150,7 +120,6 @@ function* getOrderSuccessWorker({ payload } : PayloadAction<{data: Order, itemNu
 export default function* orderSagas() {
     yield takeLeading(CreateOrChangeOrder.REQUEST, createOrderWorker);
     yield takeLeading(GetOrder.REQUEST, getOrderWorker)
-    yield takeLeading(SendPhoto.REQUEST, sendPhotoWorker);
     yield takeLeading(GetItemStatus.REQUEST, getItemStatusRequestWorker);
     yield takeLatest(GetOrder.SUCCESS, getOrderSuccessWorker)
 }

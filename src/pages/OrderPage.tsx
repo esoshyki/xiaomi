@@ -33,6 +33,8 @@ const OrderPage = () => {
         return orderData.items.every((item) => item.status === "D");
     }, [orderData]);
 
+    console.log("here")
+
     return (
         <Container.Flex verticalGap={24}>
             {isLoading && <OfferLoader />}

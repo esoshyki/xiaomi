@@ -23,6 +23,7 @@ import {
 import { getFromTree } from "../components/Offer/helpers/getFromTree";
 import { useUploadFiles } from "../contexts/uploadFiles";
 import { GetItemStatus, GetOrder } from "../store/orderSlice";
+import { getViewData } from "../store/viewSlice";
 
 interface UseOfferDataProps {
     orderNumber?: string
@@ -33,15 +34,15 @@ interface UseOfferDataProps {
 export const useOfferData = (props: UseOfferDataProps) => {
     const { orderNumber, itemNumber, order } = props;
     const data = useSelector(getOfferData);
+    const { redirectTo } = useSelector(getViewData);
 
-    const { offer, redirectTo, orderData } = data;
+    const { offer, orderData, isLoading } = data;
 
     const { questionsTree, questionsData, givenAnswers, step, questionOrder } = offer;
     const _getQuestionsResult = offer.getQuestions.result;
     const changeContent = offer.changeQuestionsContent;
     const additionalAction = offer.givenAnswers.additionalAction;
     const combinationCode = offer.givenAnswers.combinationCode
-    const getQuestionsLoading = offer.getQuestions.loading;
 
     const dispatch = useDispatch();
     const { files } = useUploadFiles();
@@ -50,10 +51,6 @@ export const useOfferData = (props: UseOfferDataProps) => {
         dispatch(setStep(step));
     }, []);
 
-    const isLoading = useMemo(
-        () => getQuestionsLoading,
-        [getQuestionsLoading]
-    );
 
     const getItemStatus = useCallback(() => {
         dispatch(GetItemStatus.request({ orderNumber, itemNumber }));
@@ -140,7 +137,7 @@ export const useOfferData = (props: UseOfferDataProps) => {
     };
 
     const fetchQuestions = () => {
-        if (offer.getQuestions.loading) return null;
+        if (isLoading) return null;
         if (order) return null;
         if (additionalAction) {
             // dispatch(resetAdditionActions());
@@ -155,7 +152,7 @@ export const useOfferData = (props: UseOfferDataProps) => {
             return;
         }
 
-        if (!getQuestionsLoading) {
+        if (!isLoading && !redirectTo) {
             dispatch(GetQuestions.request({ orderNumber, itemNumber }));
         }
     };
@@ -194,7 +191,7 @@ export const useOfferData = (props: UseOfferDataProps) => {
     };
 
     useEffect(() => {
-        if (!question && !getQuestionsLoading) {
+        if (!question && !isLoading) {
             fetchQuestions()
         }
     }, [question])
@@ -214,7 +211,7 @@ export const useOfferData = (props: UseOfferDataProps) => {
         fetchQuestions,
         progress,
         setStep: _setStep,
-        isLoading,
+        isLoading: isLoading,
         getQuestion,
         uploadImage: _uploadImage,
         changeContent,

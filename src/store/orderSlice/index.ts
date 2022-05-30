@@ -1,6 +1,6 @@
 import { RootState } from '..';
 import { createSlice, createSelector, PayloadAction } from '@reduxjs/toolkit';
-import { OrderState, CreateOrderResponse, GetOrderRequest, Order, OrderRequest } from './types';
+import { OrderState, CreateOrderResponse, GetOrderRequest, Order, OrderRequest, DeleteItemResponseData } from './types';
 import { createRoutine } from 'redux-saga-routines';
 
 const initialState : OrderState = {
@@ -12,15 +12,19 @@ const initialState : OrderState = {
         loading: false,
         errors: []
     },
-    sendPhoto: {
-        status: null,
-        loading: false
-    },
+    deleteItem: {
+        loading: false,
+        result: null,
+        errors: [],
+        data: null,
+        itemNumber: null
+    }
 }
 
 export const GetOrder = createRoutine("order/Get-Order");
 export const CreateOrChangeOrder = createRoutine("order/Create-Or-Change-Order");
 export const GetItemStatus = createRoutine("order/Get-Item-Status");
+export const DeleteItem = createRoutine("order/Delete-Item")
 
 const orderSlice = createSlice({
     name: "order",
@@ -39,6 +43,9 @@ const orderSlice = createSlice({
             state.qrCode = payload;
         },
         restoreOrderState(state: OrderState) {state = Object.assign(state, initialState)},
+        setDeleteItemNumber(state: OrderState, { payload } : PayloadAction<string | null>) {
+            state.deleteItem.itemNumber = payload;
+        }
     },
     extraReducers: {
         [CreateOrChangeOrder.REQUEST](state, { payload } : PayloadAction<OrderRequest<{}>>) {
@@ -83,6 +90,19 @@ const orderSlice = createSlice({
         [GetItemStatus.FULFILL](state) {
             state.order.loading = false;
         },
+        [DeleteItem.REQUEST](state) {
+            state.deleteItem.loading = true
+        },
+        [DeleteItem.SUCCESS](state, { payload } : PayloadAction<DeleteItemResponseData>) {
+            state.deleteItem.data = payload
+        },
+        [DeleteItem.FAILURE](state, { payload } : PayloadAction<string[]>) {
+            state.deleteItem.errors = payload
+        },
+        [DeleteItem.FULFILL](state) {
+            state.deleteItem.loading = false
+            state.deleteItem.itemNumber = null;
+        }
     }
 });
 
@@ -134,19 +154,14 @@ export const getCreateOrderResult = createSelector(
     })
 )
 
-export const getSendPhotoStatus = createSelector(
-    (state: RootState) => state.order,
-    order => order.sendPhoto.status
-)
-
-export const getOrderSendPhotosStatus = createSelector(
-    (state: RootState) => state.order,
-    orderData => orderData.sendPhoto.status,
-)
-
 export const getQrCode = createSelector(
     (state: RootState) => state.order,
     order => order.qrCode
+)
+
+export const getDeleteData = createSelector(
+    (state: RootState) => state.order,
+    order => ({...order.deleteItem, orderNumber: order.order.data?.number})
 )
 
 export const {
@@ -154,7 +169,8 @@ export const {
     setItemNumber,
     restoreOrderState,
     setQrCode,
-    setOrderStatus
+    setOrderStatus,
+    setDeleteItemNumber
 } = orderSlice.actions
 
 export default orderSlice.reducer;

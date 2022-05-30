@@ -1,7 +1,7 @@
 import { collectGetOrderData } from './helpers/collectGetOrderData';
 import { collectCreateOrChangeOrderData } from './helpers/collectCreateOrChangeOrder';
 import { collectFormData } from './helpers/collectFormData';
-import { GetOrderRequest, Order } from './../store/orderSlice/types';
+import { DeleteItemResponse, GetOrderRequest, Order } from './../store/orderSlice/types';
 import { ResponseData } from './types'
 import { api } from './instance';
 import { Axios, AxiosResponse } from 'axios';
@@ -61,10 +61,29 @@ const sendPhoto = async (images: File[], orderNumber: string, itemNumber: string
     }
 }
 
+const deleteItem = async (orderNumber: string, itemNumber: string, user: User) : Promise<DeleteItemResponse> => {
+    try {
+        const response: AxiosResponse<DeleteItemResponse> = await api.post("/orderrequest/deleteitem/", collectFormData({
+            number: orderNumber,
+            itemNumber
+        }, user));
+
+        return response.data
+
+    } catch (error: any) {
+        return ({
+            data: null,
+            errors: [error.message],
+            status: "error"
+        })
+    }
+}
+
 export const orderApi = {
     createOrder,
     getOrderData,
     sendPhoto,
     getItemStatus,
-    addItemToOrder
+    addItemToOrder,
+    deleteItem
 }

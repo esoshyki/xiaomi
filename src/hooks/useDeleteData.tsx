@@ -1,20 +1,40 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDeleteData, toggleDelete } from "../store/viewSlice";
+import { DeleteItem, getDeleteData, setDeleteItemNumber } from "../store/orderSlice";
+import { redirectTo } from "../store/viewSlice";
+
 
 export default function useDeleteData () {
     
     const dispatch = useDispatch();
     
-    const showDelete = useSelector(getDeleteData);
+    const deleteData = useSelector(getDeleteData);
 
-    const _toggleDeleteOverlay = useCallback(() => {
-        dispatch(toggleDelete())
-    }, [showDelete])
+    useEffect(() => {
+        if (deleteData.data) {
+            const { item, order } = deleteData.data;
+            if (item && order) {
+                dispatch(redirectTo("/"))
+            };
+            if (item && !order) {
+                dispatch(redirectTo("/order/" + deleteData.orderNumber))
+            }
+        }
+    }, [deleteData.data])
+
+    const _setDeleteItem = useCallback((itemNumber: string | null) => {
+        dispatch(setDeleteItemNumber(itemNumber))
+    }, []);
+
+    const deleteItem = useCallback(() => {
+        dispatch(DeleteItem.request())
+    }, [])
 
     return ({
-        showDelete,
-        toggleDelete: _toggleDeleteOverlay
+        itemToDelete: deleteData.itemNumber,
+        deleteItem,
+        setDeleteItem: _setDeleteItem,
+        loading: deleteData.loading
     })
 
 }

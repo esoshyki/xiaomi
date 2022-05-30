@@ -4,5 +4,4 @@ export type ViewState = {
     animationClose: boolean,
     currentSlide: number,
     redirectTo: string | null,
-    showDelete: boolean
 }

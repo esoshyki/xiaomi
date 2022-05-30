@@ -89,8 +89,10 @@ const Offer = ({ hidingChars }: { hidingChars?: boolean | undefined }) => {
                         />
                     )}
                 </OfferCard>
+
+                {step === "summary" && <AddNewDevice onClick={addNewDevice} />}
             </Container.Flex>
-            {step === "summary" && <AddNewDevice onClick={addNewDevice} />}
+
         </Container.Flex>
     );
 };

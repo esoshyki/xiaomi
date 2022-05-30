@@ -2,10 +2,10 @@ import { resetQuestions, setGivenAnswers, GetQuestions, restoreOffer, setCombina
 import { setAdditionalAction, setStep } from '../offerSlice';
 import { customErrors } from './../../helpers/getCustomError';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { CreateOrChangeOrder, GetOrder, GetItemStatus, setQrCode } from './index';
+import { CreateOrChangeOrder, GetOrder, GetItemStatus, setQrCode, DeleteItem } from './index';
 import {  call, put, select, takeLatest, takeLeading } from "redux-saga/effects";
 import { orderApi } from "../../api";
-import { GetOrderRequest, Order, CreateOrderResponse, OrderRequest } from "./types";
+import { GetOrderRequest, Order, CreateOrderResponse, OrderRequest, DeleteItemResponse } from "./types";
 import { ResponseData } from "../../api/types";
 import { RootState } from "..";
 import { redirectTo } from '../viewSlice';
@@ -117,9 +117,39 @@ function* getOrderSuccessWorker({ payload } : PayloadAction<{data: Order, itemNu
     };
 }
 
+function* deleteItemWorker () {
+    const state: RootState = yield select();
+
+    const user = state.user.user;
+    const orderNumber = state.order.order.data?.number;
+    const itemNumber = state.order.deleteItem.itemNumber;
+
+    console.log(orderNumber);
+    console.log(user);
+    console.log(itemNumber);
+
+    if (!orderNumber || !user || !itemNumber) {
+        yield put(DeleteItem.fulfill());
+        return;
+    };
+
+    const response : DeleteItemResponse = yield call(orderApi.deleteItem, orderNumber, itemNumber, user);
+
+    if (response.status === "success") {
+        yield put(DeleteItem.success(response.data));
+    };
+
+    if (response.status === "error") {
+        yield put(DeleteItem.failure(response.errors))
+    };
+
+    yield put(DeleteItem.fulfill());
+}
+
 export default function* orderSagas() {
     yield takeLeading(CreateOrChangeOrder.REQUEST, createOrderWorker);
     yield takeLeading(GetOrder.REQUEST, getOrderWorker)
     yield takeLeading(GetItemStatus.REQUEST, getItemStatusRequestWorker);
     yield takeLatest(GetOrder.SUCCESS, getOrderSuccessWorker)
+    yield takeLeading(DeleteItem.REQUEST, deleteItemWorker)
 }

@@ -43,7 +43,7 @@ const OfferDevice = ({
 }) => {
     const { image, name, answers, status } = data;
 
-    const { toggleDelete } = useDeleteData()
+    const { setDeleteItem } = useDeleteData()
 
     const [visibleChars, setVisibleChars] = useState(false);
     const [initVisible, setInitVisible] = useState(false);
@@ -86,7 +86,7 @@ const OfferDevice = ({
     };
 
     const deleteOrder = () => {
-        console.log("delete");
+        console.log("delete", data.itemNumber);
     };
 
     return (
@@ -151,7 +151,7 @@ const OfferDevice = ({
                             <ToggleButton
                                 type="button"
                                 red
-                                onClick={toggleDelete}
+                                onClick={() => setDeleteItem(data.itemNumber)}
                             >
                                 Удалить
                             </ToggleButton>

@@ -189,8 +189,8 @@ export const getOfferData = createSelector(
 )
 
 export const getSendPhotoStatus = createSelector(
-    (state: RootState) => state.order,
-    order => order.sendPhoto.status
+    (state: RootState) => state.offer,
+    offer => offer.sendPhoto.result
 )
 
 export const {

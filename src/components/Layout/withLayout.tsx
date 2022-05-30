@@ -20,7 +20,7 @@ export const withLayout =
         const user = useSelector(getUserData);
         const dispatch = useDispatch();
 
-        const { showDelete, toggleDelete } = useDeleteData()
+        const { deleteItem, itemToDelete, setDeleteItem } = useDeleteData();
 
         useEffect(() => {
             if (typeof document !== "undefined") {
@@ -39,12 +39,14 @@ export const withLayout =
             if (!user.user) {
                 dispatch(resetCheckout());
             }
-        }, [
-            user,
-        ]);
+        }, [user]);
 
         return (
-            <Container.Flex alignItems="stretch" fullHeight styles={{ position: "relative" }}>
+            <Container.Flex
+                alignItems="stretch"
+                fullHeight
+                styles={{ position: "relative" }}
+            >
                 <Background />
                 <Header />
                 <Main>
@@ -55,12 +57,19 @@ export const withLayout =
                             <Component {...props} />
                         )}
                     {needAuth && user.checkAuth.pending && <PageLoading />}
-                    {needAuth && !user.checkAuth.pending && user.checkAuth.result === "error" && (
-                        <Bearer />
-                    )}
-                    {needAuth && !user.checkAuth.pending && !user.checkAuth.result && <Bearer />}
+                    {needAuth &&
+                        !user.checkAuth.pending &&
+                        user.checkAuth.result === "error" && <Bearer />}
+                    {needAuth &&
+                        !user.checkAuth.pending &&
+                        !user.checkAuth.result && <Bearer />}
 
-                    {showDelete && <Delete onDelete={() => console.log("delete")} onCancel={toggleDelete}/>}
+                    {!!itemToDelete && (
+                        <Delete
+                            onDelete={deleteItem}
+                            onCancel={() => setDeleteItem(null)}
+                        />
+                    )}
                 </Main>
             </Container.Flex>
         );

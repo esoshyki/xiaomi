@@ -60,7 +60,16 @@ export type Order = {
     items: OrderItem[]
 }
 
+export type DeleteItemResponseData = {
+    item: boolean
+    order: boolean
+} | null
 
+export type DeleteItemResponse = {
+    status: "success" | "error" | null,
+    data: DeleteItemResponseData
+    errors: string[]
+}
 
 export type GetOrderResponse = ApiResponse<Order>
 
@@ -73,9 +82,12 @@ export type OrderState = {
         loading: boolean,
         errors: string[]
     },
-    sendPhoto: {
-        status: "success" | "error" | null
-        loading: boolean
+    deleteItem: {
+        result: "success" | "error" | null,
+        loading: boolean,
+        errors: string[]
+        data: DeleteItemResponseData,
+        itemNumber: string | null
     }
     qrCode?: string
 }

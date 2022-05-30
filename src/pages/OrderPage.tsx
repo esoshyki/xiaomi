@@ -36,7 +36,7 @@ const OrderPage = () => {
     console.log("here")
 
     return (
-        <Container.Flex verticalGap={24}>
+        <Container.Flex verticalGap={24} padding={"0 0 20px 0"}>
             {isLoading && <OfferLoader />}
             {orderData &&
                 orderData?.items.map((item) => (

@@ -9,7 +9,6 @@ const initialState: ViewState = {
     animationClose: false,
     currentSlide: 0,
     redirectTo: null,
-    showDelete: false
 }
 
 const viewSlice = createSlice({
@@ -40,9 +39,6 @@ const viewSlice = createSlice({
         redirectTo(state: ViewState, { payload } : PayloadAction<string | null>) {
             state.redirectTo = payload;
         },
-        toggleDelete(state: ViewState) {
-            state.showDelete = !state.showDelete
-        }
     }
 });
 
@@ -50,11 +46,6 @@ export const getViewData = createSelector(
     (state: RootState) => state.view,
     view => view
 );
-
-export const getDeleteData = createSelector(
-    (state: RootState) => state.view,
-    view => view.showDelete
-)
 
 export const { 
     showMenu,
@@ -64,7 +55,6 @@ export const {
     animationClear,
     setSlide,
     redirectTo,
-    toggleDelete
 } = viewSlice.actions;
 
 export default viewSlice.reducer;

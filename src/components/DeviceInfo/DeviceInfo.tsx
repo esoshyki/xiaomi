@@ -137,16 +137,17 @@ const OfferDevice = (props: OfferDeviceProps) => {
                     ref={cardRef}
                     verticalGap={4}
                     alignItems="stretch"
-                    styles={{ overflow: "hidden", transition: "height 250ms" }}
-                >
-                    {answers.map((answer, key) => (
-                        <Container.Flex direction="row" key={key}>
-                            <Typography.Tertiary margin={"0 4px 0 0"}>
-                                {answer.name}
-                            </Typography.Tertiary>
-                            <Typography.Small>{answer.value}</Typography.Small>
-                        </Container.Flex>
-                    ))}
+                    styles={{overflow: "hidden", transition: "height 250ms"}}>
+
+                {answers.map((answer, key) => (
+                    <Container.Flex direction="row" key={key} alignItems="start">
+                        <Typography.Tertiary margin={"0 4px 0 0"}>
+                            {answer.name}
+                        </Typography.Tertiary>
+                        <Typography.Small textAlign="start">{answer.value}</Typography.Small>
+                    </Container.Flex>
+                ))}
+
                 </Container.Flex>
 
                 {!!price && !!currency && (

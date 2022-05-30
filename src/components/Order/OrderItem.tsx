@@ -28,25 +28,17 @@ const OrderItem = ({}: {}) => {
 
     return (
         <OfferLayout isLoading={isLoading} onClick={() => {}} progress={0.5}>
-            <Container.Flex
-                verticalGap={15}
-                alignItems="start"
-                styles={{
-                    minHeight: "324px",
-                }}
-            >
-                {!!currentItem && !!orderData && status === "N" && (
-                    <OrderPrePrice
-                        currency={orderData.currency}
-                        itemData={currentItem}
-                        onClick={() =>
-                            navigate(
-                                "/create/" + orderNumber + "/" + itemNumber
-                            )
-                        }
-                    />
-                )}
-            </Container.Flex>
+            {!!currentItem && !!orderData && status === "N" && (
+                <OrderPrePrice
+                    currency={orderData.currency}
+                    itemData={currentItem}
+                    onClick={() =>
+                        navigate(
+                            "/create/" + orderNumber + "/" + itemNumber
+                        )
+                    }
+                />
+            )}
         </OfferLayout>
     );
 };

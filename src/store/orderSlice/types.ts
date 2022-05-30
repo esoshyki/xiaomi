@@ -55,7 +55,7 @@ export type OrderItem = {
 
 export type Order = {
     number: string
-    amount: string
+    amount: number
     currency: string
     status: string
     items: OrderItem[]

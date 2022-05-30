@@ -15,6 +15,8 @@ const OrderShortItem = ({
 }: OrderShortItemProps) => {
     const { name, answers, price, image, status } = itemData;
 
+    console.log(status)
+
     return (
         <OfferCard isLoading={false} progress={progress}>
             <DeviceInfo
@@ -29,6 +31,8 @@ const OrderShortItem = ({
                 hideChars
                 status={status}
             />
+
+
         </OfferCard>
     );
 };

@@ -52,7 +52,7 @@ const OrderPage = () => {
                 <OfferOrdering
                     count={orderData.items.length}
                     currency={orderData.currency}
-                    tradInAmount={orderData.amount}
+                    amount={orderData.amount}
                 />
             )}
         </Container.Flex>

@@ -44,7 +44,7 @@ const OfferSummary = () => {
     }, []);
 
     return (
-        <Container.Flex verticalGap={16} alignItems="stretch">
+        <Container.Flex verticalGap={16} alignItems="stretch" >
 
             {status !== "complete" && (
                 <Typography.Title

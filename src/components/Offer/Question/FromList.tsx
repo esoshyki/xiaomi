@@ -30,7 +30,7 @@ const FromList = (props: OfferQuestionProps) => {
                         const { answerName } = answer;
                         return (
                             <Button
-                                styles={{ width: "calc(50% - 8px)" }}
+                                styles={{ width: "calc(50% - 8px)", height: "max-content" }}
                                 key={idx}
                                 variant="outline"
                                 onClick={() => onClick(answerName, answerId)}

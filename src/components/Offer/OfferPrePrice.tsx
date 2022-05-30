@@ -16,7 +16,7 @@ const OfferPrePrice = (props: PrePriceProps) => {
     const theme = useTheme();
 
     return (
-            <Container.Flex fullWidth alignItems="stretch" verticalGap={12}>
+            <Container.Flex fullWidth alignItems="stretch" verticalGap={12} margin={"16px 0 0 0"}>
 
                 {itemData && currency && (
                     <Fragment>

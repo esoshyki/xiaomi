@@ -1,14 +1,23 @@
 import { useTheme } from "styled-components";
-import { Button, Card, Container, Info, Typography } from "../ui";
+import { Button, Card, Container, Info, Price, Typography } from "../ui";
 
 interface OfferOrderingProps {
     count?: number;
-    tradInAmount: string;
-    buyOutAmount?: string;
+    amount: number;
     currency: string;
 }
 
-const Line = ({ label, value }: { label: string; value: string }) => {
+const Line = ({
+    label,
+    amount,
+    currency,
+    text
+}: {
+    label: string;
+    amount?: number;
+    currency?: string;
+    text?: string;
+}) => {
     const theme = useTheme();
 
     return (
@@ -23,28 +32,20 @@ const Line = ({ label, value }: { label: string; value: string }) => {
                 {label}
             </Typography.Tertiary>
 
-            <Typography.Small
-                color={theme.colors.text.default}
-                styles={{
-                    fontSize: "14px",
-                    fontWeight: 700,
-                }}
-            >
-                {value}
-            </Typography.Small>
+            <Price amount={amount} currency={currency} text={text}/>
         </Container.Flex>
     );
 };
 
 const OfferOrdering = ({
     count,
-    tradInAmount,
-    buyOutAmount,
+    amount,
     currency,
 }: OfferOrderingProps) => {
     const theme = useTheme();
 
-    const _buyOutAmount = buyOutAmount ?? tradInAmount;
+    const tradInAmount = amount;
+    const buyOutAmount = amount * 0.75;
 
     return (
         <Card padding={28} fullWidth>
@@ -56,24 +57,18 @@ const OfferOrdering = ({
                 <Container.Flex>
                     <Line
                         label="Количество: "
-                        value={count ? ` ${count} шт` : " не указана"}
+                        text={count ? ` ${count} шт` : " не указана"}
                     />
                     <Line
                         label="Скидка по «Трейд-ин»: "
-                        value={
-                            tradInAmount
-                                ? ` ${tradInAmount} ${currency}`
-                                : " не указана"
-                        }
+                        amount={tradInAmount}
+                        currency={currency}
                     />
 
                     <Line
                         label="Скидка для «Выкупа»: "
-                        value={
-                            tradInAmount
-                                ? ` ${tradInAmount} ${currency}`
-                                : " не указана"
-                        }
+                        amount={buyOutAmount}
+                        currency={currency}
                     />
                 </Container.Flex>
 

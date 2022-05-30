@@ -1,5 +1,6 @@
 import { useTheme } from "styled-components";
 import { Card, Container, Overlay, Typography, Button } from "../";
+import { styled } from "../../../helpers/styled";
 
 interface DeleteProps {
     onDelete: () => void
@@ -12,7 +13,7 @@ const Delete = ({ onDelete, onCancel } : DeleteProps) => {
 
     return (
         <Overlay padding={"156px 24px"} >
-            <Card padding={28} styles={{maxWidth: "312px", backgroundColor: theme.colors.background.contrast}}>
+            <Card className="show" padding={28} styles={{maxWidth: "312px", backgroundColor: theme.colors.background.contrast}}>
                 <Container.Flex>
                     <Typography.Title>Удаление</Typography.Title>
                     <Typography.Main>Вы точно хотите произвести удаление?</Typography.Main>
